@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/import-signed-entitlement-snapshot-response.schema.json",
+  "title": "ImportSignedEntitlementSnapshotResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["accepted", "reasonCode"],
+  "properties": {
+    "accepted": {
+      "type": "boolean"
+    },
+    "reasonCode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "snapshot": {
+      "anyOf": [
+        {
+          "$ref": "entitlement-snapshot.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

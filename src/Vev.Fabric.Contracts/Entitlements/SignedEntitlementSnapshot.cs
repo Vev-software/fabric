@@ -14,6 +14,21 @@ public sealed record SignedEntitlementSnapshot(
     string Signature);
 
 /// <summary>
+/// Public API payload for importing a signed entitlement snapshot into a local runtime cache.
+/// </summary>
+public sealed record ImportSignedEntitlementSnapshotRequest(
+    SignedEntitlementSnapshot Document,
+    bool ValidateOnly = false);
+
+/// <summary>
+/// Public API payload returned after a signed entitlement snapshot import or dry-run validation.
+/// </summary>
+public sealed record ImportSignedEntitlementSnapshotResponse(
+    bool Accepted,
+    string ReasonCode,
+    EntitlementSnapshot? Snapshot = null);
+
+/// <summary>
 /// Signature verification for signed snapshot documents.
 /// </summary>
 public interface IEntitlementSignatureVerifier

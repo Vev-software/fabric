@@ -73,3 +73,14 @@ export interface SignedEntitlementSnapshot {
   payloadJson: string;
   signature: string;
 }
+
+export interface ImportSignedEntitlementSnapshotRequest {
+  document: SignedEntitlementSnapshot;
+  validateOnly?: boolean;
+}
+
+export interface ImportSignedEntitlementSnapshotResponse {
+  accepted: boolean;
+  reasonCode: ReasonCode | string;
+  snapshot?: EntitlementSnapshot | null;
+}
