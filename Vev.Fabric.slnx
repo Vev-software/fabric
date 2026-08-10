@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Vev.Fabric.Contracts/Vev.Fabric.Contracts.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Vev.Fabric.Contracts.Tests/Vev.Fabric.Contracts.Tests.csproj" />
+  </Folder>
+</Solution>

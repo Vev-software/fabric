@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Vev.Fabric.Contracts</RootNamespace>
+    <AssemblyName>Vev.Fabric.Contracts</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\schemas\v1\**\*.json" Pack="true" PackagePath="schemas\v1\" Visible="false" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/signed-entitlement-snapshot.schema.json",
+  "title": "SignedEntitlementSnapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["keyId", "algorithm", "payloadJson", "signature"],
+  "properties": {
+    "keyId": { "type": "string", "minLength": 1 },
+    "algorithm": { "type": "string", "minLength": 1 },
+    "payloadJson": { "type": "string", "minLength": 2 },
+    "signature": { "type": "string", "minLength": 1 }
+  }
+}
