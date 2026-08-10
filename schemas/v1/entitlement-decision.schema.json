@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/entitlement-decision.schema.json",
+  "title": "EntitlementDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["allowed", "capability", "reasonCode", "source", "evaluatedAt"],
+  "properties": {
+    "allowed": { "type": "boolean" },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 }
+      }
+    },
+    "reasonCode": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1 },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "validUntil": { "type": ["string", "null"], "format": "date-time" },
+    "limits": {
+      "type": ["object", "null"],
+      "additionalProperties": { "type": "number" }
+    }
+  }
+}

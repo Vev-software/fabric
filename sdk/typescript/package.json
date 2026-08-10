@@ -1,0 +1,20 @@
+{
+  "name": "@vev-software/fabric-contracts",
+  "version": "0.1.0",
+  "description": "Public Fabric contracts for tenant context, entitlement evaluation, and signed snapshot documents.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vev-software/fabric"
+  },
+  "scripts": {
+    "build": "node ./node_modules/typescript/bin/tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

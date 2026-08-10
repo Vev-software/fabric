@@ -45,6 +45,19 @@ Contributions are welcome under the terms in `CONTRIBUTING.md`. Because VEV oper
 open-core model, contributions to this repository require a sign-off (DCO or CLA as stated
 per repo).
 
+## Current entitlement surface
+
+The first implemented Fabric slice is the entitlement contract and local evaluator for `fabric#4`:
+
+- .NET contracts and evaluator in [`src/Vev.Fabric.Contracts`](./src/Vev.Fabric.Contracts)
+- JSON Schemas in [`schemas/v1`](./schemas/v1)
+- TypeScript SDK mirror in [`sdk/typescript`](./sdk/typescript)
+- conformance samples in [`conformance/samples`](./conformance/samples)
+- design/runtime notes in [`docs/entitlements.md`](./docs/entitlements.md)
+
+This surface is intentionally control-plane independent on the request path: products evaluate
+the last accepted signed snapshot locally and fail static when it goes stale beyond grace.
+
 ## License
 
 Apache-2.0. The contract layer is permissive by design: its value is broad adoption.

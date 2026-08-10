@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/entitlement-snapshot.schema.json",
+  "title": "EntitlementSnapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tenant", "issuedAt", "expiresAt", "graceUntil", "entitlements"],
+  "properties": {
+    "tenant": { "type": "string", "minLength": 1 },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "graceUntil": { "type": "string", "format": "date-time" },
+    "entitlements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["capability", "source"],
+        "properties": {
+          "capability": { "type": "string", "minLength": 1 },
+          "source": { "type": "string", "minLength": 1 },
+          "limits": {
+            "type": ["object", "null"],
+            "additionalProperties": { "type": "number" }
+          },
+          "validFrom": { "type": ["string", "null"], "format": "date-time" },
+          "validUntil": { "type": ["string", "null"], "format": "date-time" }
+        }
+      }
+    }
+  }
+}

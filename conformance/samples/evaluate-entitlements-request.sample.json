@@ -1,0 +1,22 @@
+{
+  "requests": [
+    {
+      "tenant": { "tenantId": "tenant-a" },
+      "capability": { "value": "atlas.catalogue.read" },
+      "principal": {
+        "principalId": "principal-1",
+        "displayName": "Atlas User",
+        "roles": ["AtlasArchitect"]
+      }
+    },
+    {
+      "tenant": { "tenantId": "tenant-a" },
+      "capability": { "value": "atlas.discovery.ingestion" },
+      "principal": {
+        "principalId": "principal-2",
+        "displayName": "Discovery Agent",
+        "roles": ["AtlasOperator"]
+      }
+    }
+  ]
+}

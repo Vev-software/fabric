@@ -1,0 +1,8 @@
+{
+  "tenant": "tenant-a",
+  "offer": "HostedTrial",
+  "lifecycleState": "TrialExpired",
+  "issuedAt": "2026-08-10T12:00:00Z",
+  "expiresAt": "2026-08-13T12:00:00Z",
+  "graceUntil": "2026-08-17T12:00:00Z"
+}
