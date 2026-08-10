@@ -32,6 +32,15 @@ public readonly record struct CapabilityId(string Value)
 }
 
 /// <summary>
+/// Stable hosted-plan or operational limit key from the Fabric-owned taxonomy.
+/// </summary>
+/// <param name="Value">Namespaced or product-scoped limit key, e.g. <c>atlas.users</c>.</param>
+public readonly record struct LimitKey(string Value)
+{
+    public override string ToString() => Value;
+}
+
+/// <summary>
 /// Stable resource identifier used in entitlement and authorization context.
 /// </summary>
 /// <param name="Value">Resource identifier value.</param>

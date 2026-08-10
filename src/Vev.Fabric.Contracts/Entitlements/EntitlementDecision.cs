@@ -34,6 +34,8 @@ public sealed record EntitlementDecision(
 /// </summary>
 public static class ReasonCodes
 {
+    public const string Allow = "allow";
+    public const string RoleMissing = "role_missing";
     public const string EntitlementGranted = "entitlement_granted";
     public const string EntitlementDenied = "entitlement_denied";
     public const string EntitlementUnavailable = "entitlement_unavailable";
