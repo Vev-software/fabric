@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/entitlement-bundle-resolution.schema.json",
+  "title": "EntitlementBundleResolution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["snapshot", "resolutionReasonCode"],
+  "properties": {
+    "snapshot": {
+      "$ref": "entitlement-snapshot.schema.json"
+    },
+    "resolutionReasonCode": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

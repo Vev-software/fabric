@@ -1,0 +1,101 @@
+using Vev.Fabric.Contracts.Entitlements;
+
+namespace Vev.Fabric.Contracts.Tests;
+
+public sealed class EntitlementBundleResolverTests
+{
+    private static readonly DateTimeOffset IssuedAt = new(2026, 8, 10, 12, 0, 0, TimeSpan.Zero);
+    private static readonly DateTimeOffset ExpiresAt = IssuedAt.AddDays(3);
+    private static readonly DateTimeOffset GraceUntil = IssuedAt.AddDays(7);
+
+    [Fact]
+    public void Resolve_CommunitySelfHosted_GrantsCatalogueSurface()
+    {
+        var resolver = new EntitlementBundleResolver();
+
+        var result = resolver.Resolve(new EntitlementBundleRequest(
+            "tenant-a",
+            EntitlementOffer.CommunitySelfHosted,
+            EntitlementLifecycleState.Active,
+            IssuedAt,
+            ExpiresAt,
+            GraceUntil));
+
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.catalogue.read");
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.catalogue.write");
+        Assert.DoesNotContain(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.analysis.eol");
+    }
+
+    [Fact]
+    public void Resolve_HostedTrial_GrantsPaidCapabilities_WhileTrialActive()
+    {
+        var resolver = new EntitlementBundleResolver();
+
+        var result = resolver.Resolve(new EntitlementBundleRequest(
+            "tenant-a",
+            EntitlementOffer.HostedTrial,
+            EntitlementLifecycleState.TrialActive,
+            IssuedAt,
+            ExpiresAt,
+            GraceUntil));
+
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.analysis.integration-map");
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.discovery.ingestion");
+        Assert.Equal(ReasonCodes.EntitlementGranted, result.ResolutionReasonCode);
+    }
+
+    [Fact]
+    public void Resolve_TrialExpired_ReducesToReadOnlySurface()
+    {
+        var resolver = new EntitlementBundleResolver();
+
+        var result = resolver.Resolve(new EntitlementBundleRequest(
+            "tenant-a",
+            EntitlementOffer.HostedTrial,
+            EntitlementLifecycleState.TrialExpired,
+            IssuedAt,
+            ExpiresAt,
+            GraceUntil));
+
+        Assert.Equal(ReasonCodes.LifecycleTrialExpired, result.ResolutionReasonCode);
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.catalogue.read");
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.export.portable-bundle");
+        Assert.DoesNotContain(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.catalogue.write");
+        Assert.DoesNotContain(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.analysis.integration-map");
+    }
+
+    [Fact]
+    public void Resolve_Locked_ReducesToExportOnly()
+    {
+        var resolver = new EntitlementBundleResolver();
+
+        var result = resolver.Resolve(new EntitlementBundleRequest(
+            "tenant-a",
+            EntitlementOffer.Pro,
+            EntitlementLifecycleState.Locked,
+            IssuedAt,
+            ExpiresAt,
+            GraceUntil));
+
+        Assert.Equal(ReasonCodes.LifecycleLocked, result.ResolutionReasonCode);
+        Assert.Single(result.Snapshot.Entitlements);
+        Assert.Equal("atlas.export.portable-bundle", result.Snapshot.Entitlements[0].Capability);
+    }
+
+    [Fact]
+    public void Resolve_DataPurged_GrantsNothing()
+    {
+        var resolver = new EntitlementBundleResolver();
+
+        var result = resolver.Resolve(new EntitlementBundleRequest(
+            "tenant-a",
+            EntitlementOffer.Enterprise,
+            EntitlementLifecycleState.DataPurged,
+            IssuedAt,
+            ExpiresAt,
+            GraceUntil));
+
+        Assert.Equal(ReasonCodes.LifecyclePurged, result.ResolutionReasonCode);
+        Assert.Empty(result.Snapshot.Entitlements);
+    }
+}

@@ -40,4 +40,9 @@ public static class ReasonCodes
     public const string EntitlementSnapshotInvalid = "entitlement_snapshot_invalid";
     public const string EntitlementSnapshotStale = "entitlement_snapshot_stale";
     public const string EntitlementSnapshotTenantMismatch = "entitlement_snapshot_tenant_mismatch";
+    public const string LifecycleTrialExpired = "lifecycle_trial_expired";
+    public const string LifecycleReadOnly = "lifecycle_read_only";
+    public const string LifecycleLocked = "lifecycle_locked";
+    public const string LifecycleRetention = "lifecycle_retention";
+    public const string LifecyclePurged = "lifecycle_purged";
 }

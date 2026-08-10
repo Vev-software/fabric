@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/entitlement-bundle-request.schema.json",
+  "title": "EntitlementBundleRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tenant", "offer", "lifecycleState", "issuedAt", "expiresAt", "graceUntil"],
+  "properties": {
+    "tenant": { "type": "string", "minLength": 1 },
+    "offer": {
+      "type": "string",
+      "enum": ["CommunitySelfHosted", "HostedTrial", "HostedStarter", "Pro", "Enterprise", "SelfHostedEnterprise"]
+    },
+    "lifecycleState": {
+      "type": "string",
+      "enum": ["Active", "TrialActive", "TrialExpired", "ReadOnly", "Locked", "RetentionPeriod", "DataPurged"]
+    },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "graceUntil": { "type": "string", "format": "date-time" }
+  }
+}
