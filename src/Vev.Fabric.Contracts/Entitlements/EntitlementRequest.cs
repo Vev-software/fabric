@@ -16,3 +16,15 @@ public interface IEntitlementService
 {
     EntitlementDecision Evaluate(EntitlementRequest request);
 }
+
+/// <summary>
+/// Public API payload for evaluating one entitlement request.
+/// </summary>
+public sealed record EvaluateEntitlementsRequest(
+    IReadOnlyList<EntitlementRequest> Requests);
+
+/// <summary>
+/// Public API payload returned from single or batch entitlement evaluation.
+/// </summary>
+public sealed record EvaluateEntitlementsResponse(
+    IReadOnlyList<EntitlementDecision> Decisions);
