@@ -58,6 +58,19 @@ The first implemented Fabric slice is the entitlement contract and local evaluat
 This surface is intentionally control-plane independent on the request path: products evaluate
 the last accepted signed snapshot locally and fail static when it goes stale beyond grace.
 
+## Current taxonomy surface
+
+The next implemented Fabric slice is the public taxonomy and reason-code catalog for `fabric#7`:
+
+- seeded capability, limit and reason-code definitions in [`src/Vev.Fabric.Contracts/Taxonomy`](./src/Vev.Fabric.Contracts/Taxonomy)
+- TypeScript mirror constants and types in [`sdk/typescript`](./sdk/typescript)
+- public schema in [`schemas/v1/taxonomy-catalog.schema.json`](./schemas/v1/taxonomy-catalog.schema.json)
+- conformance sample in [`conformance/samples/taxonomy-catalog.sample.json`](./conformance/samples/taxonomy-catalog.sample.json)
+- naming rules and seeded ids in [`docs/taxonomy.md`](./docs/taxonomy.md)
+
+This keeps capability ids, limit keys and decision reasons explicit and stable instead of leaving
+them implied by scattered string literals across products.
+
 ## License
 
 Apache-2.0. The contract layer is permissive by design: its value is broad adoption.
