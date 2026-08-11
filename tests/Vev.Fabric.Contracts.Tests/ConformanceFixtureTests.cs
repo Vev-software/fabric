@@ -53,4 +53,15 @@ public sealed class ConformanceFixtureTests
         Assert.Equal(EntitlementOffer.HostedTrial, document!.Offer);
         Assert.Equal(EntitlementLifecycleState.TrialExpired, document.LifecycleState);
     }
+
+    [Fact]
+    public void Sample_TaxonomyCatalog_Deserializes()
+    {
+        var json = File.ReadAllText(Path.Combine(SamplesDirectory, "taxonomy-catalog.sample.json"));
+        var document = JsonSerializer.Deserialize<Taxonomy.TaxonomyCatalogDocument>(json, SerializerOptions);
+
+        Assert.NotNull(document);
+        Assert.NotEmpty(document!.Capabilities);
+        Assert.NotEmpty(document.Reasons);
+    }
 }

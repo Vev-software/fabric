@@ -1,6 +1,8 @@
 export const CONTRACT_VERSION = "1" as const;
 
 export type ReasonCode =
+  | "allow"
+  | "role_missing"
   | "entitlement_granted"
   | "entitlement_denied"
   | "entitlement_unavailable"
@@ -29,6 +31,8 @@ export type EntitlementLifecycleState =
   | "Locked"
   | "RetentionPeriod"
   | "DataPurged";
+
+export type TaxonomyKind = "Feature" | "Limit" | "Resource" | "Reason";
 
 export interface TenantContext {
   tenantId: string;
@@ -107,6 +111,25 @@ export interface ImportSignedEntitlementSnapshotResponse {
   snapshot?: EntitlementSnapshot | null;
 }
 
+export interface CapabilityDefinition {
+  id: string;
+  kind: TaxonomyKind;
+  description: string;
+  reserved?: boolean;
+}
+
+export interface DecisionReasonDefinition {
+  code: string;
+  description: string;
+  deny?: boolean;
+}
+
+export interface TaxonomyCatalogDocument {
+  contractVersion: string;
+  capabilities: CapabilityDefinition[];
+  reasons: DecisionReasonDefinition[];
+}
+
 export interface EntitlementBundleRequest {
   tenant: string;
   offer: EntitlementOffer;
@@ -120,3 +143,51 @@ export interface EntitlementBundleResolution {
   snapshot: EntitlementSnapshot;
   resolutionReasonCode: ReasonCode | string;
 }
+
+export const ATLAS_CAPABILITIES = {
+  catalogueRead: "atlas.catalogue.read",
+  catalogueWrite: "atlas.catalogue.write",
+  analysisIntegrationMap: "atlas.analysis.integration-map",
+  analysisEndOfLife: "atlas.analysis.eol",
+  analysisApm: "atlas.analysis.apm",
+  analysisRoadmap: "atlas.analysis.roadmap",
+  aiReview: "atlas.ai.review",
+  discoveryIngestion: "atlas.discovery.ingestion",
+  portalReadonly: "atlas.portal.readonly",
+  exportPortableBundle: "atlas.export.portable-bundle",
+  exportArchiMate: "atlas.export.archimate"
+} as const;
+
+export const ATLAS_LIMIT_KEYS = {
+  entities: "atlas.entities",
+  users: "atlas.users",
+  storage: "atlas.storage",
+  workspaces: "atlas.workspaces",
+  importJobs: "atlas.import.jobs",
+  repositoryApplicationMax: "atlas.repository.application.max"
+} as const;
+
+export const FABRIC_CAPABILITIES = {
+  marketplaceInstall: "fabric.marketplace.install"
+} as const;
+
+export const PORTIC_TAXONOMY = {
+  governancePolicyAdvanced: "portic.governance.policy.advanced",
+  gatewayProvidersMax: "portic.gateway.providers.max"
+} as const;
+
+export const DECISION_REASON_CODES = {
+  allow: "allow",
+  roleMissing: "role_missing",
+  entitlementGranted: "entitlement_granted",
+  entitlementDenied: "entitlement_denied",
+  entitlementUnavailable: "entitlement_unavailable",
+  entitlementSnapshotInvalid: "entitlement_snapshot_invalid",
+  entitlementSnapshotStale: "entitlement_snapshot_stale",
+  entitlementSnapshotTenantMismatch: "entitlement_snapshot_tenant_mismatch",
+  lifecycleTrialExpired: "lifecycle_trial_expired",
+  lifecycleReadOnly: "lifecycle_read_only",
+  lifecycleLocked: "lifecycle_locked",
+  lifecycleRetention: "lifecycle_retention",
+  lifecyclePurged: "lifecycle_purged"
+} as const;

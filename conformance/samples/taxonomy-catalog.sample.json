@@ -1,0 +1,42 @@
+{
+  "contractVersion": "1",
+  "capabilities": [
+    {
+      "id": "atlas.catalogue.read",
+      "kind": "Feature",
+      "description": "Read the Atlas catalogue."
+    },
+    {
+      "id": "atlas.analysis.integration-map",
+      "kind": "Feature",
+      "description": "Integration mapping across the landscape.",
+      "reserved": true
+    },
+    {
+      "id": "atlas.users",
+      "kind": "Limit",
+      "description": "Maximum number of Atlas users."
+    },
+    {
+      "id": "fabric.marketplace.install",
+      "kind": "Feature",
+      "description": "Install a marketplace extension."
+    }
+  ],
+  "reasons": [
+    {
+      "code": "allow",
+      "description": "The action or capability is allowed."
+    },
+    {
+      "code": "role_missing",
+      "description": "The principal lacks a required role.",
+      "deny": true
+    },
+    {
+      "code": "entitlement_snapshot_stale",
+      "description": "The entitlement snapshot expired beyond grace.",
+      "deny": true
+    }
+  ]
+}

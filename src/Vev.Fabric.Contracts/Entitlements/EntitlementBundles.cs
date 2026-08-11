@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Vev.Fabric.Contracts.Taxonomy;
 
 namespace Vev.Fabric.Contracts.Entitlements;
 
@@ -57,34 +58,34 @@ public sealed record EntitlementBundleResolution(
 public sealed class EntitlementBundleResolver
 {
     private static readonly EntitlementGrant CatalogueRead =
-        new("atlas.catalogue.read", "bundle");
+        new(AtlasTaxonomy.CatalogueRead.Value, "bundle");
 
     private static readonly EntitlementGrant CatalogueWrite =
-        new("atlas.catalogue.write", "bundle");
+        new(AtlasTaxonomy.CatalogueWrite.Value, "bundle");
 
     private static readonly EntitlementGrant ExportPortableBundle =
-        new("atlas.export.portable-bundle", "bundle");
+        new(AtlasTaxonomy.ExportPortableBundle.Value, "bundle");
 
     private static readonly EntitlementGrant IntegrationMap =
-        new("atlas.analysis.integration-map", "bundle");
+        new(AtlasTaxonomy.AnalysisIntegrationMap.Value, "bundle");
 
     private static readonly EntitlementGrant EndOfLife =
-        new("atlas.analysis.eol", "bundle");
+        new(AtlasTaxonomy.AnalysisEndOfLife.Value, "bundle");
 
     private static readonly EntitlementGrant ApplicationPortfolio =
-        new("atlas.analysis.apm", "bundle");
+        new(AtlasTaxonomy.AnalysisApm.Value, "bundle");
 
     private static readonly EntitlementGrant Roadmap =
-        new("atlas.analysis.roadmap", "bundle");
+        new(AtlasTaxonomy.AnalysisRoadmap.Value, "bundle");
 
     private static readonly EntitlementGrant AiReview =
-        new("atlas.ai.review", "bundle");
+        new(AtlasTaxonomy.AiReview.Value, "bundle");
 
     private static readonly EntitlementGrant DiscoveryIngestion =
-        new("atlas.discovery.ingestion", "bundle");
+        new(AtlasTaxonomy.DiscoveryIngestion.Value, "bundle");
 
     private static readonly EntitlementGrant PortalReadOnly =
-        new("atlas.portal.readonly", "bundle");
+        new(AtlasTaxonomy.PortalReadonly.Value, "bundle");
 
     public EntitlementBundleResolution Resolve(EntitlementBundleRequest request)
     {
@@ -130,7 +131,7 @@ public sealed class EntitlementBundleResolver
                 CatalogueRead,
                 CatalogueWrite,
                 ExportPortableBundle,
-                GrantWithLimits("atlas.entities.max", 100000m)
+                GrantWithLimits(AtlasTaxonomy.Entities.Value, 100000m)
             ],
 
             EntitlementOffer.HostedTrial =>
@@ -145,7 +146,7 @@ public sealed class EntitlementBundleResolver
                 Roadmap,
                 AiReview,
                 DiscoveryIngestion,
-                GrantWithLimits("atlas.entities.max", 10000m, "atlas.users.max", 50m, "atlas.workspaces.max", 5m, "atlas.import.jobs.max", 20m)
+                GrantWithLimits(AtlasTaxonomy.Entities.Value, 10000m, AtlasTaxonomy.Users.Value, 50m, AtlasTaxonomy.Workspaces.Value, 5m, AtlasTaxonomy.ImportJobs.Value, 20m)
             ],
 
             EntitlementOffer.HostedStarter =>
@@ -154,7 +155,7 @@ public sealed class EntitlementBundleResolver
                 CatalogueWrite,
                 ExportPortableBundle,
                 PortalReadOnly,
-                GrantWithLimits("atlas.entities.max", 2000m, "atlas.users.max", 10m, "atlas.workspaces.max", 1m, "atlas.import.jobs.max", 5m)
+                GrantWithLimits(AtlasTaxonomy.Entities.Value, 2000m, AtlasTaxonomy.Users.Value, 10m, AtlasTaxonomy.Workspaces.Value, 1m, AtlasTaxonomy.ImportJobs.Value, 5m)
             ],
 
             EntitlementOffer.Pro =>
@@ -168,7 +169,7 @@ public sealed class EntitlementBundleResolver
                 ApplicationPortfolio,
                 Roadmap,
                 AiReview,
-                GrantWithLimits("atlas.entities.max", 50000m, "atlas.users.max", 100m, "atlas.workspaces.max", 10m, "atlas.import.jobs.max", 100m)
+                GrantWithLimits(AtlasTaxonomy.Entities.Value, 50000m, AtlasTaxonomy.Users.Value, 100m, AtlasTaxonomy.Workspaces.Value, 10m, AtlasTaxonomy.ImportJobs.Value, 100m)
             ],
 
             EntitlementOffer.Enterprise or EntitlementOffer.SelfHostedEnterprise =>
@@ -183,7 +184,7 @@ public sealed class EntitlementBundleResolver
                 Roadmap,
                 AiReview,
                 DiscoveryIngestion,
-                GrantWithLimits("atlas.entities.max", 250000m, "atlas.users.max", 1000m, "atlas.workspaces.max", 100m, "atlas.import.jobs.max", 1000m)
+                GrantWithLimits(AtlasTaxonomy.Entities.Value, 250000m, AtlasTaxonomy.Users.Value, 1000m, AtlasTaxonomy.Workspaces.Value, 100m, AtlasTaxonomy.ImportJobs.Value, 1000m)
             ],
 
             _ => [CatalogueRead, ExportPortableBundle]
@@ -195,7 +196,7 @@ public sealed class EntitlementBundleResolver
             .ToArray();
 
     private static IReadOnlyList<EntitlementGrant> RestrictToExportOnly(IEnumerable<EntitlementGrant> grants) =>
-        grants.Where(grant => grant.Capability is "atlas.export.portable-bundle").ToArray();
+        grants.Where(grant => grant.Capability == AtlasTaxonomy.ExportPortableBundle.Value).ToArray();
 
     private static EntitlementGrant GrantWithLimits(params object[] values)
     {
