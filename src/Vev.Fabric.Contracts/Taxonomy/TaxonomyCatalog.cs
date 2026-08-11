@@ -100,8 +100,7 @@ public static class Capabilities
         new(AtlasTaxonomy.ExportArchiMate.Value, TaxonomyKind.Feature, "Export Atlas content to ArchiMate."),
         new(AtlasTaxonomy.RepositoryApplicationMax.Value, TaxonomyKind.Limit, "Maximum number of application records in Atlas."),
         new(PorticTaxonomy.GovernancePolicyAdvanced.Value, TaxonomyKind.Feature, "Advanced Portic governance policy surface."),
-        new(PorticTaxonomy.GatewayProvidersMax.Value, TaxonomyKind.Limit, "Maximum number of Portic providers."),
-        new(OrionTaxonomy.WorkspaceCreate.Value, TaxonomyKind.Feature, "Create an Orion workspace.")
+        new(PorticTaxonomy.GatewayProvidersMax.Value, TaxonomyKind.Limit, "Maximum number of Portic providers.")
     ];
 }
 
@@ -139,11 +138,6 @@ public static class PorticTaxonomy
 {
     public static readonly CapabilityId GovernancePolicyAdvanced = new("portic.governance.policy.advanced");
     public static readonly LimitKey GatewayProvidersMax = new("portic.gateway.providers.max");
-}
-
-public static class OrionTaxonomy
-{
-    public static readonly CapabilityId WorkspaceCreate = new("orion.workspace.create");
 }
 
 /// <summary>

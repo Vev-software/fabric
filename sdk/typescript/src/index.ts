@@ -176,10 +176,6 @@ export const PORTIC_TAXONOMY = {
   gatewayProvidersMax: "portic.gateway.providers.max"
 } as const;
 
-export const ORION_CAPABILITIES = {
-  workspaceCreate: "orion.workspace.create"
-} as const;
-
 export const DECISION_REASON_CODES = {
   allow: "allow",
   roleMissing: "role_missing",
