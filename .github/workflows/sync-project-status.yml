@@ -1,6 +1,9 @@
-# Keeps the linked Atlas issue item on the Vev-software org Project board (#1)
+# Keeps this repo's issue item on the Vev-software org Project board (#1)
 # aligned with issue lifecycle and product ownership, so the Project can be used
-# as the operative overview instead of a stale list of cards.
+# as the operative overview instead of a stale list of cards. The Product field
+# is derived from the repo name prefix (atlas-* -> Atlas, portic-* -> Portic,
+# fabric/fabric-* -> Fabric); this same file is dropped verbatim into every repo
+# that should feed the board.
 #
 # Requires the ORG secret ADD_TO_PROJECT_PAT (classic PAT with `project` + `repo`
 # scopes). The default GITHUB_TOKEN cannot write to Projects v2.
@@ -30,6 +33,7 @@ jobs:
           STATUS_ON_NOT_PLANNED: Won't do|Not planned|Cancelled|Canceled
           PRODUCT_ATLAS: Atlas
           PRODUCT_PORTIC: Portic
+          PRODUCT_FABRIC: Fabric
         with:
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
           script: |
@@ -72,6 +76,10 @@ jobs:
 
               if (repoName.startsWith("portic-")) {
                 return candidates(process.env.PRODUCT_PORTIC);
+              }
+
+              if (repoName === "fabric" || repoName.startsWith("fabric-")) {
+                return candidates(process.env.PRODUCT_FABRIC);
               }
 
               return [];
