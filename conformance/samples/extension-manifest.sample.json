@@ -1,0 +1,11 @@
+{
+  "id": "com.acme.archimate-importer",
+  "version": "1.2.0",
+  "publisher": "Acme Corp",
+  "type": "importer-exporter",
+  "compatibleWith": { "fabricApi": "^1.0", "product": ">=2.0 <3.0" },
+  "permissions": [ { "value": "atlas.catalogue.read" }, { "value": "atlas.catalogue.write" } ],
+  "resources": [ { "value": "atlas:catalogue/main" } ],
+  "network": ["api.acme.example.com"],
+  "secrets": ["acme-api-key"]
+}
