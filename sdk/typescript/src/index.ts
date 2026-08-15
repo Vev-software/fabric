@@ -291,6 +291,29 @@ export interface DiscoveryLifecycleEvent {
   metadata?: Record<string, string> | null;
 }
 
+export interface DiscoveryIngestionAccessRequest {
+  tenant: TenantContext;
+  principal: PrincipalContext;
+  enrollmentId: string;
+  capability: CapabilityId;
+  enrollmentTimeline: DiscoveryEnrollmentTimeline;
+  tenantLifecycleTimeline: TenantLifecycleTimeline;
+  entitlement: EntitlementDecision;
+  asOf?: string | null;
+}
+
+export interface DiscoveryIngestionAccessDecision {
+  allowed: boolean;
+  enrollmentId: string;
+  capability: CapabilityId;
+  reasonCode: ReasonCode | string;
+  source: string;
+  evaluatedAt: string;
+  enrollmentState: DiscoveryEnrollmentState;
+  tenantLifecycleState: TenantLifecycleState;
+  validUntil?: string | null;
+}
+
 export type AuditCategory = "Data" | "Admin" | "Security";
 
 export type AuditOutcome = "Success" | "Failure" | "Denied";

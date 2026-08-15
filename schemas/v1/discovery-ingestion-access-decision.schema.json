@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/discovery-ingestion-access-decision.schema.json",
+  "title": "DiscoveryIngestionAccessDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["allowed", "enrollmentId", "capability", "reasonCode", "source", "evaluatedAt", "enrollmentState", "tenantLifecycleState"],
+  "properties": {
+    "allowed": { "type": "boolean" },
+    "enrollmentId": { "type": "string", "minLength": 1 },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "string", "const": "atlas.discovery.ingestion" }
+      }
+    },
+    "reasonCode": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1 },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "enrollmentState": {
+      "type": "string",
+      "enum": ["Pending", "Active", "Suspended", "Revoked", "Expired"]
+    },
+    "tenantLifecycleState": {
+      "type": "string",
+      "enum": ["TrialActive", "TrialExpired", "ReadOnly", "Locked", "RetentionPeriod", "DataPurged"]
+    },
+    "validUntil": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

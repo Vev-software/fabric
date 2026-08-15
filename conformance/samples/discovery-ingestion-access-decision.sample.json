@@ -1,0 +1,13 @@
+{
+  "allowed": true,
+  "enrollmentId": "disc-1",
+  "capability": {
+    "value": "atlas.discovery.ingestion"
+  },
+  "reasonCode": "allow",
+  "source": "discovery:local-access-evaluator",
+  "evaluatedAt": "2026-08-15T10:00:00Z",
+  "enrollmentState": "Active",
+  "tenantLifecycleState": "TrialActive",
+  "validUntil": "2026-09-14T09:00:00Z"
+}

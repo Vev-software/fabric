@@ -60,6 +60,25 @@ The public `DiscoveryLifecycleEvent` contract records:
 These events are for orchestration, status stitching and operational timelines. Durable audit still
 flows through the Fabric `AuditEvent` envelope.
 
+## Canonical access decision
+
+Fabric now also owns the canonical decision for whether a tenant-scoped machine principal may
+perform `atlas.discovery.ingestion` right now.
+
+`LocalDiscoveryIngestionAccessEvaluator` composes three public seams in one fixed order:
+
+1. tenant lifecycle
+2. discovery enrollment state
+3. entitlement decision
+
+Deny precedence is canonical and fail-static:
+
+- tenant lifecycle denies first (`DataPurged`, `RetentionPeriod`, `Locked`, `ReadOnly`, `TrialExpired`)
+- enrollment denies second (`Revoked`, `Suspended`, `Expired`, `Pending`)
+- entitlement denies third (for example `entitlement_denied`, `entitlement_snapshot_stale`)
+
+This keeps Atlas from hand-rolling policy composition or reason precedence locally.
+
 ## Audit vocabulary
 
 Products emit discovery audit records through the existing Fabric audit envelope using the shared
