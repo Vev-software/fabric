@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/discovery-enrollment-query.schema.json",
+  "title": "DiscoveryEnrollmentQuery",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["enrollmentId", "tenant", "principal", "capability"],
+  "properties": {
+    "enrollmentId": { "type": "string", "minLength": 1 },
+    "tenant": { "$ref": "tenant-context.schema.json" },
+    "principal": { "$ref": "principal-context.schema.json" },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 }
+      }
+    },
+    "asOf": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

@@ -57,6 +57,10 @@ The shared `TenantContext`, `PrincipalContext` and `ResourceId` primitives are a
 authorization surface described in `docs/authorization.md`; authorization and entitlement stay distinct
 even when a product evaluates both on one request.
 
+For Atlas discovery, enrollment lifecycle is separate from entitlement: the scanner's machine
+principal may exist and still be denied because `atlas.discovery.ingestion` is not granted, and a
+granted entitlement still fails closed if the enrollment is pending, suspended, revoked or expired.
+
 ## Conformance fixtures
 
 Representative sample documents live in `conformance/samples/` for:

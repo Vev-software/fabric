@@ -46,6 +46,27 @@ export type TenantLifecycleTransition =
   | "Lock"
   | "StartRetention"
   | "PurgeData";
+export type DiscoveryEnrollmentState =
+  | "Pending"
+  | "Active"
+  | "Suspended"
+  | "Revoked"
+  | "Expired";
+
+export type DiscoveryEnrollmentTransition =
+  | "Activate"
+  | "RotateCredential"
+  | "Suspend"
+  | "Revoke";
+
+export type DiscoveryLifecycleEventType =
+  | "EnrollmentCreated"
+  | "EnrollmentActivated"
+  | "CredentialRotated"
+  | "AccessDenied"
+  | "EnrollmentSuspended"
+  | "EnrollmentRevoked"
+  | "CredentialExpired";
 export type TaxonomyKind = "Feature" | "Limit" | "Resource" | "Reason";
 
 export interface TenantContext {
@@ -211,6 +232,65 @@ export interface TenantLifecycleTransitionResult {
   lifecycle: TenantLifecycleStatus;
 }
 
+export interface DiscoveryEnrollmentTimeline {
+  enrolledAt: string;
+  credentialExpiresAt?: string | null;
+  activatedAt?: string | null;
+  lastRotatedAt?: string | null;
+  suspendedAt?: string | null;
+  revokedAt?: string | null;
+}
+
+export interface DiscoveryEnrollmentQuery {
+  enrollmentId: string;
+  tenant: TenantContext;
+  principal: PrincipalContext;
+  capability: CapabilityId;
+  asOf?: string | null;
+}
+
+export interface DiscoveryEnrollmentStatus {
+  enrollmentId: string;
+  tenant: TenantContext;
+  principal: PrincipalContext;
+  capability: CapabilityId;
+  state: DiscoveryEnrollmentState;
+  reasonCode: ReasonCode | string;
+  evaluatedAt: string;
+  timeline: DiscoveryEnrollmentTimeline;
+}
+
+export interface DiscoveryEnrollmentTransitionRequest {
+  enrollmentId: string;
+  tenant: TenantContext;
+  principal: PrincipalContext;
+  capability: CapabilityId;
+  transition: DiscoveryEnrollmentTransition;
+  occurredAt: string;
+  timeline: DiscoveryEnrollmentTimeline;
+  credentialExpiresAt?: string | null;
+}
+
+export interface DiscoveryEnrollmentTransitionResult {
+  accepted: boolean;
+  reasonCode: ReasonCode | string;
+  enrollment: DiscoveryEnrollmentStatus;
+}
+
+export interface DiscoveryLifecycleEvent {
+  eventId: string;
+  occurredAt: string;
+  tenant: TenantContext;
+  enrollmentId: string;
+  principalId: string;
+  source: string;
+  eventType: DiscoveryLifecycleEventType;
+  reasonCode: ReasonCode | string;
+  capability: CapabilityId;
+  correlationId: string;
+  metadata?: Record<string, string> | null;
+}
+
 export type AuditCategory = "Data" | "Admin" | "Security";
 
 export type AuditOutcome = "Success" | "Failure" | "Denied";
@@ -290,5 +370,20 @@ export const DECISION_REASON_CODES = {
   lifecycleLocked: "lifecycle_locked",
   lifecycleRetention: "lifecycle_retention",
   lifecyclePurged: "lifecycle_purged",
-  lifecycleTransitionInvalid: "lifecycle_transition_invalid"
+  lifecycleTransitionInvalid: "lifecycle_transition_invalid",
+  discoveryEnrollmentPending: "discovery_enrollment_pending",
+  discoveryEnrollmentSuspended: "discovery_enrollment_suspended",
+  discoveryEnrollmentRevoked: "discovery_enrollment_revoked",
+  discoveryCredentialExpired: "discovery_credential_expired",
+  discoveryLifecycleTransitionInvalid: "discovery_lifecycle_transition_invalid"
+} as const;
+
+export const DISCOVERY_AUDIT_VOCABULARY = {
+  enrollmentCreateAction: "fabric.discovery.enrollment.create",
+  enrollmentActivateAction: "fabric.discovery.enrollment.activate",
+  credentialRotateAction: "fabric.discovery.credential.rotate",
+  enrollmentSuspendAction: "fabric.discovery.enrollment.suspend",
+  enrollmentRevokeAction: "fabric.discovery.enrollment.revoke",
+  ingestionAcceptAction: "atlas.discovery.ingestion.accept",
+  ingestionDenyAction: "atlas.discovery.ingestion.deny"
 } as const;

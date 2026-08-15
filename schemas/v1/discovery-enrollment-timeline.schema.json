@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/discovery-enrollment-timeline.schema.json",
+  "title": "DiscoveryEnrollmentTimeline",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["enrolledAt"],
+  "properties": {
+    "enrolledAt": { "type": "string", "format": "date-time" },
+    "credentialExpiresAt": { "type": ["string", "null"], "format": "date-time" },
+    "activatedAt": { "type": ["string", "null"], "format": "date-time" },
+    "lastRotatedAt": { "type": ["string", "null"], "format": "date-time" },
+    "suspendedAt": { "type": ["string", "null"], "format": "date-time" },
+    "revokedAt": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

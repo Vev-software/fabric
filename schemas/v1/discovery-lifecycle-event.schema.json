@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/discovery-lifecycle-event.schema.json",
+  "title": "DiscoveryLifecycleEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["eventId", "occurredAt", "tenant", "enrollmentId", "principalId", "source", "eventType", "reasonCode", "capability", "correlationId"],
+  "properties": {
+    "eventId": { "type": "string", "minLength": 1 },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "tenant": { "$ref": "tenant-context.schema.json" },
+    "enrollmentId": { "type": "string", "minLength": 1 },
+    "principalId": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1 },
+    "eventType": {
+      "type": "string",
+      "enum": ["EnrollmentCreated", "EnrollmentActivated", "CredentialRotated", "AccessDenied", "EnrollmentSuspended", "EnrollmentRevoked", "CredentialExpired"]
+    },
+    "reasonCode": { "type": "string", "minLength": 1 },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 }
+      }
+    },
+    "correlationId": { "type": "string", "minLength": 1 },
+    "metadata": {
+      "type": ["object", "null"],
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

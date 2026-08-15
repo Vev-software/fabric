@@ -160,6 +160,11 @@ public static class Reasons
         new(ReasonCodes.LifecycleLocked, "The tenant is locked pending purge or upgrade.", Deny: true),
         new(ReasonCodes.LifecycleRetention, "The tenant is inside the retention window.", Deny: true),
         new(ReasonCodes.LifecyclePurged, "The tenant data has been purged.", Deny: true),
-        new(ReasonCodes.LifecycleTransitionInvalid, "The requested lifecycle transition is not valid from the current state.", Deny: true)
+        new(ReasonCodes.LifecycleTransitionInvalid, "The requested lifecycle transition is not valid from the current state.", Deny: true),
+        new(ReasonCodes.DiscoveryEnrollmentPending, "The discovery enrollment exists but is not yet active.", Deny: true),
+        new(ReasonCodes.DiscoveryEnrollmentSuspended, "The discovery enrollment is suspended.", Deny: true),
+        new(ReasonCodes.DiscoveryEnrollmentRevoked, "The discovery enrollment is revoked.", Deny: true),
+        new(ReasonCodes.DiscoveryCredentialExpired, "The discovery credential has expired and must be rotated before use.", Deny: true),
+        new(ReasonCodes.DiscoveryLifecycleTransitionInvalid, "The requested discovery enrollment transition is not valid from the current state.", Deny: true)
     ];
 }

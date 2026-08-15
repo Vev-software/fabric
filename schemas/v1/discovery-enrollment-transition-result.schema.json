@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/discovery-enrollment-transition-result.schema.json",
+  "title": "DiscoveryEnrollmentTransitionResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["accepted", "reasonCode", "enrollment"],
+  "properties": {
+    "accepted": { "type": "boolean" },
+    "reasonCode": { "type": "string", "minLength": 1 },
+    "enrollment": { "$ref": "discovery-enrollment-status.schema.json" }
+  }
+}

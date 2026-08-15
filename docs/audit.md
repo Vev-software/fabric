@@ -106,3 +106,10 @@ audit.Append(new AuditEvent(
 
 The product supplies action and resource values and emits through the envelope; Fabric owns the
 append-only, redaction-checked guarantee.
+
+## Discovery-specific vocabulary
+
+For Atlas discovery enrollment and ingestion flows, use the shared values in
+`Vev.Fabric.Contracts.Discovery.DiscoveryAuditVocabulary` rather than inventing per-service
+strings. The audit envelope stays generic; Fabric simply seeds stable discovery action/resource
+values so lifecycle and security reviews can join events reliably.
