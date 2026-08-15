@@ -52,6 +52,10 @@ The implemented public contract now includes:
 
 Schemas live in `schemas/v1/`. The TypeScript SDK mirrors the same contract in `sdk/typescript/`.
 
+The shared `TenantContext`, `PrincipalContext` and `ResourceId` primitives are also consumed by the
+authorization surface described in `docs/authorization.md`; authorization and entitlement stay distinct
+even when a product evaluates both on one request.
+
 ## Conformance fixtures
 
 Representative sample documents live in `conformance/samples/` for:

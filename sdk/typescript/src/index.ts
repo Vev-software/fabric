@@ -42,6 +42,7 @@ export interface PrincipalContext {
   principalId: string;
   displayName?: string | null;
   roles: string[];
+  claims?: Record<string, string> | null;
 }
 
 export interface CapabilityId {
@@ -57,6 +58,21 @@ export interface EntitlementRequest {
   capability: CapabilityId;
   principal: PrincipalContext;
   resource?: ResourceId | null;
+}
+
+export interface AuthorizationRequest {
+  tenant: TenantContext;
+  principal: PrincipalContext;
+  action: string;
+  resource: ResourceId;
+}
+
+export interface AuthorizationDecision {
+  allowed: boolean;
+  action: string;
+  resource: ResourceId;
+  reasonCode: ReasonCode | string;
+  source: string;
 }
 
 export interface EntitlementDecision {

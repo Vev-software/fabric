@@ -45,6 +45,19 @@ Contributions are welcome under the terms in `CONTRIBUTING.md`. Because VEV oper
 open-core model, contributions to this repository require a sign-off (DCO or CLA as stated
 per repo).
 
+## Current authorization surface
+
+The current authorization slice implemented for `fabric#5` includes:
+
+- .NET authorization contracts and local reference implementation in [`src/Vev.Fabric.Contracts/Authorization`](./src/Vev.Fabric.Contracts/Authorization)
+- JSON Schemas in [`schemas/v1/authorization-request.schema.json`](./schemas/v1/authorization-request.schema.json) and [`schemas/v1/authorization-decision.schema.json`](./schemas/v1/authorization-decision.schema.json)
+- TypeScript SDK mirror in [`sdk/typescript`](./sdk/typescript)
+- conformance samples in [`conformance/samples`](./conformance/samples)
+- design/runtime notes in [`docs/authorization.md`](./docs/authorization.md)
+
+Products register role requirements while Fabric owns the `IAuthorizer` mechanism, keeping
+authorization separate from entitlement evaluation and external PDP choice.
+
 ## Current entitlement surface
 
 The first implemented Fabric slice is the entitlement contract and local evaluator for `fabric#4`:

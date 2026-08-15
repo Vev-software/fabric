@@ -1,0 +1,18 @@
+{
+  "tenant": {
+    "tenantId": "tenant-a"
+  },
+  "principal": {
+    "principalId": "principal-1",
+    "displayName": "Atlas Architect",
+    "roles": ["AtlasArchitect"],
+    "claims": {
+      "sub": "principal-1",
+      "email": "architect@example.test"
+    }
+  },
+  "action": "atlas.catalogue.write",
+  "resource": {
+    "value": "atlas:catalogue/main"
+  }
+}

@@ -1,0 +1,5 @@
+# Code owners for fabric.
+#
+# The public Fabric contract layer is reviewed as a whole until a dedicated
+# maintainer team exists. Repoint this entry when such a team is created.
+* @Vev-software/founders
