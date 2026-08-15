@@ -13,7 +13,8 @@ export type ReasonCode =
   | "lifecycle_read_only"
   | "lifecycle_locked"
   | "lifecycle_retention"
-  | "lifecycle_purged";
+  | "lifecycle_purged"
+  | "lifecycle_transition_invalid";
 
 export type EntitlementOffer =
   | "CommunitySelfHosted"
@@ -31,6 +32,20 @@ export type EntitlementLifecycleState =
   | "Locked"
   | "RetentionPeriod"
   | "DataPurged";
+
+export type TenantLifecycleState =
+  | "TrialActive"
+  | "TrialExpired"
+  | "ReadOnly"
+  | "Locked"
+  | "RetentionPeriod"
+  | "DataPurged";
+
+export type TenantLifecycleTransition =
+  | "EnterReadOnly"
+  | "Lock"
+  | "StartRetention"
+  | "PurgeData";
 
 export type TaxonomyKind = "Feature" | "Limit" | "Resource" | "Reason";
 
@@ -160,6 +175,42 @@ export interface EntitlementBundleResolution {
   resolutionReasonCode: ReasonCode | string;
 }
 
+export interface TenantLifecycleTimeline {
+  trialStartedAt: string;
+  trialExpiresAt: string;
+  readOnlyUntil?: string | null;
+  lockedAt?: string | null;
+  retentionUntil?: string | null;
+  purgedAt?: string | null;
+}
+
+export interface TenantLifecycleQuery {
+  tenant: string;
+  asOf?: string | null;
+}
+
+export interface TenantLifecycleStatus {
+  tenant: string;
+  state: TenantLifecycleState;
+  reasonCode: ReasonCode | string;
+  evaluatedAt: string;
+  timeline: TenantLifecycleTimeline;
+}
+
+export interface TenantLifecycleTransitionRequest {
+  tenant: string;
+  transition: TenantLifecycleTransition;
+  occurredAt: string;
+  timeline: TenantLifecycleTimeline;
+  phaseUntil?: string | null;
+}
+
+export interface TenantLifecycleTransitionResult {
+  accepted: boolean;
+  reasonCode: ReasonCode | string;
+  lifecycle: TenantLifecycleStatus;
+}
+
 export const ATLAS_CAPABILITIES = {
   catalogueRead: "atlas.catalogue.read",
   catalogueWrite: "atlas.catalogue.write",
@@ -205,5 +256,6 @@ export const DECISION_REASON_CODES = {
   lifecycleReadOnly: "lifecycle_read_only",
   lifecycleLocked: "lifecycle_locked",
   lifecycleRetention: "lifecycle_retention",
-  lifecyclePurged: "lifecycle_purged"
+  lifecyclePurged: "lifecycle_purged",
+  lifecycleTransitionInvalid: "lifecycle_transition_invalid"
 } as const;

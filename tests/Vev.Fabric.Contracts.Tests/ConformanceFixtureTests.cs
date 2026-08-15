@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Vev.Fabric.Contracts.Authorization;
 using Vev.Fabric.Contracts.Entitlements;
+using Vev.Fabric.Contracts.Lifecycle;
 
 namespace Vev.Fabric.Contracts.Tests;
 
@@ -84,5 +85,45 @@ public sealed class ConformanceFixtureTests
         Assert.NotNull(document);
         Assert.True(document!.Allowed);
         Assert.Equal("local-authorizer", document.Source);
+    }
+
+    [Fact]
+    public void Sample_TenantLifecycleQuery_Deserializes()
+    {
+        var json = File.ReadAllText(Path.Combine(SamplesDirectory, "tenant-lifecycle-query.sample.json"));
+        var document = JsonSerializer.Deserialize<TenantLifecycleQuery>(json, SerializerOptions);
+
+        Assert.NotNull(document);
+        Assert.Equal("tenant-a", document!.Tenant);
+    }
+
+    [Fact]
+    public void Sample_TenantLifecycleStatus_Deserializes()
+    {
+        var json = File.ReadAllText(Path.Combine(SamplesDirectory, "tenant-lifecycle-status.sample.json"));
+        var document = JsonSerializer.Deserialize<TenantLifecycleStatus>(json, SerializerOptions);
+
+        Assert.NotNull(document);
+        Assert.Equal(TenantLifecycleState.ReadOnly, document!.State);
+    }
+
+    [Fact]
+    public void Sample_TenantLifecycleTransitionRequest_Deserializes()
+    {
+        var json = File.ReadAllText(Path.Combine(SamplesDirectory, "tenant-lifecycle-transition-request.sample.json"));
+        var document = JsonSerializer.Deserialize<TenantLifecycleTransitionRequest>(json, SerializerOptions);
+
+        Assert.NotNull(document);
+        Assert.Equal(TenantLifecycleTransition.EnterReadOnly, document!.Transition);
+    }
+
+    [Fact]
+    public void Sample_TenantLifecycleTransitionResult_Deserializes()
+    {
+        var json = File.ReadAllText(Path.Combine(SamplesDirectory, "tenant-lifecycle-transition-result.sample.json"));
+        var document = JsonSerializer.Deserialize<TenantLifecycleTransitionResult>(json, SerializerOptions);
+
+        Assert.NotNull(document);
+        Assert.True(document!.Accepted);
     }
 }

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/tenant-lifecycle-query.schema.json",
+  "title": "TenantLifecycleQuery",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tenant"],
+  "properties": {
+    "tenant": { "type": "string", "minLength": 1 },
+    "asOf": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

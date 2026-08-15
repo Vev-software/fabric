@@ -47,4 +47,5 @@ public static class ReasonCodes
     public const string LifecycleLocked = "lifecycle_locked";
     public const string LifecycleRetention = "lifecycle_retention";
     public const string LifecyclePurged = "lifecycle_purged";
+    public const string LifecycleTransitionInvalid = "lifecycle_transition_invalid";
 }
