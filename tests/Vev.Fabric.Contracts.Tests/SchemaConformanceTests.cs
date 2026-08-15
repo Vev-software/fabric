@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Json.Schema;
 using Vev.Fabric.Contracts.Audit;
+using Vev.Fabric.Contracts.Discovery;
 using Vev.Fabric.Contracts.Authorization;
 using Vev.Fabric.Contracts.Entitlements;
 using Vev.Fabric.Contracts.Lifecycle;
@@ -22,6 +23,10 @@ public sealed class SchemaConformanceTests
             { "audit-event.sample.json", "audit-event.schema.json", typeof(AuditEvent) },
             { "authorization-decision.sample.json", "authorization-decision.schema.json", typeof(AuthorizationDecision) },
             { "authorization-request.sample.json", "authorization-request.schema.json", typeof(AuthorizationRequest) },
+            { "discovery-enrollment-status.sample.json", "discovery-enrollment-status.schema.json", typeof(DiscoveryEnrollmentStatus) },
+            { "discovery-enrollment-transition-request.sample.json", "discovery-enrollment-transition-request.schema.json", typeof(DiscoveryEnrollmentTransitionRequest) },
+            { "discovery-enrollment-transition-result.sample.json", "discovery-enrollment-transition-result.schema.json", typeof(DiscoveryEnrollmentTransitionResult) },
+            { "discovery-lifecycle-event.sample.json", "discovery-lifecycle-event.schema.json", typeof(DiscoveryLifecycleEvent) },
             { "entitlement-bundle-request.sample.json", "entitlement-bundle-request.schema.json", typeof(EntitlementBundleRequest) },
             { "evaluate-entitlements-request.sample.json", "evaluate-entitlements-request.schema.json", typeof(EvaluateEntitlementsRequest) },
             { "import-signed-entitlement-snapshot-request.sample.json", "import-signed-entitlement-snapshot-request.schema.json", typeof(ImportSignedEntitlementSnapshotRequest) },

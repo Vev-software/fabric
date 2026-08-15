@@ -1,0 +1,28 @@
+{
+  "enrollmentId": "disc-1",
+  "tenant": {
+    "tenantId": "tenant-a"
+  },
+  "principal": {
+    "principalId": "scanner-1",
+    "displayName": "Atlas Discovery Scanner",
+    "roles": ["Machine"],
+    "claims": {
+      "kind": "discovery-scanner"
+    }
+  },
+  "capability": {
+    "value": "atlas.discovery.ingestion"
+  },
+  "transition": "RotateCredential",
+  "occurredAt": "2026-08-15T10:00:00Z",
+  "timeline": {
+    "enrolledAt": "2026-08-15T09:00:00Z",
+    "credentialExpiresAt": "2026-09-14T09:00:00Z",
+    "activatedAt": "2026-08-15T09:05:00Z",
+    "lastRotatedAt": null,
+    "suspendedAt": null,
+    "revokedAt": null
+  },
+  "credentialExpiresAt": "2026-10-14T09:00:00Z"
+}

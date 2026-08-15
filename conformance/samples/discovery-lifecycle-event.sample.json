@@ -1,0 +1,19 @@
+{
+  "eventId": "disc-evt-1",
+  "occurredAt": "2026-08-15T10:00:00Z",
+  "tenant": {
+    "tenantId": "tenant-a"
+  },
+  "enrollmentId": "disc-1",
+  "principalId": "scanner-1",
+  "source": "fabric.control-plane",
+  "eventType": "EnrollmentActivated",
+  "reasonCode": "allow",
+  "capability": {
+    "value": "atlas.discovery.ingestion"
+  },
+  "correlationId": "req-1",
+  "metadata": {
+    "credentialVersion": "2"
+  }
+}

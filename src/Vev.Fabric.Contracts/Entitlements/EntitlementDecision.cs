@@ -48,4 +48,9 @@ public static class ReasonCodes
     public const string LifecycleRetention = "lifecycle_retention";
     public const string LifecyclePurged = "lifecycle_purged";
     public const string LifecycleTransitionInvalid = "lifecycle_transition_invalid";
+    public const string DiscoveryEnrollmentPending = "discovery_enrollment_pending";
+    public const string DiscoveryEnrollmentSuspended = "discovery_enrollment_suspended";
+    public const string DiscoveryEnrollmentRevoked = "discovery_enrollment_revoked";
+    public const string DiscoveryCredentialExpired = "discovery_credential_expired";
+    public const string DiscoveryLifecycleTransitionInvalid = "discovery_lifecycle_transition_invalid";
 }

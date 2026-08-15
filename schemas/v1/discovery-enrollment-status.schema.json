@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/discovery-enrollment-status.schema.json",
+  "title": "DiscoveryEnrollmentStatus",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["enrollmentId", "tenant", "principal", "capability", "state", "reasonCode", "evaluatedAt", "timeline"],
+  "properties": {
+    "enrollmentId": { "type": "string", "minLength": 1 },
+    "tenant": { "$ref": "tenant-context.schema.json" },
+    "principal": { "$ref": "principal-context.schema.json" },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 }
+      }
+    },
+    "state": {
+      "type": "string",
+      "enum": ["Pending", "Active", "Suspended", "Revoked", "Expired"]
+    },
+    "reasonCode": { "type": "string", "minLength": 1 },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "timeline": { "$ref": "discovery-enrollment-timeline.schema.json" }
+  }
+}

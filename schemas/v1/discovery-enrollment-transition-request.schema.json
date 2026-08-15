@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/discovery-enrollment-transition-request.schema.json",
+  "title": "DiscoveryEnrollmentTransitionRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["enrollmentId", "tenant", "principal", "capability", "transition", "occurredAt", "timeline"],
+  "properties": {
+    "enrollmentId": { "type": "string", "minLength": 1 },
+    "tenant": { "$ref": "tenant-context.schema.json" },
+    "principal": { "$ref": "principal-context.schema.json" },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 }
+      }
+    },
+    "transition": {
+      "type": "string",
+      "enum": ["Activate", "RotateCredential", "Suspend", "Revoke"]
+    },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "timeline": { "$ref": "discovery-enrollment-timeline.schema.json" },
+    "credentialExpiresAt": { "type": ["string", "null"], "format": "date-time" }
+  }
+}
