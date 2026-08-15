@@ -6,14 +6,7 @@
   "additionalProperties": false,
   "required": ["tenant", "capability", "principal"],
   "properties": {
-    "tenant": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["tenantId"],
-      "properties": {
-        "tenantId": { "type": "string", "minLength": 1 }
-      }
-    },
+    "tenant": { "$ref": "tenant-context.schema.json" },
     "capability": {
       "type": "object",
       "additionalProperties": false,
@@ -22,23 +15,7 @@
         "value": { "type": "string", "minLength": 1 }
       }
     },
-    "principal": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["principalId", "roles"],
-      "properties": {
-        "principalId": { "type": "string", "minLength": 1 },
-        "displayName": { "type": ["string", "null"] },
-        "roles": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "claims": {
-          "type": "object",
-          "additionalProperties": { "type": "string" }
-        }
-      }
-    },
+    "principal": { "$ref": "principal-context.schema.json" },
     "resource": {
       "type": ["object", "null"],
       "additionalProperties": false,

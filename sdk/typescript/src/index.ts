@@ -46,7 +46,6 @@ export type TenantLifecycleTransition =
   | "Lock"
   | "StartRetention"
   | "PurgeData";
-
 export type TaxonomyKind = "Feature" | "Limit" | "Resource" | "Reason";
 
 export interface TenantContext {
@@ -57,6 +56,7 @@ export interface PrincipalContext {
   principalId: string;
   displayName?: string | null;
   roles: string[];
+  /** Optional provider-neutral claims (e.g. selected OIDC claims). Never secrets or tokens. */
   claims?: Record<string, string> | null;
 }
 
@@ -210,7 +210,6 @@ export interface TenantLifecycleTransitionResult {
   reasonCode: ReasonCode | string;
   lifecycle: TenantLifecycleStatus;
 }
-
 export const ATLAS_CAPABILITIES = {
   catalogueRead: "atlas.catalogue.read",
   catalogueWrite: "atlas.catalogue.write",
