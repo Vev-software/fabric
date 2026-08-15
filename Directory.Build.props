@@ -13,5 +13,17 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Vev-software/fabric</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <!-- Version is derived from the git tag by MinVer (handbook 18 §1.1): tag `vX.Y.Z`
+         produces package `X.Y.Z`, and commits after a tag produce a pre-release. The
+         tag is the single source of truth — never set Version/VersionPrefix by hand.
+         See AGENTS.md for the release ritual. -->
+    <MinVerTagPrefix>v</MinVerTagPrefix>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Build-time only: sets Version/PackageVersion from the git tag. Fabric has no
+         central package management, so the MinVer version is pinned here directly. -->
+    <PackageReference Include="MinVer" Version="7.0.0" PrivateAssets="all" />
+  </ItemGroup>
 </Project>

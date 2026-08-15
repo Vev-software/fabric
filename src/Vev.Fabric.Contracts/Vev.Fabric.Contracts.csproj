@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Vev.Fabric.Contracts</RootNamespace>
     <AssemblyName>Vev.Fabric.Contracts</AssemblyName>
+    <Description>Public, versioned cross-cutting contracts for the VEV substrate — tenant and principal context, entitlement request/decision with reason codes, the authorizer interface, tenant lifecycle, the shared taxonomy, and the append-only audit event envelope. Ships the authoritative JSON Schemas alongside the SDK. Apache-2.0.</Description>
+    <PackageTags>vev;fabric;contracts;multi-tenant;entitlements;audit;interop</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
