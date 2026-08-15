@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/principal-context.schema.json",
+  "title": "PrincipalContext",
+  "description": "Provider-neutral representation of the authenticated principal (fabric#3, 05 §2 Identity). Identity is adopted (OIDC/OAuth/SCIM), not built: a product resolves 'which principal' from this contract alone and never reaches into an identity server.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["principalId", "roles"],
+  "properties": {
+    "principalId": {
+      "type": "string",
+      "description": "Stable subject identifier (the OIDC 'sub'), not an email or a credential.",
+      "minLength": 1
+    },
+    "displayName": {
+      "type": ["string", "null"],
+      "description": "Human-readable label for audit and UX."
+    },
+    "roles": {
+      "type": "array",
+      "description": "Coarse role names held in the current tenant.",
+      "items": { "type": "string" }
+    },
+    "claims": {
+      "type": ["object", "null"],
+      "description": "Optional provider-neutral claims (e.g. selected OIDC claims), string-valued and opaque to the contract. Never a place for secrets or tokens.",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

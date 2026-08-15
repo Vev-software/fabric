@@ -1,0 +1,216 @@
+# Keeps this repo's issue item on the Vev-software org Project board (#1)
+# aligned with issue lifecycle and product ownership, so the Project can be used
+# as the operative overview instead of a stale list of cards. The Product field
+# is derived from the repo name prefix (atlas-* -> Atlas, portic-* -> Portic,
+# fabric/fabric-* -> Fabric); this same file is dropped verbatim into every repo
+# that should feed the board.
+#
+# Requires the ORG secret ADD_TO_PROJECT_PAT (classic PAT with `project` + `repo`
+# scopes). The default GITHUB_TOKEN cannot write to Projects v2.
+name: Sync issue state to project
+
+on:
+  issues:
+    types: [opened, reopened, transferred, edited, closed]
+
+permissions:
+  contents: read
+
+jobs:
+  sync-project-status:
+    name: Sync Vev-software board status
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        env:
+          PROJECT_OWNER: Vev-software
+          PROJECT_NUMBER: "1"
+          STATUS_FIELD_NAME: Status
+          PRODUCT_FIELD_NAME: Product
+          STATUS_ON_OPEN: Backlog|Todo|To do
+          STATUS_ON_REOPEN: Backlog|Todo|To do
+          STATUS_ON_CLOSE: Done|Closed
+          STATUS_ON_NOT_PLANNED: Won't do|Not planned|Cancelled|Canceled
+          PRODUCT_ATLAS: Atlas
+          PRODUCT_PORTIC: Portic
+          PRODUCT_FABRIC: Fabric
+        with:
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          script: |
+            const owner = process.env.PROJECT_OWNER;
+            const projectNumber = Number(process.env.PROJECT_NUMBER);
+            const statusFieldName = process.env.STATUS_FIELD_NAME;
+            const productFieldName = process.env.PRODUCT_FIELD_NAME;
+            const issueNodeId = context.payload.issue.node_id;
+            const action = context.payload.action;
+            const stateReason = context.payload.issue.state_reason ?? "";
+            const repoName = context.repo.repo;
+
+            const candidates = (value) =>
+              (value ?? "")
+                .split("|")
+                .map((part) => part.trim())
+                .filter(Boolean);
+
+            const resolveTargetStatusNames = () => {
+              switch (action) {
+                case "opened":
+                case "transferred":
+                  return candidates(process.env.STATUS_ON_OPEN);
+                case "reopened":
+                  return candidates(process.env.STATUS_ON_REOPEN);
+                case "closed":
+                  if (stateReason === "not_planned") {
+                    return candidates(process.env.STATUS_ON_NOT_PLANNED);
+                  }
+                  return candidates(process.env.STATUS_ON_CLOSE);
+                default:
+                  return [];
+              }
+            };
+
+            const resolveTargetProductNames = () => {
+              if (repoName.startsWith("atlas-")) {
+                return candidates(process.env.PRODUCT_ATLAS);
+              }
+
+              if (repoName.startsWith("portic-")) {
+                return candidates(process.env.PRODUCT_PORTIC);
+              }
+
+              if (repoName === "fabric" || repoName.startsWith("fabric-")) {
+                return candidates(process.env.PRODUCT_FABRIC);
+              }
+
+              return [];
+            };
+
+            const query = `
+              query($owner: String!, $projectNumber: Int!, $issueId: ID!) {
+                organization(login: $owner) {
+                  projectV2(number: $projectNumber) {
+                    id
+                    fields(first: 50) {
+                      nodes {
+                        ... on ProjectV2SingleSelectField {
+                          id
+                          name
+                          options {
+                            id
+                            name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                node(id: $issueId) {
+                  ... on Issue {
+                    id
+                    projectItems(first: 20) {
+                      nodes {
+                        id
+                        project {
+                          ... on ProjectV2 {
+                            id
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+
+            const result = await github.graphql(query, {
+              owner,
+              projectNumber,
+              issueId: issueNodeId,
+            });
+
+            const project = result.organization?.projectV2;
+            if (!project) {
+              core.setFailed(`Project #${projectNumber} not found under ${owner}.`);
+              return;
+            }
+
+            let projectItem = result.node?.projectItems?.nodes?.find(
+              (item) => item.project?.id === project.id,
+            );
+
+            if (!projectItem) {
+              const addResult = await github.graphql(
+                `
+                  mutation($projectId: ID!, $contentId: ID!) {
+                    addProjectV2ItemById(input: { projectId: $projectId, contentId: $contentId }) {
+                      item {
+                        id
+                      }
+                    }
+                  }
+                `,
+                {
+                  projectId: project.id,
+                  contentId: issueNodeId,
+                },
+              );
+
+              projectItem = addResult.addProjectV2ItemById.item;
+              core.info(`Added issue to project as item ${projectItem.id}.`);
+            } else {
+              core.info(`Issue already present on project as item ${projectItem.id}.`);
+            }
+
+            const updateSingleSelectField = async (fieldName, targetNames) => {
+              if (targetNames.length === 0) {
+                core.info(`No value mapping configured for project field '${fieldName}'.`);
+                return;
+              }
+
+              const field = project.fields.nodes.find((candidate) => candidate?.name === fieldName);
+              if (!field) {
+                core.warning(`Project field '${fieldName}' not found. Item presence was ensured, but this field was not updated.`);
+                return;
+              }
+
+              const targetOption = targetNames
+                .map((name) => field.options.find((option) => option.name === name))
+                .find(Boolean);
+
+              if (!targetOption) {
+                core.warning(
+                  `None of the configured option names matched field '${fieldName}': ${targetNames.join(", ")}.`,
+                );
+                return;
+              }
+
+              await github.graphql(
+                `
+                  mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                    updateProjectV2ItemFieldValue(
+                      input: {
+                        projectId: $projectId
+                        itemId: $itemId
+                        fieldId: $fieldId
+                        value: { singleSelectOptionId: $optionId }
+                      }
+                    ) {
+                      projectV2Item {
+                        id
+                      }
+                    }
+                  }
+                `,
+                {
+                  projectId: project.id,
+                  itemId: projectItem.id,
+                  fieldId: field.id,
+                  optionId: targetOption.id,
+                },
+              );
+
+              core.info(`Updated project field '${fieldName}' to '${targetOption.name}'.`);
+            };
+
+            await updateSingleSelectField(statusFieldName, resolveTargetStatusNames());
+            await updateSingleSelectField(productFieldName, resolveTargetProductNames());

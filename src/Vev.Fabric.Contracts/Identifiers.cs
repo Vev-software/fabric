@@ -15,12 +15,18 @@ public readonly record struct TenantContext(string TenantId)
 }
 
 /// <summary>
-/// Provider-neutral representation of the authenticated principal.
+/// Provider-neutral representation of the authenticated principal. Identity is a Fabric
+/// concern (products never invent their own): a product resolves "which principal" from
+/// this contract alone. OIDC/OAuth is adopted, not built — <see cref="Claims"/> carries
+/// selected provider claims in a provider-neutral shape.
 /// </summary>
-/// <param name="PrincipalId">Stable subject identifier.</param>
+/// <param name="PrincipalId">Stable subject identifier (the OIDC <c>sub</c>, not an email).</param>
 /// <param name="DisplayName">Human-readable label for audit and UX.</param>
 /// <param name="Roles">Coarse role names held in the current tenant.</param>
-/// <param name="Claims">Optional provider-neutral string claims copied from a verified identity source.</param>
+/// <param name="Claims">
+/// Optional provider-neutral claims (e.g. selected OIDC claims), string-valued and opaque
+/// to the contract. Never a place for secrets or tokens. Defaults to none.
+/// </param>
 public sealed record PrincipalContext(
     string PrincipalId,
     string? DisplayName,
