@@ -12,9 +12,13 @@
     "url": "https://github.com/Vev-software/fabric"
   },
   "scripts": {
-    "build": "node ./node_modules/typescript/bin/tsc -p tsconfig.json"
+    "build": "node ./node_modules/typescript/bin/tsc -p tsconfig.json",
+    "validate:conformance": "node ./scripts/validate-conformance.mjs",
+    "check:dependency-direction": "node ./scripts/check-dependency-direction.mjs"
   },
   "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "typescript": "^5.6.0"
   }
 }

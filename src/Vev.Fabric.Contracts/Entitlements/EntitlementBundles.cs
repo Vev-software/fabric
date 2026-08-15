@@ -3,7 +3,7 @@ using Vev.Fabric.Contracts.Taxonomy;
 
 namespace Vev.Fabric.Contracts.Entitlements;
 
- [JsonConverter(typeof(JsonStringEnumConverter<EntitlementOffer>))]
+[JsonConverter(typeof(JsonStringEnumConverter<EntitlementOffer>))]
 /// <summary>
 /// Commercial/source profile resolved into concrete capabilities and limits.
 /// </summary>
@@ -17,7 +17,7 @@ public enum EntitlementOffer
     SelfHostedEnterprise
 }
 
- [JsonConverter(typeof(JsonStringEnumConverter<EntitlementLifecycleState>))]
+[JsonConverter(typeof(JsonStringEnumConverter<EntitlementLifecycleState>))]
 /// <summary>
 /// Lifecycle state used as a policy input during bundle translation.
 /// The full canonical lifecycle contract is tracked separately in fabric#8.

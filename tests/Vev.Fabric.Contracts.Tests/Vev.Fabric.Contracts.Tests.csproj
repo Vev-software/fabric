@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JsonSchema.Net" Version="9.4.0" />
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="xunit" Version="2.9.3" />
@@ -20,6 +21,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Vev.Fabric.Contracts\Vev.Fabric.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../schemas/**/*.json" CopyToOutputDirectory="PreserveNewest" LinkBase="schemas/" />
+    <None Include="../../conformance/samples/**/*.json" CopyToOutputDirectory="PreserveNewest" LinkBase="samples/" />
   </ItemGroup>
 
 </Project>

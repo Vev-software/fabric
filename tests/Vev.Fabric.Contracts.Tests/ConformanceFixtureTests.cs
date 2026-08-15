@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Vev.Fabric.Contracts.Authorization;
 using Vev.Fabric.Contracts.Entitlements;
 
 namespace Vev.Fabric.Contracts.Tests;
@@ -63,6 +64,26 @@ public sealed class ConformanceFixtureTests
         Assert.NotNull(document);
         Assert.NotEmpty(document!.Capabilities);
         Assert.NotEmpty(document.Reasons);
+    }
+
+    [Fact]
+    public void Sample_AuthorizationRequest_Deserializes()
+    {
+        var json = File.ReadAllText(Path.Combine(SamplesDirectory, "authorization-request.sample.json"));
+        var document = JsonSerializer.Deserialize<AuthorizationRequest>(json, SerializerOptions);
+
+        Assert.Equal("atlas.catalogue.write", document.Action);
+    }
+
+    [Fact]
+    public void Sample_AuthorizationDecision_Deserializes()
+    {
+        var json = File.ReadAllText(Path.Combine(SamplesDirectory, "authorization-decision.sample.json"));
+        var document = JsonSerializer.Deserialize<AuthorizationDecision>(json, SerializerOptions);
+
+        Assert.NotNull(document);
+        Assert.True(document!.Allowed);
+        Assert.Equal("local-authorizer", document.Source);
     }
 
     [Fact]

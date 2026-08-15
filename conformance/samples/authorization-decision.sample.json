@@ -1,0 +1,9 @@
+{
+  "allowed": true,
+  "action": "atlas.catalogue.write",
+  "resource": {
+    "value": "atlas:catalogue/main"
+  },
+  "reasonCode": "allow",
+  "source": "local-authorizer"
+}

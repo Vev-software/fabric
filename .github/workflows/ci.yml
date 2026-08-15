@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup .NET (pinned by global.json)
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Restore (.NET)
+        run: dotnet restore Vev.Fabric.slnx
+
+      - name: Build (.NET)
+        run: dotnet build Vev.Fabric.slnx -c Release --no-restore
+
+      - name: Lint (format verify)
+        run: dotnet format Vev.Fabric.slnx --verify-no-changes --no-restore
+
+      - name: Install TypeScript SDK dependencies
+        working-directory: sdk/typescript
+        run: npm ci
+
+      - name: Build (TypeScript SDK)
+        working-directory: sdk/typescript
+        run: npm run build
+
+      - name: Validate schemas and conformance samples
+        working-directory: sdk/typescript
+        run: npm run validate:conformance
+
+      - name: Dependency-direction fitness check
+        working-directory: sdk/typescript
+        run: npm run check:dependency-direction
+
+      - name: Test (.NET)
+        run: dotnet test Vev.Fabric.slnx -c Release --no-build

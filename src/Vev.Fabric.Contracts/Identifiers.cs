@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Vev.Fabric.Contracts;
 
 /// <summary>
@@ -6,6 +8,7 @@ namespace Vev.Fabric.Contracts;
 /// <param name="TenantId">Stable tenant identifier.</param>
 public readonly record struct TenantContext(string TenantId)
 {
+    [JsonIgnore]
     public bool IsPresent => !string.IsNullOrWhiteSpace(TenantId);
 
     public override string ToString() => TenantId;
@@ -28,6 +31,7 @@ public sealed record PrincipalContext(
     string PrincipalId,
     string? DisplayName,
     IReadOnlyCollection<string> Roles,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     IReadOnlyDictionary<string, string>? Claims = null);
 
 /// <summary>
