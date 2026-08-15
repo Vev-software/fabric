@@ -1,0 +1,10 @@
+{
+  "principalId": "principal-1",
+  "displayName": "Atlas User",
+  "roles": ["AtlasArchitect", "AtlasOperator"],
+  "claims": {
+    "iss": "https://id.example.com/",
+    "preferred_username": "auser",
+    "email_verified": "true"
+  }
+}
