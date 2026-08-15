@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/tenant-context.schema.json",
+  "title": "TenantContext",
+  "description": "Stable tenant identifier and isolation boundary carried on every product request. Tenancy is a Fabric concern (fabric#3, 15 §2, 11 §4): a product resolves 'which tenant' from this contract and never invents its own.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tenantId"],
+  "properties": {
+    "tenantId": {
+      "type": "string",
+      "description": "Stable tenant identifier. The identifier is itself the isolation boundary.",
+      "minLength": 1
+    }
+  }
+}

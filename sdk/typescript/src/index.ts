@@ -42,6 +42,8 @@ export interface PrincipalContext {
   principalId: string;
   displayName?: string | null;
   roles: string[];
+  /** Optional provider-neutral claims (e.g. selected OIDC claims). Never secrets or tokens. */
+  claims?: Record<string, string> | null;
 }
 
 export interface CapabilityId {

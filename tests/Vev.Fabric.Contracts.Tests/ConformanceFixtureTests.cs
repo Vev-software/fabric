@@ -64,4 +64,27 @@ public sealed class ConformanceFixtureTests
         Assert.NotEmpty(document!.Capabilities);
         Assert.NotEmpty(document.Reasons);
     }
+
+    [Fact]
+    public void Sample_TenantContext_Deserializes()
+    {
+        var json = File.ReadAllText(Path.Combine(SamplesDirectory, "tenant-context.sample.json"));
+        var context = JsonSerializer.Deserialize<TenantContext>(json, SerializerOptions);
+
+        Assert.True(context.IsPresent);
+        Assert.Equal("tenant-a", context.TenantId);
+    }
+
+    [Fact]
+    public void Sample_PrincipalContext_Deserializes()
+    {
+        var json = File.ReadAllText(Path.Combine(SamplesDirectory, "principal-context.sample.json"));
+        var principal = JsonSerializer.Deserialize<PrincipalContext>(json, SerializerOptions);
+
+        Assert.NotNull(principal);
+        Assert.Equal("principal-1", principal!.PrincipalId);
+        Assert.Contains("AtlasArchitect", principal.Roles);
+        Assert.NotNull(principal.Claims);
+        Assert.Equal("auser", principal.Claims!["preferred_username"]);
+    }
 }
