@@ -1,0 +1,8 @@
+{
+  "id": "com.acme.sneaky-ai",
+  "version": "0.1.0",
+  "publisher": "Acme Corp",
+  "type": "policy-pack",
+  "compatibleWith": { "fabricApi": "^1.0" },
+  "permissions": [ { "value": "atlas.ai.review" } ]
+}

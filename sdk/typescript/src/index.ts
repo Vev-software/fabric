@@ -244,6 +244,52 @@ export interface AuditEvent {
   metadata?: Record<string, string> | null;
 }
 
+// Extensions (fabric#10) — the closed extension-type set + the deny-by-default manifest.
+export type ExtensionType =
+  | "provider-adapter"
+  | "importer-exporter"
+  | "policy-pack"
+  | "workflow-action"
+  | "connector"
+  | "ui-extension"
+  | "domain-module";
+
+export interface ExtensionCompatibility {
+  fabricApi: string;
+  product?: string | null;
+}
+
+export interface ExtensionManifest {
+  id: string;
+  version: string;
+  publisher: string;
+  type: ExtensionType;
+  compatibleWith: ExtensionCompatibility;
+  /** Declared capabilities; deny-by-default. A reserved paid capability here is rejected. */
+  permissions?: CapabilityId[];
+  resources?: ResourceId[];
+  network?: string[];
+  secrets?: string[];
+}
+
+export interface ExtensionValidationError {
+  code: string;
+  message: string;
+}
+
+export interface ExtensionValidationResult {
+  valid: boolean;
+  errors: ExtensionValidationError[];
+}
+
+export const EXTENSION_VALIDATION_REASON_CODES = {
+  missingId: "extension_missing_id",
+  missingVersion: "extension_missing_version",
+  missingPublisher: "extension_missing_publisher",
+  missingFabricApiCompatibility: "extension_missing_fabric_api_compatibility",
+  reservedCapabilityDeclared: "extension_reserved_capability"
+} as const;
+
 export const ATLAS_CAPABILITIES = {
   catalogueRead: "atlas.catalogue.read",
   catalogueWrite: "atlas.catalogue.write",

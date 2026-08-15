@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/extension-manifest.schema.json",
+  "title": "ExtensionManifest",
+  "description": "The Fabric-owned extension manifest (fabric#10, 07 §3). Declares what an extension is and — deny by default — exactly what it may touch: nothing is granted unless declared. A manifest may never declare a reserved paid capability; that guard is enforced by the validator, not JSON Schema (it depends on the taxonomy).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "publisher", "type", "compatibleWith"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable extension identifier (reverse-DNS recommended).",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "description": "The extension's own SemVer version.",
+      "minLength": 1
+    },
+    "publisher": {
+      "type": "string",
+      "description": "The publishing entity.",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "description": "One of the closed set of extension types (07 §2). No universal plug-in host.",
+      "enum": [
+        "provider-adapter",
+        "importer-exporter",
+        "policy-pack",
+        "workflow-action",
+        "connector",
+        "ui-extension",
+        "domain-module"
+      ]
+    },
+    "compatibleWith": {
+      "type": "object",
+      "description": "The Fabric/product versions the extension targets, as SemVer ranges.",
+      "additionalProperties": false,
+      "required": ["fabricApi"],
+      "properties": {
+        "fabricApi": {
+          "type": "string",
+          "description": "SemVer range of the Fabric contract API, e.g. '^1.0'.",
+          "minLength": 1
+        },
+        "product": {
+          "type": ["string", "null"],
+          "description": "Optional SemVer range of the host product, for product-specific extensions."
+        }
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "description": "Declared capabilities the extension requests. Deny-by-default: absent means none. A reserved paid capability here is rejected by the validator.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["value"],
+        "properties": {
+          "value": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "resources": {
+      "type": "array",
+      "description": "Declared resource scopes the extension needs. Deny-by-default.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["value"],
+        "properties": {
+          "value": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "network": {
+      "type": "array",
+      "description": "Declared outbound network host patterns. Deny-by-default.",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "secrets": {
+      "type": "array",
+      "description": "Declared secret references (names, never values). Deny-by-default.",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
