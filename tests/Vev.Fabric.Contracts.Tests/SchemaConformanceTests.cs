@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Json.Schema;
+using Vev.Fabric.Contracts.Audit;
 using Vev.Fabric.Contracts.Authorization;
 using Vev.Fabric.Contracts.Entitlements;
 using Vev.Fabric.Contracts.Lifecycle;
@@ -18,6 +19,7 @@ public sealed class SchemaConformanceTests
     public static TheoryData<string, string, Type> SampleContracts =>
         new()
         {
+            { "audit-event.sample.json", "audit-event.schema.json", typeof(AuditEvent) },
             { "authorization-decision.sample.json", "authorization-decision.schema.json", typeof(AuthorizationDecision) },
             { "authorization-request.sample.json", "authorization-request.schema.json", typeof(AuthorizationRequest) },
             { "entitlement-bundle-request.sample.json", "entitlement-bundle-request.schema.json", typeof(EntitlementBundleRequest) },

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/audit-event.schema.json",
+  "title": "AuditEvent",
+  "description": "Append-only audit event envelope shared across VEV products (fabric#6, 05 §2 Audit). The envelope carries who did what to which resource, in which tenant, when, and under which correlation id. It never carries a product-domain schema, secrets or customer content: products supply action and resource values, not shape.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "occurredAt",
+    "tenant",
+    "actor",
+    "source",
+    "action",
+    "resource",
+    "category",
+    "outcome",
+    "correlationId"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "description": "Stable unique identifier for this record; the append-only primary key.",
+      "minLength": 1
+    },
+    "occurredAt": {
+      "type": "string",
+      "description": "When the audited action occurred.",
+      "format": "date-time"
+    },
+    "tenant": {
+      "type": "object",
+      "description": "The tenant whose isolation boundary the action happened within.",
+      "additionalProperties": false,
+      "required": ["tenantId"],
+      "properties": {
+        "tenantId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "actor": {
+      "type": "object",
+      "description": "Redaction-safe projection of the acting principal. Deliberately carries no claims: audit payloads hold no secrets or provider data by default.",
+      "additionalProperties": false,
+      "required": ["principalId"],
+      "properties": {
+        "principalId": {
+          "type": "string",
+          "description": "Stable subject identifier (the OIDC 'sub'), not an email.",
+          "minLength": 1
+        },
+        "displayName": { "type": ["string", "null"] },
+        "roles": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "source": {
+      "type": "string",
+      "description": "Emitting component, e.g. 'atlas' or 'fabric.control-plane', so product and substrate events stitch together.",
+      "minLength": 1
+    },
+    "action": {
+      "type": "string",
+      "description": "Product-supplied action value, e.g. 'atlas.catalogue.write'.",
+      "minLength": 1
+    },
+    "resource": {
+      "type": "object",
+      "description": "The resource the action targeted. Product supplies the value; Fabric owns the field.",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 },
+        "type": { "type": ["string", "null"] }
+      }
+    },
+    "category": {
+      "type": "string",
+      "description": "Data events are ordinary asset changes; Admin and Security events are immutable.",
+      "enum": ["Data", "Admin", "Security"]
+    },
+    "outcome": {
+      "type": "string",
+      "description": "Whether the action succeeded, failed, or was denied by policy.",
+      "enum": ["Success", "Failure", "Denied"]
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "Correlates every event emitted while handling one request.",
+      "minLength": 1
+    },
+    "causationId": {
+      "type": ["string", "null"],
+      "description": "Optional id of the event that caused this one, for causal stitching.",
+      "minLength": 1
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional product-supplied context, string-valued and opaque. Must not carry secrets or customer content.",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}
