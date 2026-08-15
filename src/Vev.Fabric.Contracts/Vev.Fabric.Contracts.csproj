@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Vev.Fabric.Contracts</RootNamespace>
     <AssemblyName>Vev.Fabric.Contracts</AssemblyName>
+    <Description>Public Fabric contracts for tenant context, entitlement evaluation, and signed snapshot documents, with the authoritative JSON Schemas bundled. Apache-2.0.</Description>
+    <PackageTags>vev;fabric;contracts;entitlement;interop</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

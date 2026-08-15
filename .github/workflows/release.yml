@@ -1,0 +1,20 @@
+# Cuts a signed release when a version tag is pushed. Thin caller of the org's
+# reusable workflow — the release logic lives in Vev-software/.github (handbook 18 §8).
+# The git tag is the single source of truth (18 §1.1).
+name: release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+jobs:
+  release:
+    uses: Vev-software/.github/.github/workflows/release-dotnet-npm.yml@main
+    permissions:
+      contents: write # create the GitHub Release
+      id-token: write # Sigstore provenance
+      attestations: write
+    with:
+      solution: Vev.Fabric.slnx
+      dotnet_project: src/Vev.Fabric.Contracts/Vev.Fabric.Contracts.csproj
+      ts_dir: sdk/typescript

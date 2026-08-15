@@ -1,0 +1,35 @@
+# Publishes the SDK packages to the public registries for a released tag. Thin caller
+# of the org's reusable workflow (handbook 18 §8), gated by the `release` environment.
+# OIDC Trusted Publishing — no stored API keys. One-time registry setup per package:
+# see the reusable workflow header in Vev-software/.github and the engineering runbook.
+name: publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Released tag to publish (e.g. v0.2.0). Must already exist (cut by release.yml)."
+        type: string
+        required: true
+      publish_nuget:
+        description: "Publish Vev.Fabric.Contracts to nuget.org"
+        type: boolean
+        default: true
+      publish_npm:
+        description: "Publish @vev-software/fabric-contracts to npm"
+        type: boolean
+        default: true
+
+jobs:
+  publish:
+    uses: Vev-software/.github/.github/workflows/publish-dotnet-npm.yml@main
+    permissions:
+      contents: read
+      id-token: write # OIDC Trusted Publishing
+    with:
+      tag: ${{ inputs.tag }}
+      solution: Vev.Fabric.slnx
+      dotnet_project: src/Vev.Fabric.Contracts/Vev.Fabric.Contracts.csproj
+      ts_dir: sdk/typescript
+      publish_nuget: ${{ inputs.publish_nuget }}
+      publish_npm: ${{ inputs.publish_npm }}

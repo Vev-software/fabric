@@ -2,3 +2,7 @@ bin/
 obj/
 dist/
 node_modules/
+
+# Schemas are copied in at pack time by sdk/typescript/scripts/prepack.mjs
+# (see package.json "files"); schemas/v1 at the repo root stays the source of truth.
+sdk/typescript/schemas/
