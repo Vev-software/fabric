@@ -85,18 +85,19 @@ The current hosted lifecycle slice implemented for `fabric#8` includes:
 This makes trial expiry, read-only, lock, retention and purge states explicit public contracts
 instead of product-local flags or scheduler-specific assumptions.
 
-## Current discovery enrollment surface
+## Current discovery enrollment and access surface
 
-The public discovery enrollment slice implemented for `atlas-enterprise#9` includes:
+The public discovery enrollment/access slice implemented for `atlas-enterprise#9` and `fabric#28` includes:
 
-- .NET discovery enrollment contracts, lifecycle state machine, lifecycle event envelope and audit vocabulary in [`src/Vev.Fabric.Contracts/Discovery`](./src/Vev.Fabric.Contracts/Discovery)
+- .NET discovery enrollment contracts, access-decision evaluator, lifecycle state machine, lifecycle event envelope and audit vocabulary in [`src/Vev.Fabric.Contracts/Discovery`](./src/Vev.Fabric.Contracts/Discovery)
 - JSON Schemas in [`schemas/v1`](./schemas/v1)
 - TypeScript SDK mirror in [`sdk/typescript`](./sdk/typescript)
 - conformance samples in [`conformance/samples`](./conformance/samples)
 - design/runtime notes in [`docs/discovery-enrollment.md`](./docs/discovery-enrollment.md)
 
-This gives Atlas discovery a public Fabric seam for tenant-bound machine enrollment, credential
-rotation and fail-static denied states instead of private bootstrap shortcuts.
+This gives Atlas discovery a public Fabric seam for tenant-bound machine enrollment, canonical
+ingestion access decisions, credential rotation and fail-static denied states instead of private
+bootstrap shortcuts.
 
 ## Current entitlement surface
 

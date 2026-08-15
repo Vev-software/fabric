@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/discovery-ingestion-access-request.schema.json",
+  "title": "DiscoveryIngestionAccessRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tenant", "principal", "enrollmentId", "capability", "enrollmentTimeline", "tenantLifecycleTimeline", "entitlement"],
+  "properties": {
+    "tenant": { "$ref": "tenant-context.schema.json" },
+    "principal": { "$ref": "principal-context.schema.json" },
+    "enrollmentId": { "type": "string", "minLength": 1 },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "string", "const": "atlas.discovery.ingestion" }
+      }
+    },
+    "enrollmentTimeline": { "$ref": "discovery-enrollment-timeline.schema.json" },
+    "tenantLifecycleTimeline": { "$ref": "tenant-lifecycle-timeline.schema.json" },
+    "entitlement": { "$ref": "entitlement-decision.schema.json" },
+    "asOf": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

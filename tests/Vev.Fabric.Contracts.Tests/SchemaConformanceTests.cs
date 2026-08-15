@@ -23,6 +23,8 @@ public sealed class SchemaConformanceTests
             { "audit-event.sample.json", "audit-event.schema.json", typeof(AuditEvent) },
             { "authorization-decision.sample.json", "authorization-decision.schema.json", typeof(AuthorizationDecision) },
             { "authorization-request.sample.json", "authorization-request.schema.json", typeof(AuthorizationRequest) },
+            { "discovery-ingestion-access-request.sample.json", "discovery-ingestion-access-request.schema.json", typeof(DiscoveryIngestionAccessRequest) },
+            { "discovery-ingestion-access-decision.sample.json", "discovery-ingestion-access-decision.schema.json", typeof(DiscoveryIngestionAccessDecision) },
             { "discovery-enrollment-status.sample.json", "discovery-enrollment-status.schema.json", typeof(DiscoveryEnrollmentStatus) },
             { "discovery-enrollment-transition-request.sample.json", "discovery-enrollment-transition-request.schema.json", typeof(DiscoveryEnrollmentTransitionRequest) },
             { "discovery-enrollment-transition-result.sample.json", "discovery-enrollment-transition-result.schema.json", typeof(DiscoveryEnrollmentTransitionResult) },

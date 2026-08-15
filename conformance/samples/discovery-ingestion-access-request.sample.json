@@ -1,0 +1,41 @@
+{
+  "tenant": {
+    "tenantId": "tenant-a"
+  },
+  "principal": {
+    "principalId": "scanner-1",
+    "displayName": "Atlas Discovery Scanner",
+    "roles": ["Machine"]
+  },
+  "enrollmentId": "disc-1",
+  "capability": {
+    "value": "atlas.discovery.ingestion"
+  },
+  "enrollmentTimeline": {
+    "enrolledAt": "2026-08-15T09:00:00Z",
+    "credentialExpiresAt": "2026-09-14T09:00:00Z",
+    "activatedAt": "2026-08-15T09:05:00Z",
+    "lastRotatedAt": null,
+    "suspendedAt": null,
+    "revokedAt": null
+  },
+  "tenantLifecycleTimeline": {
+    "trialStartedAt": "2026-08-01T10:00:00Z",
+    "trialExpiresAt": "2026-08-30T10:00:00Z",
+    "readOnlyUntil": null,
+    "lockedAt": null,
+    "retentionUntil": null,
+    "purgedAt": null
+  },
+  "entitlement": {
+    "allowed": true,
+    "capability": {
+      "value": "atlas.discovery.ingestion"
+    },
+    "reasonCode": "entitlement_granted",
+    "source": "entitlement:snapshot:2026-08-15T09:00:00.0000000+00:00",
+    "evaluatedAt": "2026-08-15T10:00:00Z",
+    "validUntil": "2026-09-14T09:00:00Z"
+  },
+  "asOf": "2026-08-15T10:00:00Z"
+}
