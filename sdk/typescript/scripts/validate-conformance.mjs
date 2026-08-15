@@ -10,6 +10,7 @@ const schemaDir = path.join(repoRoot, "schemas", "v1");
 const sampleDir = path.join(repoRoot, "conformance", "samples");
 
 const sampleSchemaMap = new Map([
+  ["audit-event.sample.json", "audit-event.schema.json"],
   ["authorization-decision.sample.json", "authorization-decision.schema.json"],
   ["authorization-request.sample.json", "authorization-request.schema.json"],
   ["entitlement-bundle-request.sample.json", "entitlement-bundle-request.schema.json"],

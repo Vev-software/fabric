@@ -210,6 +210,40 @@ export interface TenantLifecycleTransitionResult {
   reasonCode: ReasonCode | string;
   lifecycle: TenantLifecycleStatus;
 }
+
+export type AuditCategory = "Data" | "Admin" | "Security";
+
+export type AuditOutcome = "Success" | "Failure" | "Denied";
+
+/** Redaction-safe projection of the acting principal. Never carries claims, secrets or tokens. */
+export interface AuditActor {
+  principalId: string;
+  displayName?: string | null;
+  roles?: string[];
+}
+
+export interface AuditResource {
+  value: string;
+  type?: string | null;
+}
+
+/** Append-only audit event envelope shared across VEV products (fabric#6). */
+export interface AuditEvent {
+  eventId: string;
+  occurredAt: string;
+  tenant: TenantContext;
+  actor: AuditActor;
+  source: string;
+  action: string;
+  resource: AuditResource;
+  category: AuditCategory;
+  outcome: AuditOutcome;
+  correlationId: string;
+  causationId?: string | null;
+  /** Product-supplied, string-valued context. Must not carry secrets or customer content. */
+  metadata?: Record<string, string> | null;
+}
+
 export const ATLAS_CAPABILITIES = {
   catalogueRead: "atlas.catalogue.read",
   catalogueWrite: "atlas.catalogue.write",

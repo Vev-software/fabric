@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Vev.Fabric.Contracts.Audit;
 using Vev.Fabric.Contracts.Authorization;
 using Vev.Fabric.Contracts.Entitlements;
 using Vev.Fabric.Contracts.Lifecycle;
@@ -14,6 +15,21 @@ public sealed class ConformanceFixtureTests
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
+
+    [Fact]
+    public void Sample_AuditEvent_Deserializes()
+    {
+        var json = File.ReadAllText(Path.Combine(SamplesDirectory, "audit-event.sample.json"));
+        var document = JsonSerializer.Deserialize<AuditEvent>(json, SerializerOptions);
+
+        Assert.NotNull(document);
+        Assert.Equal("atlas.catalogue.write", document!.Action);
+        Assert.Equal(AuditCategory.Data, document.Category);
+        Assert.Equal(AuditOutcome.Success, document.Outcome);
+        Assert.Equal("tenant-a", document.Tenant.TenantId);
+        Assert.Equal("principal-1", document.Actor.PrincipalId);
+        Assert.DoesNotContain("claims", json);
+    }
 
     [Fact]
     public void Sample_SignedSnapshot_Deserializes()

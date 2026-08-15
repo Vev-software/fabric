@@ -1,0 +1,26 @@
+{
+  "eventId": "01J8Z9AUDIT0000000000000001",
+  "occurredAt": "2026-08-15T10:00:00Z",
+  "tenant": {
+    "tenantId": "tenant-a"
+  },
+  "actor": {
+    "principalId": "principal-1",
+    "displayName": "Atlas Architect",
+    "roles": ["AtlasArchitect"]
+  },
+  "source": "atlas",
+  "action": "atlas.catalogue.write",
+  "resource": {
+    "value": "atlas:catalogue/main",
+    "type": "catalogue-entry"
+  },
+  "category": "Data",
+  "outcome": "Success",
+  "correlationId": "req-7f3c2b18",
+  "causationId": "req-7f3c2b18-parent",
+  "metadata": {
+    "changeKind": "update",
+    "clientApp": "atlas-web"
+  }
+}

@@ -58,6 +58,20 @@ The current authorization slice implemented for `fabric#5` includes:
 Products register role requirements while Fabric owns the `IAuthorizer` mechanism, keeping
 authorization separate from entitlement evaluation and external PDP choice.
 
+## Current audit surface
+
+The current audit event slice implemented for `fabric#6` includes:
+
+- .NET audit envelope, redaction guard and append-only reference sink in [`src/Vev.Fabric.Contracts/Audit`](./src/Vev.Fabric.Contracts/Audit)
+- JSON Schema in [`schemas/v1/audit-event.schema.json`](./schemas/v1/audit-event.schema.json)
+- TypeScript SDK mirror in [`sdk/typescript`](./sdk/typescript)
+- conformance sample in [`conformance/samples/audit-event.sample.json`](./conformance/samples/audit-event.sample.json)
+- envelope, redaction and correlation notes in [`docs/audit.md`](./docs/audit.md)
+
+Every product create/edit/delete flows through one append-only envelope. Redaction is baked in
+(the actor drops principal claims, and metadata keys are checked for secrets) and admin/security
+events are immutable, so audit stays consistent exactly where inconsistency would be a security risk.
+
 ## Current lifecycle surface
 
 The current hosted lifecycle slice implemented for `fabric#8` includes:
