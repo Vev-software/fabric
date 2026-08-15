@@ -40,7 +40,8 @@ Current lifecycle policy:
 - `Locked` and `RetentionPeriod` reduce the tenant to export-only.
 - `DataPurged` grants nothing.
 
-The canonical lifecycle contract is tracked separately in `fabric#8`; this document describes the entitlement-side policy input already consumed by bundle translation.
+The canonical lifecycle contract now lives in `docs/lifecycle.md`; this document describes the
+entitlement-side policy input consumed by bundle translation.
 
 ## Public API shapes
 

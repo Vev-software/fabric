@@ -16,6 +16,10 @@ const sampleSchemaMap = new Map([
   ["evaluate-entitlements-request.sample.json", "evaluate-entitlements-request.schema.json"],
   ["import-signed-entitlement-snapshot-request.sample.json", "import-signed-entitlement-snapshot-request.schema.json"],
   ["signed-entitlement-snapshot.sample.json", "signed-entitlement-snapshot.schema.json"],
+  ["tenant-lifecycle-query.sample.json", "tenant-lifecycle-query.schema.json"],
+  ["tenant-lifecycle-status.sample.json", "tenant-lifecycle-status.schema.json"],
+  ["tenant-lifecycle-transition-request.sample.json", "tenant-lifecycle-transition-request.schema.json"],
+  ["tenant-lifecycle-transition-result.sample.json", "tenant-lifecycle-transition-result.schema.json"],
   ["taxonomy-catalog.sample.json", "taxonomy-catalog.schema.json"]
 ]);
 

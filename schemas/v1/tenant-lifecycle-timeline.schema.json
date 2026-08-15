@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/tenant-lifecycle-timeline.schema.json",
+  "title": "TenantLifecycleTimeline",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trialStartedAt", "trialExpiresAt"],
+  "properties": {
+    "trialStartedAt": { "type": "string", "format": "date-time" },
+    "trialExpiresAt": { "type": "string", "format": "date-time" },
+    "readOnlyUntil": { "type": ["string", "null"], "format": "date-time" },
+    "lockedAt": { "type": ["string", "null"], "format": "date-time" },
+    "retentionUntil": { "type": ["string", "null"], "format": "date-time" },
+    "purgedAt": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/tenant-lifecycle-transition-result.schema.json",
+  "title": "TenantLifecycleTransitionResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["accepted", "reasonCode", "lifecycle"],
+  "properties": {
+    "accepted": { "type": "boolean" },
+    "reasonCode": { "type": "string", "minLength": 1 },
+    "lifecycle": { "$ref": "tenant-lifecycle-status.schema.json" }
+  }
+}

@@ -159,6 +159,7 @@ public static class Reasons
         new(ReasonCodes.LifecycleReadOnly, "The tenant is in read-only lifecycle mode.", Deny: true),
         new(ReasonCodes.LifecycleLocked, "The tenant is locked pending purge or upgrade.", Deny: true),
         new(ReasonCodes.LifecycleRetention, "The tenant is inside the retention window.", Deny: true),
-        new(ReasonCodes.LifecyclePurged, "The tenant data has been purged.", Deny: true)
+        new(ReasonCodes.LifecyclePurged, "The tenant data has been purged.", Deny: true),
+        new(ReasonCodes.LifecycleTransitionInvalid, "The requested lifecycle transition is not valid from the current state.", Deny: true)
     ];
 }

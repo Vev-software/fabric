@@ -1,0 +1,14 @@
+{
+  "tenant": "tenant-a",
+  "state": "ReadOnly",
+  "reasonCode": "lifecycle_read_only",
+  "evaluatedAt": "2026-08-15T10:00:00Z",
+  "timeline": {
+    "trialStartedAt": "2026-08-01T10:00:00Z",
+    "trialExpiresAt": "2026-08-15T10:00:00Z",
+    "readOnlyUntil": "2026-08-22T10:00:00Z",
+    "lockedAt": null,
+    "retentionUntil": null,
+    "purgedAt": null
+  }
+}

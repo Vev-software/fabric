@@ -58,6 +58,19 @@ The current authorization slice implemented for `fabric#5` includes:
 Products register role requirements while Fabric owns the `IAuthorizer` mechanism, keeping
 authorization separate from entitlement evaluation and external PDP choice.
 
+## Current lifecycle surface
+
+The current hosted lifecycle slice implemented for `fabric#8` includes:
+
+- .NET lifecycle contracts and state machine in [`src/Vev.Fabric.Contracts/Lifecycle`](./src/Vev.Fabric.Contracts/Lifecycle)
+- JSON Schemas in [`schemas/v1`](./schemas/v1)
+- TypeScript SDK mirror in [`sdk/typescript`](./sdk/typescript)
+- conformance samples in [`conformance/samples`](./conformance/samples)
+- timestamp semantics and runtime notes in [`docs/lifecycle.md`](./docs/lifecycle.md)
+
+This makes trial expiry, read-only, lock, retention and purge states explicit public contracts
+instead of product-local flags or scheduler-specific assumptions.
+
 ## Current entitlement surface
 
 The first implemented Fabric slice is the entitlement contract and local evaluator for `fabric#4`:

@@ -3,6 +3,7 @@ using System.Text.Json.Nodes;
 using Json.Schema;
 using Vev.Fabric.Contracts.Authorization;
 using Vev.Fabric.Contracts.Entitlements;
+using Vev.Fabric.Contracts.Lifecycle;
 using Vev.Fabric.Contracts.Taxonomy;
 
 namespace Vev.Fabric.Contracts.Tests;
@@ -23,6 +24,10 @@ public sealed class SchemaConformanceTests
             { "evaluate-entitlements-request.sample.json", "evaluate-entitlements-request.schema.json", typeof(EvaluateEntitlementsRequest) },
             { "import-signed-entitlement-snapshot-request.sample.json", "import-signed-entitlement-snapshot-request.schema.json", typeof(ImportSignedEntitlementSnapshotRequest) },
             { "signed-entitlement-snapshot.sample.json", "signed-entitlement-snapshot.schema.json", typeof(SignedEntitlementSnapshot) },
+            { "tenant-lifecycle-query.sample.json", "tenant-lifecycle-query.schema.json", typeof(TenantLifecycleQuery) },
+            { "tenant-lifecycle-status.sample.json", "tenant-lifecycle-status.schema.json", typeof(TenantLifecycleStatus) },
+            { "tenant-lifecycle-transition-request.sample.json", "tenant-lifecycle-transition-request.schema.json", typeof(TenantLifecycleTransitionRequest) },
+            { "tenant-lifecycle-transition-result.sample.json", "tenant-lifecycle-transition-result.schema.json", typeof(TenantLifecycleTransitionResult) },
             { "taxonomy-catalog.sample.json", "taxonomy-catalog.schema.json", typeof(TaxonomyCatalogDocument) }
         };
 
