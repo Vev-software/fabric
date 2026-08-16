@@ -165,6 +165,9 @@ public static class Reasons
         new(ReasonCodes.DiscoveryEnrollmentSuspended, "The discovery enrollment is suspended.", Deny: true),
         new(ReasonCodes.DiscoveryEnrollmentRevoked, "The discovery enrollment is revoked.", Deny: true),
         new(ReasonCodes.DiscoveryCredentialExpired, "The discovery credential has expired and must be rotated before use.", Deny: true),
-        new(ReasonCodes.DiscoveryLifecycleTransitionInvalid, "The requested discovery enrollment transition is not valid from the current state.", Deny: true)
+        new(ReasonCodes.DiscoveryLifecycleTransitionInvalid, "The requested discovery enrollment transition is not valid from the current state.", Deny: true),
+        new(ReasonCodes.EntitlementSnapshotRolledBack, "A snapshot older than the highest already seen was rejected (anti-rollback).", Deny: true),
+        new(ReasonCodes.EntitlementClockRegression, "The wall clock moved backwards past the last observed time.", Deny: true),
+        new(ReasonCodes.TrialExpired, "The trial entitlement has expired; trials hard-stop and are not frozen open by an outage.", Deny: true)
     ];
 }

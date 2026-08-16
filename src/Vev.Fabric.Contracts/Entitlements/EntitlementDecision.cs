@@ -53,4 +53,15 @@ public static class ReasonCodes
     public const string DiscoveryEnrollmentRevoked = "discovery_enrollment_revoked";
     public const string DiscoveryCredentialExpired = "discovery_credential_expired";
     public const string DiscoveryLifecycleTransitionInvalid = "discovery_lifecycle_transition_invalid";
+
+    // Offline evaluator hardening (fabric#9, security#1 T3/T4/T7).
+
+    /// <summary>A snapshot older than the highest already seen was presented (anti-rollback).</summary>
+    public const string EntitlementSnapshotRolledBack = "entitlement_snapshot_rolled_back";
+
+    /// <summary>The wall clock moved backwards past the last observed time (anti-clock-manipulation).</summary>
+    public const string EntitlementClockRegression = "entitlement_clock_regression";
+
+    /// <summary>A trial entitlement expired: trials hard-stop and are never frozen open by an outage.</summary>
+    public const string TrialExpired = "trial_expired";
 }

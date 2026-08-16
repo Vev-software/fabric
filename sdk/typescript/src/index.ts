@@ -143,6 +143,8 @@ export interface EntitlementSnapshot {
   expiresAt: string;
   graceUntil: string;
   entitlements: EntitlementGrant[];
+  /** Optional monotonic anti-rollback nonce per tenant+deployment (fabric#9). */
+  counter?: number | null;
 }
 
 export interface SignedEntitlementSnapshot {
@@ -444,7 +446,10 @@ export const DECISION_REASON_CODES = {
   discoveryEnrollmentSuspended: "discovery_enrollment_suspended",
   discoveryEnrollmentRevoked: "discovery_enrollment_revoked",
   discoveryCredentialExpired: "discovery_credential_expired",
-  discoveryLifecycleTransitionInvalid: "discovery_lifecycle_transition_invalid"
+  discoveryLifecycleTransitionInvalid: "discovery_lifecycle_transition_invalid",
+  entitlementSnapshotRolledBack: "entitlement_snapshot_rolled_back",
+  entitlementClockRegression: "entitlement_clock_regression",
+  trialExpired: "trial_expired"
 } as const;
 
 export const DISCOVERY_AUDIT_VOCABULARY = {
