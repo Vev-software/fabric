@@ -2,15 +2,24 @@
 # OIDC Trusted Publishing — no stored API keys. One-time registry setup per package:
 # see the reusable workflow header in Vev-software/.github.
 #
-# NOTE: the nuget job is INLINED here (not delegated to the org reusable workflow)
-# because NuGet Trusted Publishing rejects org-owned policies when the publish runs
-# across a reusable-workflow boundary — the OIDC `job_workflow_ref` then points at
-# Vev-software/.github and the org policy lookup fails with HTTP 401
-# (see https://github.com/NuGet/login/issues/6). Running NuGet/login directly in this
-# repo keeps `job_workflow_ref` = Vev-software/fabric/.github/workflows/publish.yml,
-# which matches a per-repo policy (repo=fabric, workflow=publish.yml, env=release).
-# Revert to the reusable `release-dotnet-npm.yml` nuget job once #6 is fixed. npm is
-# unaffected and stays on the reusable workflow.
+# NOTE: BOTH publish jobs are INLINED here (not delegated to the org reusable
+# workflow) because Trusted Publishing matches the OIDC job/workflow ref, and a
+# reusable-workflow boundary moves that ref to Vev-software/.github — which no
+# per-repo policy matches:
+#   * nuget — NuGet/login rejects org-owned policies across the boundary; the OIDC
+#     `job_workflow_ref` points at Vev-software/.github and the lookup fails with
+#     HTTP 401 (https://github.com/NuGet/login/issues/6).
+#   * npm — same class of failure, observed empirically: publishing @vev-software/
+#     fabric-contracts@0.1.1 through the reusable workflow returned E404 (npm's
+#     "unauthorized" for a scoped package), because the per-repo npm Trusted
+#     Publisher policy is registered as repo=fabric, workflow=publish.yml, which the
+#     reusable ref (Vev-software/.github/publish-dotnet-npm.yml) does not match. The
+#     org reusable workflow's claim that "npm is unaffected" does not hold here.
+# Inlining both keeps `job_workflow_ref` = Vev-software/fabric/.github/workflows/
+# publish.yml, matching the per-repo policies (repo=fabric, workflow=publish.yml,
+# env=release). Revert the nuget job to the reusable workflow once NuGet/login#6 is
+# fixed; keep npm inlined unless the org policy is re-registered against the reusable
+# workflow ref.
 name: publish
 
 on:
@@ -80,16 +89,44 @@ jobs:
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
 
-  # npm stays on the org reusable workflow — unaffected by NuGet/login#6.
+  # Inlined npm publish (see file header for why). Mirrors the reusable workflow's
+  # npm job; keep the two in sync. Inlining keeps the OIDC ref = fabric/publish.yml so
+  # the per-repo npm Trusted Publisher policy matches.
   npm:
     name: publish · npm
-    if: ${{ inputs.publish_npm }}
-    uses: Vev-software/.github/.github/workflows/publish-dotnet-npm.yml@main
+    if: ${{ !github.event.repository.fork && inputs.publish_npm }}
+    runs-on: ubuntu-latest
+    environment: release
     permissions:
       contents: read
-      id-token: write # OIDC Trusted Publishing
-    with:
-      tag: ${{ inputs.tag }}
-      ts_dir: sdk/typescript
-      publish_nuget: false
-      publish_npm: ${{ inputs.publish_npm }}
+      id-token: write # OIDC for npm Trusted Publishing + build provenance
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+
+      # Trusted Publishing (tokenless OIDC) needs a recent npm (>= 11.5.1).
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      # Stamp the npm version from the tag (vX.Y.Z -> X.Y.Z) — same source as .NET.
+      - name: Build
+        working-directory: sdk/typescript
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          npm version "${TAG#v}" --no-git-tag-version --allow-same-version
+          npm install
+          npm run build
+
+      # No NODE_AUTH_TOKEN: OIDC Trusted Publishing supplies the credential and
+      # npm attaches a signed provenance statement automatically.
+      - name: Publish to npm (Trusted Publishing)
+        working-directory: sdk/typescript
+        run: npm publish --access public
