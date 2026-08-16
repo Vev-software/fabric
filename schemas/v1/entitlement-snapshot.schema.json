@@ -5,11 +5,16 @@
   "type": "object",
   "additionalProperties": false,
   "required": ["tenant", "issuedAt", "expiresAt", "graceUntil", "entitlements"],
+  "$comment": "counter is an optional monotonic anti-rollback nonce (fabric#9).",
   "properties": {
     "tenant": { "type": "string", "minLength": 1 },
     "issuedAt": { "type": "string", "format": "date-time" },
     "expiresAt": { "type": "string", "format": "date-time" },
     "graceUntil": { "type": "string", "format": "date-time" },
+    "counter": {
+      "type": ["integer", "null"],
+      "description": "Optional monotonic anti-rollback nonce per tenant+deployment (fabric#9)."
+    },
     "entitlements": {
       "type": "array",
       "items": {
