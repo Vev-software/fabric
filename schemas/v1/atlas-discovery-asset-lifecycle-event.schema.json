@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/atlas-discovery-asset-lifecycle-event.schema.json",
+  "title": "AtlasDiscoveryAssetLifecycleEvent",
+  "description": "Public Fabric-backed event contract for one discovery-driven Atlas catalogue create/update effect. The event carries stable correlation, tenant, scanner enrollment reference and the resulting Atlas asset id without embedding the Atlas domain model itself.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "occurredAt",
+    "tenant",
+    "enrollmentId",
+    "principalId",
+    "source",
+    "eventType",
+    "assetId",
+    "sourceAgentId",
+    "observedId",
+    "correlationId",
+    "capability"
+  ],
+  "properties": {
+    "eventId": { "type": "string", "minLength": 1 },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "tenant": { "$ref": "tenant-context.schema.json" },
+    "enrollmentId": { "type": "string", "minLength": 1 },
+    "principalId": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1 },
+    "eventType": {
+      "type": "string",
+      "enum": [
+        "eu.vev.atlas.server.created.v1",
+        "eu.vev.atlas.server.updated.v1",
+        "eu.vev.atlas.application.created.v1",
+        "eu.vev.atlas.application.updated.v1"
+      ]
+    },
+    "assetId": { "type": "string", "minLength": 1 },
+    "sourceAgentId": { "type": "string", "minLength": 1 },
+    "observedId": { "type": "string", "minLength": 1 },
+    "correlationId": { "type": "string", "minLength": 1 },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "string", "const": "atlas.discovery.ingestion" }
+      }
+    },
+    "metadata": {
+      "type": ["object", "null"],
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

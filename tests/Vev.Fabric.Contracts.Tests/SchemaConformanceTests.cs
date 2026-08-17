@@ -21,6 +21,7 @@ public sealed class SchemaConformanceTests
         new()
         {
             { "audit-event.sample.json", "audit-event.schema.json", typeof(AuditEvent) },
+            { "atlas-discovery-asset-lifecycle-event.sample.json", "atlas-discovery-asset-lifecycle-event.schema.json", typeof(AtlasDiscoveryAssetLifecycleEvent) },
             { "authorization-decision.sample.json", "authorization-decision.schema.json", typeof(AuthorizationDecision) },
             { "authorization-request.sample.json", "authorization-request.schema.json", typeof(AuthorizationRequest) },
             { "discovery-ingestion-access-request.sample.json", "discovery-ingestion-access-request.schema.json", typeof(DiscoveryIngestionAccessRequest) },

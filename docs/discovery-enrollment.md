@@ -10,6 +10,7 @@ Fabric owns:
 - tenant-bound machine enrollment for Atlas discovery scanners
 - credential activation, rotation, suspension and revocation lifecycle
 - lifecycle events around enrollment and denied ingestion attempts
+- the public event contract for discovery-driven Atlas asset create/update effects
 - the shared discovery audit vocabulary emitted through the Fabric audit envelope
 
 Fabric does **not** own scanner observation payloads, reconciliation logic, or Atlas catalogue
@@ -59,6 +60,22 @@ The public `DiscoveryLifecycleEvent` contract records:
 
 These events are for orchestration, status stitching and operational timelines. Durable audit still
 flows through the Fabric `AuditEvent` envelope.
+
+## Atlas discovery asset lifecycle events
+
+Discovery-driven catalogue writes are a separate public event surface from enrollment lifecycle.
+When Atlas discovery apply creates or updates one supported Atlas asset, Atlas may emit one
+`AtlasDiscoveryAssetLifecycleEvent` using the shared names in `AtlasDiscoveryEventVocabulary`.
+
+The current public event names are:
+
+- `eu.vev.atlas.server.created.v1`
+- `eu.vev.atlas.server.updated.v1`
+- `eu.vev.atlas.application.created.v1`
+- `eu.vev.atlas.application.updated.v1`
+
+These events carry tenant, enrollment, principal, source-agent and observed-id references without
+embedding the Atlas asset document itself. Detailed notes live in `docs/atlas-discovery-events.md`.
 
 ## Canonical access decision
 
