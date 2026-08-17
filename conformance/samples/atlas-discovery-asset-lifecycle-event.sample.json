@@ -1,0 +1,22 @@
+{
+  "eventId": "atlas-disc-evt-1",
+  "occurredAt": "2026-08-17T10:00:00Z",
+  "tenant": {
+    "tenantId": "tenant-a"
+  },
+  "enrollmentId": "disc-1",
+  "principalId": "scanner-1",
+  "source": "atlas.enterprise.discovery",
+  "eventType": "eu.vev.atlas.server.created.v1",
+  "assetId": "srv-payments-01",
+  "sourceAgentId": "scanner-a",
+  "observedId": "host:payments-01",
+  "correlationId": "req-1",
+  "capability": {
+    "value": "atlas.discovery.ingestion"
+  },
+  "metadata": {
+    "assetKind": "server",
+    "change": "created"
+  }
+}

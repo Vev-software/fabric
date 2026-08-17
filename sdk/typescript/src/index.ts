@@ -293,6 +293,28 @@ export interface DiscoveryLifecycleEvent {
   metadata?: Record<string, string> | null;
 }
 
+export type AtlasDiscoveryAssetLifecycleEventType =
+  | "eu.vev.atlas.server.created.v1"
+  | "eu.vev.atlas.server.updated.v1"
+  | "eu.vev.atlas.application.created.v1"
+  | "eu.vev.atlas.application.updated.v1";
+
+export interface AtlasDiscoveryAssetLifecycleEvent {
+  eventId: string;
+  occurredAt: string;
+  tenant: TenantContext;
+  enrollmentId: string;
+  principalId: string;
+  source: string;
+  eventType: AtlasDiscoveryAssetLifecycleEventType;
+  assetId: string;
+  sourceAgentId: string;
+  observedId: string;
+  correlationId: string;
+  capability: CapabilityId;
+  metadata?: Record<string, string> | null;
+}
+
 export interface DiscoveryIngestionAccessRequest {
   tenant: TenantContext;
   principal: PrincipalContext;
@@ -460,4 +482,11 @@ export const DISCOVERY_AUDIT_VOCABULARY = {
   enrollmentRevokeAction: "fabric.discovery.enrollment.revoke",
   ingestionAcceptAction: "atlas.discovery.ingestion.accept",
   ingestionDenyAction: "atlas.discovery.ingestion.deny"
+} as const;
+
+export const ATLAS_DISCOVERY_EVENT_TYPES = {
+  serverCreated: "eu.vev.atlas.server.created.v1",
+  serverUpdated: "eu.vev.atlas.server.updated.v1",
+  applicationCreated: "eu.vev.atlas.application.created.v1",
+  applicationUpdated: "eu.vev.atlas.application.updated.v1"
 } as const;
