@@ -1,7 +1,7 @@
-# Cuts a signed release when a version tag is pushed. Thin caller of the org's
-# reusable workflow — do not copy the release logic in here (handbook 18 §8).
-# The git tag is the single source of truth (18 §1.1).
-name: release
+# Auto-fires when the `release` workflow (publish.yml) pushes a vX.Y.Z tag. Creates the signed
+# GitHub Release + provenance attestations via the org's reusable workflow. Registry publishing
+# lives in publish.yml. Renamed to `github release` so it is distinct from the `release` button.
+name: github release
 
 on:
   push:
