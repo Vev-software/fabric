@@ -1,62 +1,122 @@
-# Publishes the SDK packages to the public registries for a released tag.
-# OIDC Trusted Publishing — no stored API keys. One-time registry setup per package:
-# see the reusable workflow header in Vev-software/.github.
+# One-button release: pick a version bump, we validate main, then you click Approve to publish.
 #
-# NOTE: BOTH publish jobs are INLINED here (not delegated to the org reusable
-# workflow) because Trusted Publishing matches the OIDC job/workflow ref, and a
-# reusable-workflow boundary moves that ref to Vev-software/.github — which no
-# per-repo policy matches:
-#   * nuget — NuGet/login rejects org-owned policies across the boundary; the OIDC
-#     `job_workflow_ref` points at Vev-software/.github and the lookup fails with
-#     HTTP 401 (https://github.com/NuGet/login/issues/6).
-#   * npm — same class of failure, observed empirically: publishing @vev-software/
-#     fabric-contracts@0.1.1 through the reusable workflow returned E404 (npm's
-#     "unauthorized" for a scoped package), because the per-repo npm Trusted
-#     Publisher policy is registered as repo=fabric, workflow=publish.yml, which the
-#     reusable ref (Vev-software/.github/publish-dotnet-npm.yml) does not match. The
-#     org reusable workflow's claim that "npm is unaffected" does not hold here.
-# Inlining both keeps `job_workflow_ref` = Vev-software/fabric/.github/workflows/
-# publish.yml, matching the per-repo policies (repo=fabric, workflow=publish.yml,
-# env=release). Revert the nuget job to the reusable workflow once NuGet/login#6 is
-# fixed; keep npm inlined unless the org policy is re-registered against the reusable
-# workflow ref.
-name: publish
+# Flow (Actions -> release -> Run workflow -> choose bump -> Run):
+#   1. verify  (no gate)  — refuse unless on main; require the latest `ci` run for main's HEAD
+#                            to be green; compute the next version from the last tag + bump.
+#   2. release (environment: release, Required Reviewers) — pauses for your Approve click, then
+#      build+test again, push the tag `vX.Y.Z` (which fires release.yml -> GitHub Release), and
+#      publish to nuget.org + npm via OIDC Trusted Publishing.
+#
+# WHY THIS FILE STAYS NAMED publish.yml: the nuget AND npm Trusted Publisher policies pin
+# `workflow=publish.yml`. OIDC token exchange matches on the workflow_ref filename, so renaming
+# this file (or moving the publish steps into a differently-named workflow) breaks both. Keep the
+# filename; the display `name:` below is just the button label.
+#
+# WHY nuget + npm are INLINED in one job: NuGet Trusted Publishing rejects org-owned policies
+# across a reusable-workflow boundary (job_workflow_ref points at Vev-software/.github, HTTP 401,
+# https://github.com/NuGet/login/issues/6), so nuget must run in this repo. npm validates the
+# top-level workflow_ref (= publish.yml here) so inlining is fine for it too — and keeping both in
+# ONE gated job means a single Approve click covers the whole release. `NUGET_USER` is the nuget
+# policy CREATOR's personal username (repo variable).
+name: release
 
 on:
   workflow_dispatch:
     inputs:
-      tag:
-        description: "Released tag to publish (e.g. v0.1.0). Must already exist (cut by release.yml)."
-        type: string
-        required: true
-      publish_nuget:
-        description: "Publish Vev.Fabric.Contracts to nuget.org"
+      bump:
+        description: "Version bump from the latest tag"
+        type: choice
+        options: [patch, minor, major]
+        default: patch
+      dry_run:
+        description: "Validate + build + pack, but do NOT tag or publish"
         type: boolean
-        default: true
-      publish_npm:
-        description: "Publish @vev-software/fabric-contracts to npm"
-        type: boolean
-        default: true
+        default: false
 
 permissions:
   contents: read
 
 jobs:
-  # Inlined nuget publish (see file header for why). Mirrors the reusable workflow's
-  # nuget job; keep the two in sync.
-  nuget:
-    name: publish · nuget.org
-    if: ${{ !github.event.repository.fork && inputs.publish_nuget }}
+  # Gate 1 — validate the state of main. No publishing here, no approval needed.
+  verify:
+    name: verify main + compute version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read # read ci.yml run conclusions
+    outputs:
+      version: ${{ steps.plan.outputs.version }}
+      tag: ${{ steps.plan.outputs.tag }}
+      sha: ${{ steps.plan.outputs.sha }}
+    steps:
+      - name: Refuse unless dispatched from main
+        run: |
+          if [ "${{ github.ref }}" != "refs/heads/main" ]; then
+            echo "::error::Run this from the default branch (main); got ${{ github.ref }}."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Require the latest CI run for this commit to be green
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHA="$(git rev-parse HEAD)"
+          echo "main HEAD = $SHA"
+          CONCLUSION="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow ci.yml --branch main \
+            --limit 40 --json headSha,status,conclusion \
+            --jq "[.[] | select(.headSha==\"$SHA\")][0] | \"\(.status):\(.conclusion)\"")"
+          echo "ci for $SHA -> ${CONCLUSION:-none}"
+          if [ "$CONCLUSION" != "completed:success" ]; then
+            echo "::error::CI has not completed successfully for main@$SHA (state: ${CONCLUSION:-none}). Wait for CI to go green, then re-run."
+            exit 1
+          fi
+
+      - name: Compute next version
+        id: plan
+        run: |
+          git fetch --tags --force --quiet
+          LATEST="$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n1)"
+          LATEST="${LATEST:-v0.0.0}"; LATEST="${LATEST#v}"
+          IFS=. read -r MA MI PA <<< "$LATEST"
+          case "${{ inputs.bump }}" in
+            patch) PA=$((PA+1));;
+            minor) MI=$((MI+1)); PA=0;;
+            major) MA=$((MA+1)); MI=0; PA=0;;
+          esac
+          VERSION="$MA.$MI.$PA"; TAG="v$VERSION"
+          if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "::error::Tag $TAG already exists."; exit 1
+          fi
+          echo "Next: $LATEST -> $VERSION (${{ inputs.bump }})"
+          {
+            echo "version=$VERSION"
+            echo "tag=$TAG"
+            echo "sha=$(git rev-parse HEAD)"
+          } >> "$GITHUB_OUTPUT"
+
+  # Gate 2 — the "Publish" button. Requires approval via the `release` environment
+  # (enable Required Reviewers on it). One approval covers the whole release.
+  release:
+    name: publish ${{ needs.verify.outputs.tag }} to nuget + npm
+    needs: verify
+    if: ${{ !github.event.repository.fork }}
     runs-on: ubuntu-latest
     environment: release
     permissions:
-      contents: read
-      id-token: write # OIDC for NuGet Trusted Publishing — no API key
+      contents: write # push the version tag
+      id-token: write # OIDC for nuget + npm Trusted Publishing — no stored keys
+    env:
+      VERSION: ${{ needs.verify.outputs.version }}
+      TAG: ${{ needs.verify.outputs.tag }}
     steps:
-      # Check out the released tag with full history so MinVer derives that version.
       - uses: actions/checkout@v7
         with:
-          ref: ${{ inputs.tag }}
+          ref: ${{ needs.verify.outputs.sha }}
           fetch-depth: 0
 
       - name: Setup .NET (pinned by global.json)
@@ -64,69 +124,62 @@ jobs:
         with:
           global-json-file: global.json
 
-      - name: Build + test (public feeds only)
-        run: |
-          dotnet restore Vev.Fabric.slnx
-          dotnet build Vev.Fabric.slnx -c Release --no-restore
-          dotnet test Vev.Fabric.slnx -c Release --no-build
-
-      # No --no-build: MinVer stamps the version (from the checked-out tag) during pack.
-      - name: Pack
-        run: dotnet pack src/Vev.Fabric.Contracts/Vev.Fabric.Contracts.csproj -c Release -o artifacts
-
-      # Exchange the GitHub OIDC token for a short-lived nuget.org API key. Needs a
-      # trusted-publishing policy on nuget.org and the repo variable NUGET_USER.
-      - name: NuGet login (Trusted Publishing)
-        id: nuget-login
-        uses: NuGet/login@v1
-        with:
-          user: ${{ vars.NUGET_USER }}
-
-      - name: Push to nuget.org
-        run: |
-          dotnet nuget push "artifacts/*.nupkg" \
-            --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" \
-            --source https://api.nuget.org/v3/index.json \
-            --skip-duplicate
-
-  # Inlined npm publish (see file header for why). Mirrors the reusable workflow's
-  # npm job; keep the two in sync. Inlining keeps the OIDC ref = fabric/publish.yml so
-  # the per-repo npm Trusted Publisher policy matches.
-  npm:
-    name: publish · npm
-    if: ${{ !github.event.repository.fork && inputs.publish_npm }}
-    runs-on: ubuntu-latest
-    environment: release
-    permissions:
-      contents: read
-      id-token: write # OIDC for npm Trusted Publishing + build provenance
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ inputs.tag }}
-
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
 
-      # Trusted Publishing (tokenless OIDC) needs a recent npm (>= 11.5.1).
-      - name: Update npm
-        run: npm install -g npm@latest
-
-      # Stamp the npm version from the tag (vX.Y.Z -> X.Y.Z) — same source as .NET.
-      - name: Build
-        working-directory: sdk/typescript
-        env:
-          TAG: ${{ inputs.tag }}
+      # Re-run the suite on the exact commit before we tag anything.
+      - name: Build + test (public feeds only)
         run: |
-          npm version "${TAG#v}" --no-git-tag-version --allow-same-version
+          dotnet restore Vev.Fabric.slnx
+          dotnet build Vev.Fabric.slnx -c Release --no-restore
+          dotnet test Vev.Fabric.slnx -c Release --no-build
+
+      # Create the tag only after tests pass. Pushing it fires release.yml -> GitHub Release,
+      # and MinVer / npm derive the version from it below. Skipped on dry-run.
+      - name: Tag ${{ env.TAG }}
+        if: ${{ !inputs.dry_run }}
+        run: |
+          git fetch --tags --force --quiet
+          # Idempotent so "Re-run failed jobs" works if a later publish step failed.
+          if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "Tag $TAG already exists — skipping create."
+          else
+            git tag "$TAG" "${{ needs.verify.outputs.sha }}"
+            git push origin "$TAG"
+          fi
+
+      - name: Pack (nuget)
+        run: dotnet pack src/Vev.Fabric.Contracts/Vev.Fabric.Contracts.csproj -c Release -o artifacts -p:MinVerVersionOverride=${{ env.VERSION }}
+
+      - name: NuGet login (Trusted Publishing)
+        if: ${{ !inputs.dry_run }}
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USER }}
+
+      - name: Push to nuget.org
+        if: ${{ !inputs.dry_run }}
+        run: |
+          dotnet nuget push "artifacts/*.nupkg" \
+            --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+      # npm Trusted Publishing (OIDC): no NODE_AUTH_TOKEN — npm mints the credential and attaches
+      # a signed provenance statement automatically.
+      - name: Publish to npm
+        working-directory: sdk/typescript
+        run: |
+          npm install -g npm@latest
+          npm version "$VERSION" --no-git-tag-version --allow-same-version
           npm install
           npm run build
-
-      # No NODE_AUTH_TOKEN: OIDC Trusted Publishing supplies the credential and
-      # npm attaches a signed provenance statement automatically.
-      - name: Publish to npm (Trusted Publishing)
-        working-directory: sdk/typescript
-        run: npm publish --access public
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            npm publish --access public --dry-run
+          else
+            npm publish --access public
+          fi
