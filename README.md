@@ -58,6 +58,20 @@ The current authorization slice implemented for `fabric#5` includes:
 Products register role requirements while Fabric owns the `IAuthorizer` mechanism, keeping
 authorization separate from entitlement evaluation and external PDP choice.
 
+## Current service-identity surface
+
+Machine-to-machine identity for service callers — one product backend calling a sibling
+product's API on a tenant's behalf:
+
+- .NET contract, issuer and validator in [`src/Vev.Fabric.Contracts/Identity`](./src/Vev.Fabric.Contracts/Identity) (`ServiceIdentity`, `ServiceAssertionIssuer`, `ServiceAssertionValidator`)
+- design/runtime notes in [`docs/service-identity.md`](./docs/service-identity.md)
+
+A short-lived, asymmetrically-signed (ES256) assertion the caller mints and the callee
+verifies with only the caller's public key — replacing long-lived shared service secrets, and
+scoping each call to a single tenant. .NET-only for now (a server-side crypto helper, not a
+JSON wire document), so no JSON Schema / TypeScript mirror; the wire form is a standard compact
+JWS in the `X-Fabric-Service-Assertion` header.
+
 ## Current audit surface
 
 The current audit event slice implemented for `fabric#6` includes:
