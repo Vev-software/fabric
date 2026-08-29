@@ -24,6 +24,25 @@ public sealed class EntitlementBundleResolverTests
         Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.catalogue.read");
         Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.catalogue.write");
         Assert.DoesNotContain(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.analysis.eol");
+        // Data-layer introspection is a paid Starter+ capability; the free community offer never grants it.
+        Assert.DoesNotContain(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.data.introspection");
+    }
+
+    [Fact]
+    public void Resolve_HostedStarter_GrantsDataIntrospection()
+    {
+        var resolver = new EntitlementBundleResolver();
+
+        var result = resolver.Resolve(new EntitlementBundleRequest(
+            "tenant-a",
+            EntitlementOffer.HostedStarter,
+            EntitlementLifecycleState.Active,
+            IssuedAt,
+            ExpiresAt,
+            GraceUntil));
+
+        // Schema introspection unlocks from the Starter tier up (a paid data-layer capability).
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.data.introspection");
     }
 
     [Fact]

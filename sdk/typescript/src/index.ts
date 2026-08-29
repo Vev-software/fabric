@@ -426,6 +426,7 @@ export const ATLAS_CAPABILITIES = {
   analysisRoadmap: "atlas.analysis.roadmap",
   aiReview: "atlas.ai.review",
   discoveryIngestion: "atlas.discovery.ingestion",
+  dataIntrospection: "atlas.data.introspection",
   portalReadonly: "atlas.portal.readonly",
   exportPortableBundle: "atlas.export.portable-bundle",
   exportArchiMate: "atlas.export.archimate"

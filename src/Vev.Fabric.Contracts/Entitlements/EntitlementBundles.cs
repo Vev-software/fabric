@@ -84,6 +84,11 @@ public sealed class EntitlementBundleResolver
     private static readonly EntitlementGrant DiscoveryIngestion =
         new(AtlasTaxonomy.DiscoveryIngestion.Value, "bundle");
 
+    // Database schema introspection into the data catalogue: a paid data-layer capability that unlocks
+    // from the Starter tier up (discovery as a calibrated Starter hook).
+    private static readonly EntitlementGrant DataIntrospection =
+        new(AtlasTaxonomy.DataIntrospection.Value, "bundle");
+
     private static readonly EntitlementGrant PortalReadOnly =
         new(AtlasTaxonomy.PortalReadonly.Value, "bundle");
 
@@ -146,6 +151,7 @@ public sealed class EntitlementBundleResolver
                 Roadmap,
                 AiReview,
                 DiscoveryIngestion,
+                DataIntrospection,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 10000m, AtlasTaxonomy.Users.Value, 50m, AtlasTaxonomy.Workspaces.Value, 5m, AtlasTaxonomy.ImportJobs.Value, 20m)
             ],
 
@@ -155,6 +161,7 @@ public sealed class EntitlementBundleResolver
                 CatalogueWrite,
                 ExportPortableBundle,
                 PortalReadOnly,
+                DataIntrospection,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 2000m, AtlasTaxonomy.Users.Value, 10m, AtlasTaxonomy.Workspaces.Value, 1m, AtlasTaxonomy.ImportJobs.Value, 5m)
             ],
 
@@ -169,6 +176,7 @@ public sealed class EntitlementBundleResolver
                 ApplicationPortfolio,
                 Roadmap,
                 AiReview,
+                DataIntrospection,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 50000m, AtlasTaxonomy.Users.Value, 100m, AtlasTaxonomy.Workspaces.Value, 10m, AtlasTaxonomy.ImportJobs.Value, 100m)
             ],
 
@@ -184,6 +192,7 @@ public sealed class EntitlementBundleResolver
                 Roadmap,
                 AiReview,
                 DiscoveryIngestion,
+                DataIntrospection,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 250000m, AtlasTaxonomy.Users.Value, 1000m, AtlasTaxonomy.Workspaces.Value, 100m, AtlasTaxonomy.ImportJobs.Value, 1000m)
             ],
 
