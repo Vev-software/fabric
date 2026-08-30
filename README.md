@@ -58,6 +58,17 @@ The current authorization slice implemented for `fabric#5` includes:
 Products register role requirements while Fabric owns the `IAuthorizer` mechanism, keeping
 authorization separate from entitlement evaluation and external PDP choice.
 
+## Current AI surface
+
+The provider-neutral AI slice implemented for `fabric#42` includes:
+
+- .NET contracts and fail-closed reference implementation in [`src/Vev.Fabric.Contracts/Ai`](./src/Vev.Fabric.Contracts/Ai)
+- JSON Schemas and conformance samples in [`schemas/v1`](./schemas/v1) and [`conformance/samples`](./conformance/samples)
+- policy, metering and product-boundary notes in [`docs/ai.md`](./docs/ai.md)
+
+Portic and other provider adapters implement `IAiAssistService`; Fabric owns neither provider SDKs
+nor product mutation authority.
+
 ## Current service-identity surface
 
 Machine-to-machine identity for service callers — one product backend calling a sibling

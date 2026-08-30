@@ -64,4 +64,6 @@ public static class ReasonCodes
 
     /// <summary>A trial entitlement expired: trials hard-stop and are never frozen open by an outage.</summary>
     public const string TrialExpired = "trial_expired";
+    public const string AiPolicyRequired = "ai_policy_required";
+    public const string AiProviderUnavailable = "ai_provider_unavailable";
 }

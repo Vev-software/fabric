@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Json.Schema;
 using Vev.Fabric.Contracts.Audit;
+using Vev.Fabric.Contracts.Ai;
 using Vev.Fabric.Contracts.Discovery;
 using Vev.Fabric.Contracts.Authorization;
 using Vev.Fabric.Contracts.Entitlements;
@@ -21,6 +22,8 @@ public sealed class SchemaConformanceTests
         new()
         {
             { "audit-event.sample.json", "audit-event.schema.json", typeof(AuditEvent) },
+            { "ai-assist-request.sample.json", "ai-assist-request.schema.json", typeof(AiAssistRequest) },
+            { "ai-assist-result.sample.json", "ai-assist-result.schema.json", typeof(AiAssistResult) },
             { "atlas-discovery-asset-lifecycle-event.sample.json", "atlas-discovery-asset-lifecycle-event.schema.json", typeof(AtlasDiscoveryAssetLifecycleEvent) },
             { "authorization-decision.sample.json", "authorization-decision.schema.json", typeof(AuthorizationDecision) },
             { "authorization-request.sample.json", "authorization-request.schema.json", typeof(AuthorizationRequest) },

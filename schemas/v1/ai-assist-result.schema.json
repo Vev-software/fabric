@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/ai-assist-result.schema.json",
+  "title": "AiAssistResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["outcome", "reasonCode", "policy"],
+  "properties": {
+    "outcome": { "enum": ["Completed", "Denied", "Unavailable", "Failed"] },
+    "reasonCode": { "type": "string", "minLength": 1 },
+    "policy": { "type": "object", "additionalProperties": false, "required": ["noTraining", "dataResidency", "redactionApplied", "promptInjectionHandling"], "properties": { "noTraining": { "type": "boolean" }, "dataResidency": { "enum": ["EuropeanEconomicArea"] }, "redactionApplied": { "type": "boolean" }, "promptInjectionHandling": { "enum": ["Required"] } } },
+    "output": { "type": ["string", "null"] },
+    "provider": { "type": ["string", "null"] },
+    "usage": { "type": ["object", "null"], "additionalProperties": false, "required": ["usageId", "inputUnits", "outputUnits", "meteredAt"], "properties": { "usageId": { "type": "string", "minLength": 1 }, "inputUnits": { "type": "number", "minimum": 0 }, "outputUnits": { "type": "number", "minimum": 0 }, "meteredAt": { "type": "string", "format": "date-time" } } }
+  }
+}

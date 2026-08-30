@@ -1,0 +1,10 @@
+{
+  "tenant": { "tenantId": "tenant-a" },
+  "principal": { "principalId": "architect-1", "displayName": "Atlas Architect", "roles": ["AtlasArchitect"] },
+  "capability": { "value": "atlas.ai.review" },
+  "purpose": "draft-target-version",
+  "input": "Redacted, grounded architectural context.",
+  "policy": { "noTraining": true, "requiredDataResidency": "EuropeanEconomicArea", "redactionRequired": true, "promptInjectionHandling": "Required" },
+  "correlationId": "corr-ai-1",
+  "grounding": { "sourceCount": "3" }
+}
