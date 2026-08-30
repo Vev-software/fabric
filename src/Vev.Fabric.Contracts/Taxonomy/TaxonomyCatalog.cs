@@ -85,6 +85,7 @@ public static class Capabilities
         new(AtlasTaxonomy.AiReview.Value, TaxonomyKind.Feature, "AI-assisted architecture review.", Reserved: true),
         new(AtlasTaxonomy.DiscoveryIngestion.Value, TaxonomyKind.Feature, "Discovery ingestion into Atlas.", Reserved: true),
         new(AtlasTaxonomy.DataIntrospection.Value, TaxonomyKind.Feature, "Database schema introspection into the Atlas data catalogue.", Reserved: true),
+        new(AtlasTaxonomy.DataQuality.Value, TaxonomyKind.Feature, "Data-quality, provenance and classification profiling over the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.PortalReadonly.Value, TaxonomyKind.Feature, "Read-only Atlas portal surface."),
 
         // Fabric and module system anchors
@@ -119,6 +120,7 @@ public static class AtlasTaxonomy
     public static readonly CapabilityId AiReview = new("atlas.ai.review");
     public static readonly CapabilityId DiscoveryIngestion = new("atlas.discovery.ingestion");
     public static readonly CapabilityId DataIntrospection = new("atlas.data.introspection");
+    public static readonly CapabilityId DataQuality = new("atlas.data.quality");
     public static readonly CapabilityId PortalReadonly = new("atlas.portal.readonly");
     public static readonly CapabilityId ExportPortableBundle = new("atlas.export.portable-bundle");
     public static readonly CapabilityId ExportArchiMate = new("atlas.export.archimate");
