@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/ai-assist-request.schema.json",
+  "title": "AiAssistRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tenant", "principal", "capability", "purpose", "input", "policy", "correlationId"],
+  "properties": {
+    "tenant": { "type": "object", "additionalProperties": false, "required": ["tenantId"], "properties": { "tenantId": { "type": "string", "minLength": 1 } } },
+    "principal": { "type": "object", "additionalProperties": false, "required": ["principalId", "roles"], "properties": { "principalId": { "type": "string", "minLength": 1 }, "displayName": { "type": ["string", "null"] }, "roles": { "type": "array", "items": { "type": "string" } }, "claims": { "type": "object", "additionalProperties": { "type": "string" } } } },
+    "capability": { "type": "object", "additionalProperties": false, "required": ["value"], "properties": { "value": { "type": "string", "minLength": 1 } } },
+    "purpose": { "type": "string", "minLength": 1 },
+    "input": { "type": "string", "minLength": 1 },
+    "policy": { "type": "object", "additionalProperties": false, "required": ["noTraining", "requiredDataResidency", "redactionRequired", "promptInjectionHandling"], "properties": { "noTraining": { "const": true }, "requiredDataResidency": { "const": "EuropeanEconomicArea" }, "redactionRequired": { "const": true }, "promptInjectionHandling": { "const": "Required" } } },
+    "correlationId": { "type": "string", "minLength": 1 },
+    "grounding": { "type": ["object", "null"], "additionalProperties": { "type": "string" } }
+  }
+}

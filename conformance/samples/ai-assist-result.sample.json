@@ -1,0 +1,8 @@
+{
+  "outcome": "Completed",
+  "reasonCode": "allow",
+  "policy": { "noTraining": true, "dataResidency": "EuropeanEconomicArea", "redactionApplied": true, "promptInjectionHandling": "Required" },
+  "output": "Advisory draft proposal.",
+  "provider": "portic",
+  "usage": { "usageId": "usage-ai-1", "inputUnits": 120, "outputUnits": 80, "meteredAt": "2026-08-30T12:00:00Z" }
+}

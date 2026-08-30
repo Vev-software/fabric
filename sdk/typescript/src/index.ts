@@ -14,6 +14,8 @@ export type ReasonCode =
   | "lifecycle_locked"
   | "lifecycle_retention"
   | "lifecycle_purged"
+  | "ai_policy_required"
+  | "ai_provider_unavailable"
   | "lifecycle_transition_invalid";
 
 export type EntitlementOffer =
@@ -342,6 +344,53 @@ export type AuditCategory = "Data" | "Admin" | "Security";
 
 export type AuditOutcome = "Success" | "Failure" | "Denied";
 
+export type AiDataResidency = "EuropeanEconomicArea";
+export type AiPromptInjectionHandling = "Required";
+export type AiAssistOutcome = "Completed" | "Denied" | "Unavailable" | "Failed";
+
+/** Mandatory provider-routing safeguards for every Fabric AI request. */
+export interface AiSafetyPolicy {
+  noTraining: true;
+  requiredDataResidency: AiDataResidency;
+  redactionRequired: true;
+  promptInjectionHandling: AiPromptInjectionHandling;
+}
+
+/** Provider-neutral advisory request; product state is never mutated by this contract. */
+export interface AiAssistRequest {
+  tenant: TenantContext;
+  principal: PrincipalContext;
+  capability: CapabilityId;
+  purpose: string;
+  input: string;
+  policy: AiSafetyPolicy;
+  correlationId: string;
+  grounding?: Record<string, string> | null;
+}
+
+export interface AiUsage {
+  usageId: string;
+  inputUnits: number;
+  outputUnits: number;
+  meteredAt: string;
+}
+
+export interface AiPolicyAttestation {
+  noTraining: boolean;
+  dataResidency: AiDataResidency;
+  redactionApplied: boolean;
+  promptInjectionHandling: AiPromptInjectionHandling;
+}
+
+export interface AiAssistResult {
+  outcome: AiAssistOutcome;
+  reasonCode: ReasonCode | string;
+  policy: AiPolicyAttestation;
+  output?: string | null;
+  provider?: string | null;
+  usage?: AiUsage | null;
+}
+
 /** Redaction-safe projection of the acting principal. Never carries claims, secrets or tokens. */
 export interface AuditActor {
   principalId: string;
@@ -473,7 +522,9 @@ export const DECISION_REASON_CODES = {
   discoveryLifecycleTransitionInvalid: "discovery_lifecycle_transition_invalid",
   entitlementSnapshotRolledBack: "entitlement_snapshot_rolled_back",
   entitlementClockRegression: "entitlement_clock_regression",
-  trialExpired: "trial_expired"
+  trialExpired: "trial_expired",
+  aiPolicyRequired: "ai_policy_required",
+  aiProviderUnavailable: "ai_provider_unavailable"
 } as const;
 
 export const DISCOVERY_AUDIT_VOCABULARY = {
