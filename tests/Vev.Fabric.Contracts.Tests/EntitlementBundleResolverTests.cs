@@ -1,4 +1,5 @@
 using Vev.Fabric.Contracts.Entitlements;
+using Vev.Fabric.Contracts.Taxonomy;
 
 namespace Vev.Fabric.Contracts.Tests;
 
@@ -61,6 +62,20 @@ public sealed class EntitlementBundleResolverTests
 
         // Data-quality profiling unlocks from the Starter tier up, alongside schema introspection.
         Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.data.quality");
+    }
+
+    [Theory]
+    [InlineData(EntitlementOffer.HostedTrial)]
+    [InlineData(EntitlementOffer.HostedStarter)]
+    [InlineData(EntitlementOffer.Pro)]
+    [InlineData(EntitlementOffer.Enterprise)]
+    [InlineData(EntitlementOffer.SelfHostedEnterprise)]
+    public void Resolve_Starter_and_higher_grants_ArchiMate_export(EntitlementOffer offer)
+    {
+        var resolution = new EntitlementBundleResolver().Resolve(new EntitlementBundleRequest(
+            "tenant-a", offer, EntitlementLifecycleState.Active, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddDays(30), DateTimeOffset.UtcNow.AddDays(37)));
+
+        Assert.Contains(resolution.Snapshot.Entitlements, grant => grant.Capability == AtlasTaxonomy.ExportArchiMate.Value);
     }
 
     [Fact]
