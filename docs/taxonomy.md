@@ -54,6 +54,10 @@ Current Atlas limit keys:
 
 Reserved paid Atlas capabilities are marked as reserved in the catalog so downstream module or entitlement work can treat them explicitly as commercial seams.
 
+`atlas.export.archimate` resolves from Hosted Trial and every Starter-or-higher offer. Lifecycle
+restriction still removes it in read-only and export-only states, so the normal portability escape
+hatch remains the portable bundle rather than an EA export surface.
+
 ## Shared decision reasons
 
 The current shared reason-code catalog covers:

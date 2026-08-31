@@ -94,6 +94,9 @@ public sealed class EntitlementBundleResolver
     private static readonly EntitlementGrant DataQuality =
         new(AtlasTaxonomy.DataQuality.Value, "bundle");
 
+    private static readonly EntitlementGrant ExportArchiMate =
+        new(AtlasTaxonomy.ExportArchiMate.Value, "bundle");
+
     private static readonly EntitlementGrant PortalReadOnly =
         new(AtlasTaxonomy.PortalReadonly.Value, "bundle");
 
@@ -158,6 +161,7 @@ public sealed class EntitlementBundleResolver
                 DiscoveryIngestion,
                 DataIntrospection,
                 DataQuality,
+                ExportArchiMate,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 10000m, AtlasTaxonomy.Users.Value, 50m, AtlasTaxonomy.Workspaces.Value, 5m, AtlasTaxonomy.ImportJobs.Value, 20m)
             ],
 
@@ -169,6 +173,7 @@ public sealed class EntitlementBundleResolver
                 PortalReadOnly,
                 DataIntrospection,
                 DataQuality,
+                ExportArchiMate,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 2000m, AtlasTaxonomy.Users.Value, 10m, AtlasTaxonomy.Workspaces.Value, 1m, AtlasTaxonomy.ImportJobs.Value, 5m)
             ],
 
@@ -185,6 +190,7 @@ public sealed class EntitlementBundleResolver
                 AiReview,
                 DataIntrospection,
                 DataQuality,
+                ExportArchiMate,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 50000m, AtlasTaxonomy.Users.Value, 100m, AtlasTaxonomy.Workspaces.Value, 10m, AtlasTaxonomy.ImportJobs.Value, 100m)
             ],
 
@@ -202,6 +208,7 @@ public sealed class EntitlementBundleResolver
                 DiscoveryIngestion,
                 DataIntrospection,
                 DataQuality,
+                ExportArchiMate,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 250000m, AtlasTaxonomy.Users.Value, 1000m, AtlasTaxonomy.Workspaces.Value, 100m, AtlasTaxonomy.ImportJobs.Value, 1000m)
             ],
 
