@@ -127,4 +127,20 @@ public sealed class TenantLifecycleStateMachineTests
         Assert.Equal(ReasonCodes.LifecycleTransitionInvalid, result.ReasonCode);
         Assert.Equal(TenantLifecycleState.TrialExpired, result.Lifecycle.State);
     }
+
+    [Theory]
+    [InlineData(TenantLifecycleState.TrialActive, EntitlementLifecycleState.TrialActive)]
+    [InlineData(TenantLifecycleState.TrialExpired, EntitlementLifecycleState.TrialExpired)]
+    [InlineData(TenantLifecycleState.ReadOnly, EntitlementLifecycleState.ReadOnly)]
+    [InlineData(TenantLifecycleState.Locked, EntitlementLifecycleState.Locked)]
+    [InlineData(TenantLifecycleState.RetentionPeriod, EntitlementLifecycleState.RetentionPeriod)]
+    [InlineData(TenantLifecycleState.DataPurged, EntitlementLifecycleState.DataPurged)]
+    public void Canonical_lifecycle_maps_to_entitlement_policy_state(
+        TenantLifecycleState lifecycleState,
+        EntitlementLifecycleState expected)
+    {
+        var actual = EntitlementLifecycleStateMapper.From(lifecycleState);
+
+        Assert.Equal(expected, actual);
+    }
 }
