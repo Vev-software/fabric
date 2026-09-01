@@ -53,3 +53,7 @@ Lifecycle and entitlement remain separate concerns:
 - entitlements say what capabilities the tenant currently holds
 
 The entitlement bundle resolver consumes lifecycle as policy input, but the canonical hosted lifecycle model now lives here rather than being implied by entitlement-only enums.
+
+EntitlementLifecycleStateMapper is the public, total translation from TenantLifecycleState (or a
+TenantLifecycleStatus) to the entitlement-policy input. Control planes use it at the boundary between
+lifecycle evaluation and bundle composition; products must not maintain a second lifecycle mapping.

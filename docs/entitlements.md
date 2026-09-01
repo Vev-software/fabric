@@ -43,6 +43,11 @@ Current lifecycle policy:
 The canonical lifecycle contract now lives in `docs/lifecycle.md`; this document describes the
 entitlement-side policy input consumed by bundle translation.
 
+Before resolving a bundle, a hosted control plane translates the canonical lifecycle with
+EntitlementLifecycleStateMapper. The mapping covers every canonical state: active trial, expired
+trial, read-only, locked, retention and purged. It does not itself grant a capability; the bundle
+resolver remains the sole policy decision point.
+
 ## Public API shapes
 
 The implemented public contract now includes:
