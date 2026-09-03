@@ -81,6 +81,11 @@ public sealed class EntitlementBundleResolver
     private static readonly EntitlementGrant AiReview =
         new(AtlasTaxonomy.AiReview.Value, "bundle");
 
+    // Free landscape-structuring hook. Every offer grants the capability; the community/free offer caps
+    // it with a daily limit (atlas.ai.structure.daily), while paid offers leave it uncapped.
+    private static readonly EntitlementGrant AiStructure =
+        new(AtlasTaxonomy.AiStructure.Value, "bundle");
+
     private static readonly EntitlementGrant DiscoveryIngestion =
         new(AtlasTaxonomy.DiscoveryIngestion.Value, "bundle");
 
@@ -144,7 +149,8 @@ public sealed class EntitlementBundleResolver
                 CatalogueRead,
                 CatalogueWrite,
                 ExportPortableBundle,
-                GrantWithLimits(AtlasTaxonomy.Entities.Value, 100000m)
+                AiStructure,
+                GrantWithLimits(AtlasTaxonomy.Entities.Value, 100000m, AtlasTaxonomy.AiStructureDaily.Value, 3m)
             ],
 
             EntitlementOffer.HostedTrial =>
@@ -162,6 +168,7 @@ public sealed class EntitlementBundleResolver
                 DataIntrospection,
                 DataQuality,
                 ExportArchiMate,
+                AiStructure,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 10000m, AtlasTaxonomy.Users.Value, 50m, AtlasTaxonomy.Workspaces.Value, 5m, AtlasTaxonomy.ImportJobs.Value, 20m)
             ],
 
@@ -174,6 +181,7 @@ public sealed class EntitlementBundleResolver
                 DataIntrospection,
                 DataQuality,
                 ExportArchiMate,
+                AiStructure,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 2000m, AtlasTaxonomy.Users.Value, 10m, AtlasTaxonomy.Workspaces.Value, 1m, AtlasTaxonomy.ImportJobs.Value, 5m)
             ],
 
@@ -191,6 +199,7 @@ public sealed class EntitlementBundleResolver
                 DataIntrospection,
                 DataQuality,
                 ExportArchiMate,
+                AiStructure,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 50000m, AtlasTaxonomy.Users.Value, 100m, AtlasTaxonomy.Workspaces.Value, 10m, AtlasTaxonomy.ImportJobs.Value, 100m)
             ],
 
@@ -209,6 +218,7 @@ public sealed class EntitlementBundleResolver
                 DataIntrospection,
                 DataQuality,
                 ExportArchiMate,
+                AiStructure,
                 GrantWithLimits(AtlasTaxonomy.Entities.Value, 250000m, AtlasTaxonomy.Users.Value, 1000m, AtlasTaxonomy.Workspaces.Value, 100m, AtlasTaxonomy.ImportJobs.Value, 1000m)
             ],
 

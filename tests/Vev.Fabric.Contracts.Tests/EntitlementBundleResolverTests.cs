@@ -150,4 +150,41 @@ public sealed class EntitlementBundleResolverTests
         Assert.Equal(ReasonCodes.LifecyclePurged, result.ResolutionReasonCode);
         Assert.Empty(result.Snapshot.Entitlements);
     }
+
+    [Fact]
+    public void Resolve_CommunitySelfHosted_GrantsAiStructure_CappedToADailyLimit()
+    {
+        var resolver = new EntitlementBundleResolver();
+
+        var result = resolver.Resolve(new EntitlementBundleRequest(
+            "tenant-free",
+            EntitlementOffer.CommunitySelfHosted,
+            EntitlementLifecycleState.Active,
+            IssuedAt,
+            ExpiresAt,
+            GraceUntil));
+
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.ai.structure");
+        var limits = Assert.Single(result.Snapshot.Entitlements, grant => grant.Capability == "fabric.bundle.limits");
+        Assert.NotNull(limits.Limits);
+        Assert.Equal(3m, limits.Limits!["atlas.ai.structure.daily"]);
+    }
+
+    [Fact]
+    public void Resolve_SelfHostedEnterprise_GrantsAiStructure_Uncapped()
+    {
+        var resolver = new EntitlementBundleResolver();
+
+        var result = resolver.Resolve(new EntitlementBundleRequest(
+            "tenant-paid",
+            EntitlementOffer.SelfHostedEnterprise,
+            EntitlementLifecycleState.Active,
+            IssuedAt,
+            ExpiresAt,
+            GraceUntil));
+
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.ai.structure");
+        var limits = Assert.Single(result.Snapshot.Entitlements, grant => grant.Capability == "fabric.bundle.limits");
+        Assert.False(limits.Limits?.ContainsKey("atlas.ai.structure.daily") ?? false);
+    }
 }
