@@ -474,6 +474,7 @@ export const ATLAS_CAPABILITIES = {
   analysisApm: "atlas.analysis.apm",
   analysisRoadmap: "atlas.analysis.roadmap",
   aiReview: "atlas.ai.review",
+  aiStructure: "atlas.ai.structure",
   discoveryIngestion: "atlas.discovery.ingestion",
   dataIntrospection: "atlas.data.introspection",
   dataQuality: "atlas.data.quality",
@@ -488,7 +489,8 @@ export const ATLAS_LIMIT_KEYS = {
   storage: "atlas.storage",
   workspaces: "atlas.workspaces",
   importJobs: "atlas.import.jobs",
-  repositoryApplicationMax: "atlas.repository.application.max"
+  repositoryApplicationMax: "atlas.repository.application.max",
+  aiStructureDaily: "atlas.ai.structure.daily"
 } as const;
 
 export const FABRIC_CAPABILITIES = {

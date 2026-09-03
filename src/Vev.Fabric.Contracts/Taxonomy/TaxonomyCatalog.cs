@@ -88,6 +88,9 @@ public static class Capabilities
         new(AtlasTaxonomy.DataQuality.Value, TaxonomyKind.Feature, "Data-quality, provenance and classification profiling over the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.PortalReadonly.Value, TaxonomyKind.Feature, "Read-only Atlas portal surface."),
 
+        // Free AI adoption hook (not reserved): landscape structuring from pasted content.
+        new(AtlasTaxonomy.AiStructure.Value, TaxonomyKind.Feature, "AI-assisted landscape structuring from pasted content."),
+
         // Fabric and module system anchors
         new(FabricTaxonomy.MarketplaceInstall.Value, TaxonomyKind.Feature, "Install a marketplace extension."),
 
@@ -97,6 +100,7 @@ public static class Capabilities
         new(AtlasTaxonomy.Storage.Value, TaxonomyKind.Limit, "Maximum Atlas storage allotment."),
         new(AtlasTaxonomy.Workspaces.Value, TaxonomyKind.Limit, "Maximum number of Atlas workspaces."),
         new(AtlasTaxonomy.ImportJobs.Value, TaxonomyKind.Limit, "Maximum Atlas import jobs."),
+        new(AtlasTaxonomy.AiStructureDaily.Value, TaxonomyKind.Limit, "Daily free landscape-structuring allowance."),
 
         // Example Fabric/Portic anchors used in handbook and examples
         new(AtlasTaxonomy.ExportArchiMate.Value, TaxonomyKind.Feature, "Export Atlas content to ArchiMate."),
@@ -118,6 +122,13 @@ public static class AtlasTaxonomy
     public static readonly CapabilityId AnalysisApm = new("atlas.analysis.apm");
     public static readonly CapabilityId AnalysisRoadmap = new("atlas.analysis.roadmap");
     public static readonly CapabilityId AiReview = new("atlas.ai.review");
+
+    /// <summary>
+    /// AI-assisted landscape structuring from pasted content ("Paste to landscape"). A free adoption
+    /// hook (not Reserved): the community/free bundle grants it with a daily limit
+    /// (<see cref="AiStructureDaily"/>); paid tiers grant it without a daily cap.
+    /// </summary>
+    public static readonly CapabilityId AiStructure = new("atlas.ai.structure");
     public static readonly CapabilityId DiscoveryIngestion = new("atlas.discovery.ingestion");
     public static readonly CapabilityId DataIntrospection = new("atlas.data.introspection");
     public static readonly CapabilityId DataQuality = new("atlas.data.quality");
@@ -131,6 +142,9 @@ public static class AtlasTaxonomy
     public static readonly LimitKey Workspaces = new("atlas.workspaces");
     public static readonly LimitKey ImportJobs = new("atlas.import.jobs");
     public static readonly LimitKey RepositoryApplicationMax = new("atlas.repository.application.max");
+
+    /// <summary>Daily allotment for the free landscape-structuring hook (<see cref="AiStructure"/>).</summary>
+    public static readonly LimitKey AiStructureDaily = new("atlas.ai.structure.daily");
 }
 
 public static class FabricTaxonomy
