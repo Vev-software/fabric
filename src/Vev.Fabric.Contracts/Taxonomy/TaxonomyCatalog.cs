@@ -83,8 +83,10 @@ public static class Capabilities
         new(AtlasTaxonomy.AnalysisApm.Value, TaxonomyKind.Feature, "Application portfolio management analysis.", Reserved: true),
         new(AtlasTaxonomy.AnalysisRoadmap.Value, TaxonomyKind.Feature, "Roadmap generation over the landscape.", Reserved: true),
         new(AtlasTaxonomy.AiReview.Value, TaxonomyKind.Feature, "AI-assisted architecture review.", Reserved: true),
+        new(AtlasTaxonomy.AiGenerate.Value, TaxonomyKind.Feature, "AI-generated draft deliverables over a selected landscape slice.", Reserved: true),
         new(AtlasTaxonomy.DiscoveryIngestion.Value, TaxonomyKind.Feature, "Discovery ingestion into Atlas.", Reserved: true),
         new(AtlasTaxonomy.DataIntrospection.Value, TaxonomyKind.Feature, "Database schema introspection into the Atlas data catalogue.", Reserved: true),
+        new(AtlasTaxonomy.DataOverlap.Value, TaxonomyKind.Feature, "Data overlap analysis (domain/dublet and consumer-map) over the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.DataQuality.Value, TaxonomyKind.Feature, "Data-quality, provenance and classification profiling over the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.PortalReadonly.Value, TaxonomyKind.Feature, "Read-only Atlas portal surface."),
 
@@ -103,7 +105,7 @@ public static class Capabilities
         new(AtlasTaxonomy.AiStructureDaily.Value, TaxonomyKind.Limit, "Daily free landscape-structuring allowance."),
 
         // Example Fabric/Portic anchors used in handbook and examples
-        new(AtlasTaxonomy.ExportArchiMate.Value, TaxonomyKind.Feature, "Export Atlas content to ArchiMate."),
+        new(AtlasTaxonomy.ExportArchiMate.Value, TaxonomyKind.Feature, "Export Atlas content to ArchiMate.", Reserved: true),
         new(AtlasTaxonomy.RepositoryApplicationMax.Value, TaxonomyKind.Limit, "Maximum number of application records in Atlas."),
         new(PorticTaxonomy.GovernancePolicyAdvanced.Value, TaxonomyKind.Feature, "Advanced Portic governance policy surface."),
         new(PorticTaxonomy.GatewayProvidersMax.Value, TaxonomyKind.Limit, "Maximum number of Portic providers.")
@@ -129,8 +131,10 @@ public static class AtlasTaxonomy
     /// (<see cref="AiStructureDaily"/>); paid tiers grant it without a daily cap.
     /// </summary>
     public static readonly CapabilityId AiStructure = new("atlas.ai.structure");
+    public static readonly CapabilityId AiGenerate = new("atlas.ai.generate");
     public static readonly CapabilityId DiscoveryIngestion = new("atlas.discovery.ingestion");
     public static readonly CapabilityId DataIntrospection = new("atlas.data.introspection");
+    public static readonly CapabilityId DataOverlap = new("atlas.data.overlap");
     public static readonly CapabilityId DataQuality = new("atlas.data.quality");
     public static readonly CapabilityId PortalReadonly = new("atlas.portal.readonly");
     public static readonly CapabilityId ExportPortableBundle = new("atlas.export.portable-bundle");
