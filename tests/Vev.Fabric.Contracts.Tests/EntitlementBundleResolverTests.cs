@@ -64,6 +64,29 @@ public sealed class EntitlementBundleResolverTests
         Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.data.quality");
     }
 
+    [Fact]
+    public void Resolve_HostedStarter_GrantsAnalysisTaste_ButNotProSteering()
+    {
+        var result = new EntitlementBundleResolver().Resolve(new EntitlementBundleRequest(
+            "tenant-a",
+            EntitlementOffer.HostedStarter,
+            EntitlementLifecycleState.Active,
+            IssuedAt,
+            ExpiresAt,
+            GraceUntil));
+
+        // Starter gets a cross-cutting analysis taste: end-of-life + a portfolio overview,
+        // so it reads as "understand your landscape", not "a data layer".
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.analysis.eol");
+        Assert.Contains(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.analysis.apm");
+
+        // The deeper steering — integration mapping, roadmaps/target states and AI-assisted
+        // review — stays a Pro capability, so Starter is not the full product.
+        Assert.DoesNotContain(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.analysis.integration-map");
+        Assert.DoesNotContain(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.analysis.roadmap");
+        Assert.DoesNotContain(result.Snapshot.Entitlements, grant => grant.Capability == "atlas.ai.review");
+    }
+
     [Theory]
     [InlineData(EntitlementOffer.HostedTrial)]
     [InlineData(EntitlementOffer.HostedStarter)]
