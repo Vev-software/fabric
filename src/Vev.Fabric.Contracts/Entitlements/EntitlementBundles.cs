@@ -178,6 +178,12 @@ public sealed class EntitlementBundleResolver
                 CatalogueWrite,
                 ExportPortableBundle,
                 PortalReadOnly,
+                // A cross-cutting analysis "taste": end-of-life and a portfolio overview,
+                // so Starter reads as "understand your landscape", not "a data layer".
+                // The deeper steering — integration mapping, roadmaps/target states and
+                // AI-assisted review — stays a Pro capability.
+                EndOfLife,
+                ApplicationPortfolio,
                 DataIntrospection,
                 DataQuality,
                 ExportArchiMate,
