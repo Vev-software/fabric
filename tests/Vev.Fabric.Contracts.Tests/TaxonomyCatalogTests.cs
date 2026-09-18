@@ -40,6 +40,7 @@ public sealed class TaxonomyCatalogTests
         [
             "atlas.ai.generate",
             "atlas.ai.review",
+            "atlas.ai.structure.bulk",
             "atlas.analysis.apm",
             "atlas.analysis.eol",
             "atlas.analysis.integration-map",
@@ -63,6 +64,16 @@ public sealed class TaxonomyCatalogTests
             Capabilities.All, capability => capability.Id == AtlasTaxonomy.ExportArchiMate.Value);
 
         Assert.True(archimate.Reserved, "atlas.export.archimate must be reserved (paid) in the canonical taxonomy.");
+    }
+
+    [Fact]
+    public void Bulk_Structuring_Is_Reserved_While_Free_Structuring_Remains_Unreserved()
+    {
+        var bulk = Assert.Single(Capabilities.All, capability => capability.Id == AtlasTaxonomy.AiStructureBulk.Value);
+        var free = Assert.Single(Capabilities.All, capability => capability.Id == AtlasTaxonomy.AiStructure.Value);
+        Assert.True(bulk.Reserved);
+        Assert.Equal(TaxonomyKind.Feature, bulk.Kind);
+        Assert.False(free.Reserved);
     }
 
     [Fact]

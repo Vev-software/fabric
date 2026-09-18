@@ -2,6 +2,12 @@
   "contractVersion": "1",
   "capabilities": [
     {
+      "id": "atlas.ai.structure.bulk",
+      "kind": "Feature",
+      "description": "Batch document structuring into a reviewable landscape draft.",
+      "reserved": true
+    },
+    {
       "id": "atlas.catalogue.read",
       "kind": "Feature",
       "description": "Read the Atlas catalogue."
