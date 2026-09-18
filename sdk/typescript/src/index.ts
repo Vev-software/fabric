@@ -475,6 +475,7 @@ export const ATLAS_CAPABILITIES = {
   analysisRoadmap: "atlas.analysis.roadmap",
   aiReview: "atlas.ai.review",
   aiStructure: "atlas.ai.structure",
+  aiStructureBulk: "atlas.ai.structure.bulk",
   aiGenerate: "atlas.ai.generate",
   discoveryIngestion: "atlas.discovery.ingestion",
   dataIntrospection: "atlas.data.introspection",

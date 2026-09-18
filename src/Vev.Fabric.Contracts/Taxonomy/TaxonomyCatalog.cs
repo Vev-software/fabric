@@ -84,6 +84,7 @@ public static class Capabilities
         new(AtlasTaxonomy.AnalysisRoadmap.Value, TaxonomyKind.Feature, "Roadmap generation over the landscape.", Reserved: true),
         new(AtlasTaxonomy.AiReview.Value, TaxonomyKind.Feature, "AI-assisted architecture review.", Reserved: true),
         new(AtlasTaxonomy.AiGenerate.Value, TaxonomyKind.Feature, "AI-generated draft deliverables over a selected landscape slice.", Reserved: true),
+        new(AtlasTaxonomy.AiStructureBulk.Value, TaxonomyKind.Feature, "Batch document structuring into a reviewable landscape draft.", Reserved: true),
         new(AtlasTaxonomy.DiscoveryIngestion.Value, TaxonomyKind.Feature, "Discovery ingestion into Atlas.", Reserved: true),
         new(AtlasTaxonomy.DataIntrospection.Value, TaxonomyKind.Feature, "Database schema introspection into the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.DataOverlap.Value, TaxonomyKind.Feature, "Data overlap analysis (domain/dublet and consumer-map) over the Atlas data catalogue.", Reserved: true),
@@ -131,6 +132,8 @@ public static class AtlasTaxonomy
     /// (<see cref="AiStructureDaily"/>); paid tiers grant it without a daily cap.
     /// </summary>
     public static readonly CapabilityId AiStructure = new("atlas.ai.structure");
+    /// <summary>Reserved batch document structuring capability, separate from the free structuring allowance.</summary>
+    public static readonly CapabilityId AiStructureBulk = new("atlas.ai.structure.bulk");
     public static readonly CapabilityId AiGenerate = new("atlas.ai.generate");
     public static readonly CapabilityId DiscoveryIngestion = new("atlas.discovery.ingestion");
     public static readonly CapabilityId DataIntrospection = new("atlas.data.introspection");

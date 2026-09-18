@@ -40,6 +40,7 @@ Current Atlas feature ids seeded in Fabric:
 - `atlas.analysis.roadmap`
 - `atlas.ai.review`
 - `atlas.ai.generate`
+- `atlas.ai.structure.bulk`
 - `atlas.discovery.ingestion`
 - `atlas.data.introspection`
 - `atlas.data.overlap`
@@ -68,6 +69,7 @@ commercial seams are:
 - `atlas.analysis.roadmap`
 - `atlas.ai.review`
 - `atlas.ai.generate`
+- `atlas.ai.structure.bulk`
 - `atlas.discovery.ingestion`
 - `atlas.data.introspection`
 - `atlas.data.overlap`
@@ -77,6 +79,18 @@ commercial seams are:
 `atlas.export.archimate` resolves from Hosted Trial and every Starter-or-higher offer. Lifecycle
 restriction still removes it in read-only and export-only states, so the normal portability escape
 hatch remains the portable bundle rather than an EA export surface.
+
+## Batch document structuring
+
+`atlas.ai.structure.bulk` is a reserved feature for batch document structuring into a
+reviewable landscape draft. It is exposed as `AtlasTaxonomy.AiStructureBulk` in .NET
+and `ATLAS_CAPABILITIES.aiStructureBulk` in TypeScript. It does not change the free
+`atlas.ai.structure` capability or its `atlas.ai.structure.daily` allowance.
+
+This additive identifier does not change the schema version or existing grants.
+No existing offer grants it automatically; bundle assignment is a separate decision.
+Consumers must adopt a published SDK containing this identifier and align their
+reserved capability sets before enabling the feature.
 
 ## Shared decision reasons
 

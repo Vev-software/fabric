@@ -10,6 +10,17 @@ public sealed class EntitlementBundleResolverTests
     private static readonly DateTimeOffset GraceUntil = IssuedAt.AddDays(7);
 
     [Fact]
+    public void Bulk_Structuring_Is_Not_Implicitly_Granted_By_Existing_Offers()
+    {
+        foreach (var offer in Enum.GetValues<EntitlementOffer>())
+        {
+            var result = new EntitlementBundleResolver().Resolve(new EntitlementBundleRequest(
+                "tenant-a", offer, EntitlementLifecycleState.Active, IssuedAt, ExpiresAt, GraceUntil));
+            Assert.DoesNotContain(result.Snapshot.Entitlements, grant => grant.Capability == AtlasTaxonomy.AiStructureBulk.Value);
+        }
+    }
+
+    [Fact]
     public void Resolve_CommunitySelfHosted_GrantsCatalogueSurface()
     {
         var resolver = new EntitlementBundleResolver();
