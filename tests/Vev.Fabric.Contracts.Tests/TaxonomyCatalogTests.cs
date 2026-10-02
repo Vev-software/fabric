@@ -50,6 +50,7 @@ public sealed class TaxonomyCatalogTests
             "atlas.data.quality",
             "atlas.discovery.ingestion",
             "atlas.export.archimate",
+            "atlas.landscape.share",
         ];
 
         Assert.Equal(expected.OrderBy(id => id, StringComparer.Ordinal), reserved);

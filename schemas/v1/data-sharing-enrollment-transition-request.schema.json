@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/data-sharing-enrollment-transition-request.schema.json",
+  "title": "DataSharingEnrollmentTransitionRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "enrollmentId",
+    "binding",
+    "principal",
+    "capability",
+    "transition",
+    "occurredAt",
+    "timeline"
+  ],
+  "properties": {
+    "enrollmentId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "binding": {
+      "$ref": "data-sharing-binding.schema.json"
+    },
+    "principal": {
+      "$ref": "principal-context.schema.json"
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "transition": {
+      "type": "string",
+      "enum": [
+        "Activate",
+        "RotateCredential",
+        "Suspend",
+        "Revoke"
+      ]
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "timeline": {
+      "$ref": "data-sharing-enrollment-timeline.schema.json"
+    },
+    "credentialExpiresAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "requestedBy": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "Source",
+            "Consumer"
+          ]
+        }
+      ]
+    },
+    "activation": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "data-sharing-activation-record.schema.json"
+        }
+      ]
+    },
+    "presentedActivationCode": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

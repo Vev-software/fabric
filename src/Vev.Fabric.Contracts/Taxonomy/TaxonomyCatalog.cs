@@ -86,6 +86,7 @@ public static class Capabilities
         new(AtlasTaxonomy.AiGenerate.Value, TaxonomyKind.Feature, "AI-generated draft deliverables over a selected landscape slice.", Reserved: true),
         new(AtlasTaxonomy.AiStructureBulk.Value, TaxonomyKind.Feature, "Batch document structuring into a reviewable landscape draft.", Reserved: true),
         new(AtlasTaxonomy.DiscoveryIngestion.Value, TaxonomyKind.Feature, "Discovery ingestion into Atlas.", Reserved: true),
+        new(AtlasTaxonomy.LandscapeShare.Value, TaxonomyKind.Feature, "Push a minimized landscape digest to a consenting consuming product.", Reserved: true),
         new(AtlasTaxonomy.DataIntrospection.Value, TaxonomyKind.Feature, "Database schema introspection into the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.DataOverlap.Value, TaxonomyKind.Feature, "Data overlap analysis (domain/dublet and consumer-map) over the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.DataQuality.Value, TaxonomyKind.Feature, "Data-quality, provenance and classification profiling over the Atlas data catalogue.", Reserved: true),
@@ -136,6 +137,12 @@ public static class AtlasTaxonomy
     public static readonly CapabilityId AiStructureBulk = new("atlas.ai.structure.bulk");
     public static readonly CapabilityId AiGenerate = new("atlas.ai.generate");
     public static readonly CapabilityId DiscoveryIngestion = new("atlas.discovery.ingestion");
+
+    /// <summary>
+    /// Push a minimized landscape digest to a consuming product the customer consented to, through a data-sharing
+    /// enrollment. Reserved: whether outbound push is part of the free edition is decided by the edition, not here.
+    /// </summary>
+    public static readonly CapabilityId LandscapeShare = new("atlas.landscape.share");
     public static readonly CapabilityId DataIntrospection = new("atlas.data.introspection");
     public static readonly CapabilityId DataOverlap = new("atlas.data.overlap");
     public static readonly CapabilityId DataQuality = new("atlas.data.quality");
@@ -191,6 +198,15 @@ public static class Reasons
         new(ReasonCodes.DiscoveryEnrollmentRevoked, "The discovery enrollment is revoked.", Deny: true),
         new(ReasonCodes.DiscoveryCredentialExpired, "The discovery credential has expired and must be rotated before use.", Deny: true),
         new(ReasonCodes.DiscoveryLifecycleTransitionInvalid, "The requested discovery enrollment transition is not valid from the current state.", Deny: true),
+        new(ReasonCodes.SharingEnrollmentPending, "The data-sharing enrollment exists but is not yet active.", Deny: true),
+        new(ReasonCodes.SharingEnrollmentSuspended, "The data-sharing enrollment is suspended.", Deny: true),
+        new(ReasonCodes.SharingEnrollmentRevoked, "The data-sharing enrollment is revoked.", Deny: true),
+        new(ReasonCodes.SharingCredentialExpired, "The data-sharing credential has expired and must be rotated before use.", Deny: true),
+        new(ReasonCodes.SharingLifecycleTransitionInvalid, "The requested data-sharing enrollment transition is not valid from the current state.", Deny: true),
+        new(ReasonCodes.SharingActivationCodeInvalid, "The activation code is not valid for this enrollment.", Deny: true),
+        new(ReasonCodes.SharingActivationCodeExpired, "The activation code has expired.", Deny: true),
+        new(ReasonCodes.SharingActivationCodeUsed, "The activation code has already been used.", Deny: true),
+        new(ReasonCodes.SharingBindingMismatch, "The push names a tenant or consumer account other than the one the enrollment is bound to.", Deny: true),
         new(ReasonCodes.EntitlementSnapshotRolledBack, "A snapshot older than the highest already seen was rejected (anti-rollback).", Deny: true),
         new(ReasonCodes.EntitlementClockRegression, "The wall clock moved backwards past the last observed time.", Deny: true),
         new(ReasonCodes.TrialExpired, "The trial entitlement has expired; trials hard-stop and are not frozen open by an outage.", Deny: true)

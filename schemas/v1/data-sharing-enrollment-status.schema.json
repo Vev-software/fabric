@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/data-sharing-enrollment-status.schema.json",
+  "title": "DataSharingEnrollmentStatus",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "enrollmentId",
+    "binding",
+    "principal",
+    "capability",
+    "state",
+    "reasonCode",
+    "evaluatedAt",
+    "timeline"
+  ],
+  "properties": {
+    "enrollmentId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "binding": {
+      "$ref": "data-sharing-binding.schema.json"
+    },
+    "principal": {
+      "$ref": "principal-context.schema.json"
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "Pending",
+        "Active",
+        "Suspended",
+        "Revoked",
+        "Expired"
+      ]
+    },
+    "reasonCode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "timeline": {
+      "$ref": "data-sharing-enrollment-timeline.schema.json"
+    }
+  }
+}

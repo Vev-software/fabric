@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/data-sharing-binding.schema.json",
+  "title": "DataSharingBinding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sourceTenant",
+    "consumerAccountId"
+  ],
+  "properties": {
+    "sourceTenant": {
+      "$ref": "tenant-context.schema.json"
+    },
+    "consumerAccountId": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
