@@ -7,6 +7,7 @@ using Vev.Fabric.Contracts.Discovery;
 using Vev.Fabric.Contracts.Authorization;
 using Vev.Fabric.Contracts.Entitlements;
 using Vev.Fabric.Contracts.Lifecycle;
+using Vev.Fabric.Contracts.Sharing;
 using Vev.Fabric.Contracts.Taxonomy;
 
 namespace Vev.Fabric.Contracts.Tests;
@@ -33,6 +34,12 @@ public sealed class SchemaConformanceTests
             { "discovery-enrollment-transition-request.sample.json", "discovery-enrollment-transition-request.schema.json", typeof(DiscoveryEnrollmentTransitionRequest) },
             { "discovery-enrollment-transition-result.sample.json", "discovery-enrollment-transition-result.schema.json", typeof(DiscoveryEnrollmentTransitionResult) },
             { "discovery-lifecycle-event.sample.json", "discovery-lifecycle-event.schema.json", typeof(DiscoveryLifecycleEvent) },
+            { "data-sharing-enrollment-status.sample.json", "data-sharing-enrollment-status.schema.json", typeof(DataSharingEnrollmentStatus) },
+            { "data-sharing-enrollment-transition-request.sample.json", "data-sharing-enrollment-transition-request.schema.json", typeof(DataSharingEnrollmentTransitionRequest) },
+            { "data-sharing-enrollment-transition-result.sample.json", "data-sharing-enrollment-transition-result.schema.json", typeof(DataSharingEnrollmentTransitionResult) },
+            { "data-sharing-lifecycle-event.sample.json", "data-sharing-lifecycle-event.schema.json", typeof(DataSharingLifecycleEvent) },
+            { "data-sharing-push-access-request.sample.json", "data-sharing-push-access-request.schema.json", typeof(DataSharingPushAccessRequest) },
+            { "data-sharing-push-access-decision.sample.json", "data-sharing-push-access-decision.schema.json", typeof(DataSharingPushAccessDecision) },
             { "entitlement-bundle-request.sample.json", "entitlement-bundle-request.schema.json", typeof(EntitlementBundleRequest) },
             { "evaluate-entitlements-request.sample.json", "evaluate-entitlements-request.schema.json", typeof(EvaluateEntitlementsRequest) },
             { "import-signed-entitlement-snapshot-request.sample.json", "import-signed-entitlement-snapshot-request.schema.json", typeof(ImportSignedEntitlementSnapshotRequest) },

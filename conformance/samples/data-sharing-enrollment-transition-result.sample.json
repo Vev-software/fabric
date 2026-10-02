@@ -1,0 +1,45 @@
+{
+  "accepted": true,
+  "reasonCode": "allow",
+  "enrollment": {
+    "enrollmentId": "share-1",
+    "binding": {
+      "sourceTenant": {
+        "tenantId": "tenant-a"
+      },
+      "consumerAccountId": "account-42"
+    },
+    "principal": {
+      "principalId": "atlas-pusher-1",
+      "displayName": "Atlas landscape sharing",
+      "roles": [
+        "Machine"
+      ],
+      "claims": {
+        "kind": "landscape-share"
+      }
+    },
+    "capability": {
+      "value": "atlas.landscape.share"
+    },
+    "state": "Active",
+    "reasonCode": "allow",
+    "evaluatedAt": "2026-10-02T09:10:00Z",
+    "timeline": {
+      "enrolledAt": "2026-10-02T09:00:00Z",
+      "credentialExpiresAt": "2027-10-02T09:10:00Z",
+      "activatedAt": "2026-10-02T09:10:00Z",
+      "lastRotatedAt": null,
+      "suspendedAt": null,
+      "revokedAt": null,
+      "revokedBy": null
+    }
+  },
+  "activation": {
+    "enrollmentId": "share-1",
+    "codeHash": "84d78fc13dccb2e600f3091f25fdb0c47103e3265e969a0c5b27bb01d701e39b",
+    "issuedAt": "2026-10-02T09:00:00Z",
+    "expiresAt": "2026-10-02T09:30:00Z",
+    "consumedAt": "2026-10-02T09:10:00Z"
+  }
+}

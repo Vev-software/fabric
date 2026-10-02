@@ -1,0 +1,54 @@
+{
+  "binding": {
+    "sourceTenant": {
+      "tenantId": "tenant-a"
+    },
+    "consumerAccountId": "account-42"
+  },
+  "principal": {
+    "principalId": "atlas-pusher-1",
+    "displayName": "Atlas landscape sharing",
+    "roles": [
+      "Machine"
+    ],
+    "claims": {
+      "kind": "landscape-share"
+    }
+  },
+  "enrollmentId": "share-1",
+  "capability": {
+    "value": "atlas.landscape.share"
+  },
+  "enrollmentTimeline": {
+    "enrolledAt": "2026-10-02T09:00:00Z",
+    "credentialExpiresAt": "2027-10-02T09:10:00Z",
+    "activatedAt": "2026-10-02T09:10:00Z",
+    "lastRotatedAt": null,
+    "suspendedAt": null,
+    "revokedAt": null,
+    "revokedBy": null
+  },
+  "tenantLifecycleTimeline": {
+    "trialStartedAt": "2026-10-01T10:00:00Z",
+    "trialExpiresAt": "2026-10-30T10:00:00Z",
+    "readOnlyUntil": null,
+    "lockedAt": null,
+    "retentionUntil": null,
+    "purgedAt": null
+  },
+  "entitlement": {
+    "allowed": true,
+    "capability": {
+      "value": "atlas.landscape.share"
+    },
+    "reasonCode": "entitlement_granted",
+    "source": "entitlement:snapshot:2026-10-02T09:00:00.0000000+00:00",
+    "evaluatedAt": "2026-10-02T10:00:00Z",
+    "validUntil": "2027-10-02T09:00:00Z"
+  },
+  "claimed": {
+    "tenantId": "tenant-a",
+    "consumerAccountId": "account-42"
+  },
+  "asOf": "2026-10-02T10:00:00Z"
+}

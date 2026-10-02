@@ -340,6 +340,129 @@ export interface DiscoveryIngestionAccessDecision {
   validUntil?: string | null;
 }
 
+export type DataSharingEnrollmentState = DiscoveryEnrollmentState;
+
+export type DataSharingEnrollmentTransition = DiscoveryEnrollmentTransition;
+
+/** Which side of a data-sharing enrollment acted: the product that holds and pushes the data, or the one that receives it. */
+export type DataSharingParty = "Source" | "Consumer";
+
+export type DataSharingLifecycleEventType =
+  | "EnrollmentCreated"
+  | "EnrollmentActivated"
+  | "CredentialRotated"
+  | "PushDenied"
+  | "EnrollmentSuspended"
+  | "EnrollmentRevoked"
+  | "CredentialExpired";
+
+/** One source tenant bound to one consumer-side account. The consumer decides it; a push never does. */
+export interface DataSharingBinding {
+  sourceTenant: { tenantId: string };
+  consumerAccountId: string;
+}
+
+export interface DataSharingEnrollmentTimeline {
+  enrolledAt: string;
+  credentialExpiresAt?: string | null;
+  activatedAt?: string | null;
+  lastRotatedAt?: string | null;
+  suspendedAt?: string | null;
+  revokedAt?: string | null;
+  revokedBy?: DataSharingParty | null;
+}
+
+/** The one-time activation code as stored: a hash bound to the enrollment, never the code. */
+export interface DataSharingActivationRecord {
+  enrollmentId: string;
+  codeHash: string;
+  issuedAt: string;
+  expiresAt: string;
+  consumedAt?: string | null;
+}
+
+export interface DataSharingEnrollmentQuery {
+  enrollmentId: string;
+  binding: DataSharingBinding;
+  principal: PrincipalContext;
+  capability: CapabilityId;
+  asOf?: string | null;
+}
+
+export interface DataSharingEnrollmentStatus {
+  enrollmentId: string;
+  binding: DataSharingBinding;
+  principal: PrincipalContext;
+  capability: CapabilityId;
+  state: DataSharingEnrollmentState;
+  reasonCode: ReasonCode | string;
+  evaluatedAt: string;
+  timeline: DataSharingEnrollmentTimeline;
+}
+
+export interface DataSharingEnrollmentTransitionRequest {
+  enrollmentId: string;
+  binding: DataSharingBinding;
+  principal: PrincipalContext;
+  capability: CapabilityId;
+  transition: DataSharingEnrollmentTransition;
+  occurredAt: string;
+  timeline: DataSharingEnrollmentTimeline;
+  credentialExpiresAt?: string | null;
+  /** Required for Revoke: either side may revoke. */
+  requestedBy?: DataSharingParty | null;
+  /** Required for Activate, together with the code that was presented. */
+  activation?: DataSharingActivationRecord | null;
+  presentedActivationCode?: string | null;
+}
+
+export interface DataSharingEnrollmentTransitionResult {
+  accepted: boolean;
+  reasonCode: ReasonCode | string;
+  enrollment: DataSharingEnrollmentStatus;
+  /** After a successful activation: the consumed record to store. */
+  activation?: DataSharingActivationRecord | null;
+}
+
+export interface DataSharingLifecycleEvent {
+  eventId: string;
+  occurredAt: string;
+  binding: DataSharingBinding;
+  enrollmentId: string;
+  principalId: string;
+  source: string;
+  eventType: DataSharingLifecycleEventType;
+  reasonCode: ReasonCode | string;
+  capability: CapabilityId;
+  correlationId: string;
+  metadata?: Record<string, string> | null;
+}
+
+export interface DataSharingPushAccessRequest {
+  binding: DataSharingBinding;
+  principal: PrincipalContext;
+  enrollmentId: string;
+  capability: CapabilityId;
+  enrollmentTimeline: DataSharingEnrollmentTimeline;
+  tenantLifecycleTimeline: TenantLifecycleTimeline;
+  entitlement: EntitlementDecision;
+  /** What the push says about itself. Never trusted: a claim that differs from the binding is denied. */
+  claimed?: { tenantId?: string | null; consumerAccountId?: string | null } | null;
+  asOf?: string | null;
+}
+
+export interface DataSharingPushAccessDecision {
+  allowed: boolean;
+  enrollmentId: string;
+  capability: CapabilityId;
+  reasonCode: ReasonCode | string;
+  source: string;
+  evaluatedAt: string;
+  enrollmentState: DataSharingEnrollmentState;
+  tenantLifecycleState: TenantLifecycleState;
+  validUntil?: string | null;
+}
+
 export type AuditCategory = "Data" | "Admin" | "Security";
 
 export type AuditOutcome = "Success" | "Failure" | "Denied";
@@ -478,6 +601,7 @@ export const ATLAS_CAPABILITIES = {
   aiStructureBulk: "atlas.ai.structure.bulk",
   aiGenerate: "atlas.ai.generate",
   discoveryIngestion: "atlas.discovery.ingestion",
+  landscapeShare: "atlas.landscape.share",
   dataIntrospection: "atlas.data.introspection",
   dataOverlap: "atlas.data.overlap",
   dataQuality: "atlas.data.quality",
@@ -525,6 +649,15 @@ export const DECISION_REASON_CODES = {
   discoveryEnrollmentRevoked: "discovery_enrollment_revoked",
   discoveryCredentialExpired: "discovery_credential_expired",
   discoveryLifecycleTransitionInvalid: "discovery_lifecycle_transition_invalid",
+  sharingEnrollmentPending: "sharing_enrollment_pending",
+  sharingEnrollmentSuspended: "sharing_enrollment_suspended",
+  sharingEnrollmentRevoked: "sharing_enrollment_revoked",
+  sharingCredentialExpired: "sharing_credential_expired",
+  sharingLifecycleTransitionInvalid: "sharing_lifecycle_transition_invalid",
+  sharingActivationCodeInvalid: "sharing_activation_code_invalid",
+  sharingActivationCodeExpired: "sharing_activation_code_expired",
+  sharingActivationCodeUsed: "sharing_activation_code_used",
+  sharingBindingMismatch: "sharing_binding_mismatch",
   entitlementSnapshotRolledBack: "entitlement_snapshot_rolled_back",
   entitlementClockRegression: "entitlement_clock_regression",
   trialExpired: "trial_expired",
@@ -540,6 +673,16 @@ export const DISCOVERY_AUDIT_VOCABULARY = {
   enrollmentRevokeAction: "fabric.discovery.enrollment.revoke",
   ingestionAcceptAction: "atlas.discovery.ingestion.accept",
   ingestionDenyAction: "atlas.discovery.ingestion.deny"
+} as const;
+
+export const DATA_SHARING_AUDIT_VOCABULARY = {
+  enrollmentCreateAction: "fabric.sharing.enrollment.create",
+  enrollmentActivateAction: "fabric.sharing.enrollment.activate",
+  credentialRotateAction: "fabric.sharing.credential.rotate",
+  enrollmentSuspendAction: "fabric.sharing.enrollment.suspend",
+  enrollmentRevokeAction: "fabric.sharing.enrollment.revoke",
+  pushAcceptAction: "atlas.landscape.share.push.accept",
+  pushDenyAction: "atlas.landscape.share.push.deny"
 } as const;
 
 export const ATLAS_DISCOVERY_EVENT_TYPES = {

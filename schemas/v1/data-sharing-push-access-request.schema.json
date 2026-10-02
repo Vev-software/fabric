@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/data-sharing-push-access-request.schema.json",
+  "title": "DataSharingPushAccessRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "binding",
+    "principal",
+    "enrollmentId",
+    "capability",
+    "enrollmentTimeline",
+    "tenantLifecycleTimeline",
+    "entitlement"
+  ],
+  "properties": {
+    "binding": {
+      "$ref": "data-sharing-binding.schema.json"
+    },
+    "principal": {
+      "$ref": "principal-context.schema.json"
+    },
+    "enrollmentId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "const": "atlas.landscape.share"
+        }
+      }
+    },
+    "enrollmentTimeline": {
+      "$ref": "data-sharing-enrollment-timeline.schema.json"
+    },
+    "tenantLifecycleTimeline": {
+      "$ref": "tenant-lifecycle-timeline.schema.json"
+    },
+    "entitlement": {
+      "$ref": "entitlement-decision.schema.json"
+    },
+    "claimed": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "tenantId": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "consumerAccountId": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "asOf": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  }
+}

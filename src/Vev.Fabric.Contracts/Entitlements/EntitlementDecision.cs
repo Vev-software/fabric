@@ -53,6 +53,15 @@ public static class ReasonCodes
     public const string DiscoveryEnrollmentRevoked = "discovery_enrollment_revoked";
     public const string DiscoveryCredentialExpired = "discovery_credential_expired";
     public const string DiscoveryLifecycleTransitionInvalid = "discovery_lifecycle_transition_invalid";
+    public const string SharingEnrollmentPending = "sharing_enrollment_pending";
+    public const string SharingEnrollmentSuspended = "sharing_enrollment_suspended";
+    public const string SharingEnrollmentRevoked = "sharing_enrollment_revoked";
+    public const string SharingCredentialExpired = "sharing_credential_expired";
+    public const string SharingLifecycleTransitionInvalid = "sharing_lifecycle_transition_invalid";
+    public const string SharingActivationCodeInvalid = "sharing_activation_code_invalid";
+    public const string SharingActivationCodeExpired = "sharing_activation_code_expired";
+    public const string SharingActivationCodeUsed = "sharing_activation_code_used";
+    public const string SharingBindingMismatch = "sharing_binding_mismatch";
 
     // Offline evaluator hardening (fabric#9, security#1 T3/T4/T7).
 
