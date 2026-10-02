@@ -214,6 +214,30 @@ export interface TenantLifecycleQuery {
   asOf?: string | null;
 }
 
+/** Issuer-qualified member identity; both parts are compared exactly. */
+export interface TenantMemberIdentity {
+  issuer: string;
+  subject: string;
+}
+
+export interface TenantMember {
+  identity: TenantMemberIdentity;
+  /** Opaque role names; their meaning is product policy. */
+  roles: string[];
+}
+
+/** Portable, versioned tenant membership (fabric#57). Data only: no credentials, transport or role policy. */
+export interface TenantMembershipSnapshot {
+  /** Reject every value other than a version you know. */
+  schemaVersion: 1;
+  tenant: TenantContext;
+  sequence: number;
+  issuedAt: string;
+  validUntil: string;
+  /** The complete membership; absence means "not a member". */
+  members: TenantMember[];
+}
+
 export interface TenantLifecycleStatus {
   tenant: string;
   state: TenantLifecycleState;
@@ -658,6 +682,13 @@ export const DECISION_REASON_CODES = {
   sharingActivationCodeExpired: "sharing_activation_code_expired",
   sharingActivationCodeUsed: "sharing_activation_code_used",
   sharingBindingMismatch: "sharing_binding_mismatch",
+  membershipSnapshotUnavailable: "membership_snapshot_unavailable",
+  membershipSnapshotInvalid: "membership_snapshot_invalid",
+  membershipSnapshotUnsupportedVersion: "membership_snapshot_unsupported_version",
+  membershipSnapshotTenantMismatch: "membership_snapshot_tenant_mismatch",
+  membershipSnapshotRolledBack: "membership_snapshot_rolled_back",
+  membershipSnapshotExpired: "membership_snapshot_expired",
+  membershipNotFound: "membership_not_found",
   entitlementSnapshotRolledBack: "entitlement_snapshot_rolled_back",
   entitlementClockRegression: "entitlement_clock_regression",
   trialExpired: "trial_expired",
