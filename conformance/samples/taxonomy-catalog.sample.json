@@ -4,7 +4,7 @@
     {
       "id": "atlas.landscape.share.relations",
       "kind": "Feature",
-      "description": "Share only runsOn and suppliedBy relations and a layer hint with a consenting consuming product; requires atlas.landscape.share and admin opt-in. Does not authorize integration topology.",
+      "description": "Share minimized runsOn, suppliedBy and explicitly activated stage-2 integrates associations and a layer hint; requires atlas.landscape.share and customer-admin opt-in. No network details or edge metadata; stage-1 activation does not authorize stage 2.",
       "reserved": true
     },
     {

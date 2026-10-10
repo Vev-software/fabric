@@ -96,8 +96,14 @@ reserved capability sets before enabling the feature.
 
 `atlas.landscape.share.relations` is confirmed as the separate reserved grant. The
 suffix keeps it under the existing sharing namespace while identifying the narrower
-scope: only `runsOn`, `suppliedBy` and a layer hint. It does not authorize integration
-topology; stage 2 needs a later grant or an explicit scope decision.
+scope: `runsOn`, `suppliedBy`, a layer hint, and, with explicit stage-2 activation,
+`integrates` between included systems/applications. The 2026-10-10 scope decision
+extends the existing grant to these undirected company-level associations. Existing
+stage-1 activations must not silently expand. Stage 2 requires customer-admin
+authorization explicitly covering integrations and a receiver that supports them.
+Edges contain only opaque endpoints and a closed kind: no network details, labels,
+data descriptions/counts, or personal data. The digest vocabulary does not itself
+authorize stage 2; sender and receiver enforce the activated scope.
 
 The .NET identifier is `AtlasTaxonomy.LandscapeShareRelations`; the TypeScript alias
 is `ATLAS_CAPABILITIES.landscapeShareRelations`. Both this grant and
