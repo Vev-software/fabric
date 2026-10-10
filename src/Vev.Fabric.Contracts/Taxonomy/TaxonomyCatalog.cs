@@ -87,7 +87,7 @@ public static class Capabilities
         new(AtlasTaxonomy.AiStructureBulk.Value, TaxonomyKind.Feature, "Batch document structuring into a reviewable landscape draft.", Reserved: true),
         new(AtlasTaxonomy.DiscoveryIngestion.Value, TaxonomyKind.Feature, "Discovery ingestion into Atlas.", Reserved: true),
         new(AtlasTaxonomy.LandscapeShare.Value, TaxonomyKind.Feature, "Push a minimized landscape digest to a consenting consuming product.", Reserved: true),
-        new(AtlasTaxonomy.LandscapeShareRelations.Value, TaxonomyKind.Feature, "Share only runsOn and suppliedBy relations and a layer hint with a consenting consuming product; requires atlas.landscape.share and admin opt-in. Does not authorize integration topology.", Reserved: true),
+        new(AtlasTaxonomy.LandscapeShareRelations.Value, TaxonomyKind.Feature, "Share minimized runsOn, suppliedBy and explicitly activated stage-2 integrates associations and a layer hint; requires atlas.landscape.share and customer-admin opt-in. No network details or edge metadata; stage-1 activation does not authorize stage 2.", Reserved: true),
         new(AtlasTaxonomy.DataIntrospection.Value, TaxonomyKind.Feature, "Database schema introspection into the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.DataOverlap.Value, TaxonomyKind.Feature, "Data overlap analysis (domain/dublet and consumer-map) over the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.DataQuality.Value, TaxonomyKind.Feature, "Data-quality, provenance and classification profiling over the Atlas data catalogue.", Reserved: true),
