@@ -2,6 +2,12 @@
   "contractVersion": "1",
   "capabilities": [
     {
+      "id": "atlas.landscape.share.relations",
+      "kind": "Feature",
+      "description": "Share only runsOn and suppliedBy relations and a layer hint with a consenting consuming product; requires atlas.landscape.share and admin opt-in. Does not authorize integration topology.",
+      "reserved": true
+    },
+    {
       "id": "atlas.ai.structure.bulk",
       "kind": "Feature",
       "description": "Batch document structuring into a reviewable landscape draft.",
