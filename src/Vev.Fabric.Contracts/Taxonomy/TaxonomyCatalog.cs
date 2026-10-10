@@ -210,6 +210,13 @@ public static class Reasons
         new(ReasonCodes.SharingActivationCodeExpired, "The activation code has expired.", Deny: true),
         new(ReasonCodes.SharingActivationCodeUsed, "The activation code has already been used.", Deny: true),
         new(ReasonCodes.SharingBindingMismatch, "The push names a tenant or consumer account other than the one the enrollment is bound to.", Deny: true),
+        new(ReasonCodes.MembershipSnapshotUnavailable, "No tenant membership snapshot has been applied yet.", Deny: true),
+        new(ReasonCodes.MembershipSnapshotInvalid, "The tenant membership snapshot is malformed or conflicts with the snapshot already applied at the same sequence.", Deny: true),
+        new(ReasonCodes.MembershipSnapshotUnsupportedVersion, "The tenant membership snapshot declares a schema version this consumer does not know.", Deny: true),
+        new(ReasonCodes.MembershipSnapshotTenantMismatch, "The tenant membership snapshot is scoped to a different tenant.", Deny: true),
+        new(ReasonCodes.MembershipSnapshotRolledBack, "A tenant membership snapshot older than the one already applied was rejected (anti-rollback).", Deny: true),
+        new(ReasonCodes.MembershipSnapshotExpired, "The tenant membership snapshot is past its validity window and confers no membership.", Deny: true),
+        new(ReasonCodes.MembershipNotFound, "The issuer and subject are not members of the tenant.", Deny: true),
         new(ReasonCodes.EntitlementSnapshotRolledBack, "A snapshot older than the highest already seen was rejected (anti-rollback).", Deny: true),
         new(ReasonCodes.EntitlementClockRegression, "The wall clock moved backwards past the last observed time.", Deny: true),
         new(ReasonCodes.TrialExpired, "The trial entitlement has expired; trials hard-stop and are not frozen open by an outage.", Deny: true)

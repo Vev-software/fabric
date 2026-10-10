@@ -97,6 +97,16 @@ Every product create/edit/delete flows through one append-only envelope. Redacti
 (the actor drops principal claims, and metadata keys are checked for secrets) and admin/security
 events are immutable, so audit stays consistent exactly where inconsistency would be a security risk.
 
+## Tenant membership
+
+`TenantMembershipSnapshot` is a portable, versioned list of a tenant's members with opaque role
+bindings. It is data only: no credentials, no transport and no role policy.
+
+- .NET contracts and reference consumer in [`src/Vev.Fabric.Contracts/Membership`](./src/Vev.Fabric.Contracts/Membership)
+- JSON Schema [`tenant-membership-snapshot.schema.json`](./schemas/v1/tenant-membership-snapshot.schema.json) and TypeScript types in [`sdk/typescript`](./sdk/typescript)
+- conformance samples in [`conformance/samples`](./conformance/samples) and negative fixtures in [`conformance/invalid`](./conformance/invalid)
+- how to apply it in [`docs/membership.md`](./docs/membership.md); decision in [ADR 0001](./docs/adr/0001-tenant-membership-snapshot.md)
+
 ## Current lifecycle surface
 
 The current hosted lifecycle slice implemented for `fabric#8` includes:
