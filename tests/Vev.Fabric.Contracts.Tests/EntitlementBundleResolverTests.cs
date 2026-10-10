@@ -10,6 +10,23 @@ public sealed class EntitlementBundleResolverTests
     private static readonly DateTimeOffset GraceUntil = IssuedAt.AddDays(7);
 
     [Fact]
+    public void Sharing_grants_are_paired_and_only_in_active_enterprise_bundles()
+    {
+        foreach (var offer in Enum.GetValues<EntitlementOffer>())
+        {
+            foreach (var lifecycle in Enum.GetValues<EntitlementLifecycleState>())
+            {
+                var snapshot = new EntitlementBundleResolver().Resolve(new EntitlementBundleRequest(
+                    "tenant-a", offer, lifecycle, IssuedAt, ExpiresAt, GraceUntil)).Snapshot;
+                var expected = (offer is EntitlementOffer.Enterprise or EntitlementOffer.SelfHostedEnterprise)
+                    && (lifecycle is EntitlementLifecycleState.Active or EntitlementLifecycleState.TrialActive);
+                Assert.Equal(expected, snapshot.Entitlements.Any(g => g.Capability == AtlasTaxonomy.LandscapeShare.Value));
+                Assert.Equal(expected, snapshot.Entitlements.Any(g => g.Capability == AtlasTaxonomy.LandscapeShareRelations.Value));
+            }
+        }
+    }
+
+    [Fact]
     public void Bulk_Structuring_Is_Not_Implicitly_Granted_By_Existing_Offers()
     {
         foreach (var offer in Enum.GetValues<EntitlementOffer>())

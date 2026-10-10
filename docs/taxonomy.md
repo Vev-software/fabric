@@ -92,6 +92,34 @@ No existing offer grants it automatically; bundle assignment is a separate decis
 Consumers must adopt a published SDK containing this identifier and align their
 reserved capability sets before enabling the feature.
 
+## Landscape relation sharing
+
+`atlas.landscape.share.relations` is confirmed as the separate reserved grant. The
+suffix keeps it under the existing sharing namespace while identifying the narrower
+scope: only `runsOn`, `suppliedBy` and a layer hint. It does not authorize integration
+topology; stage 2 needs a later grant or an explicit scope decision.
+
+The .NET identifier is `AtlasTaxonomy.LandscapeShareRelations`; the TypeScript alias
+is `ATLAS_CAPABILITIES.landscapeShareRelations`. Both this grant and
+`atlas.landscape.share`, plus admin opt-in through an active sharing enrollment,
+are required. A signed payload scope is never authorization. The reference evaluator's
+`EvaluateRelations(request, relationsEntitlement)` first checks the ordinary sharing
+request, then the separate relations entitlement, and bounds validity by both decisions.
+Consumers handling relations must use this composed check (or equivalent checks).
+The existing `Evaluate` method authorizes the base digest only.
+
+The conservative initial bundle choice grants both capabilities only to Enterprise
+and SelfHostedEnterprise while active; lifecycle restrictions remove both. Community,
+Hosted Trial, Hosted Starter and Pro do not receive either automatically. Owner question:
+should paid tiers below Enterprise or the hosted trial also carry both sharing grants?
+
+This is additive: existing request/schema shapes and base-digest evaluation are unchanged.
+Downstream Atlas aliases must align after a containing SDK is published; no downstream
+implementation is included here. Latest tag at implementation is `v0.1.9`; the default
+patch release would produce `Vev.Fabric.Contracts` and `@vev-software/fabric-contracts`
+version `0.1.10` (a minor bump would produce `0.2.0`). The owner chooses and approves
+the release; this change does not publish packages or enable integrations.
+
 ## Shared decision reasons
 
 The current shared reason-code catalog covers:

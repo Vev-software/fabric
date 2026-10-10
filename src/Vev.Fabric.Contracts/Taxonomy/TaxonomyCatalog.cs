@@ -87,6 +87,7 @@ public static class Capabilities
         new(AtlasTaxonomy.AiStructureBulk.Value, TaxonomyKind.Feature, "Batch document structuring into a reviewable landscape draft.", Reserved: true),
         new(AtlasTaxonomy.DiscoveryIngestion.Value, TaxonomyKind.Feature, "Discovery ingestion into Atlas.", Reserved: true),
         new(AtlasTaxonomy.LandscapeShare.Value, TaxonomyKind.Feature, "Push a minimized landscape digest to a consenting consuming product.", Reserved: true),
+        new(AtlasTaxonomy.LandscapeShareRelations.Value, TaxonomyKind.Feature, "Share only runsOn and suppliedBy relations and a layer hint with a consenting consuming product; requires atlas.landscape.share and admin opt-in. Does not authorize integration topology.", Reserved: true),
         new(AtlasTaxonomy.DataIntrospection.Value, TaxonomyKind.Feature, "Database schema introspection into the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.DataOverlap.Value, TaxonomyKind.Feature, "Data overlap analysis (domain/dublet and consumer-map) over the Atlas data catalogue.", Reserved: true),
         new(AtlasTaxonomy.DataQuality.Value, TaxonomyKind.Feature, "Data-quality, provenance and classification profiling over the Atlas data catalogue.", Reserved: true),
@@ -143,6 +144,8 @@ public static class AtlasTaxonomy
     /// enrollment. Reserved: whether outbound push is part of the free edition is decided by the edition, not here.
     /// </summary>
     public static readonly CapabilityId LandscapeShare = new("atlas.landscape.share");
+    /// <summary>Share runsOn and suppliedBy relations and a layer hint, requiring LandscapeShare and admin opt-in; excludes integration topology.</summary>
+    public static readonly CapabilityId LandscapeShareRelations = new("atlas.landscape.share.relations");
     public static readonly CapabilityId DataIntrospection = new("atlas.data.introspection");
     public static readonly CapabilityId DataOverlap = new("atlas.data.overlap");
     public static readonly CapabilityId DataQuality = new("atlas.data.quality");

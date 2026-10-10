@@ -602,6 +602,8 @@ export const ATLAS_CAPABILITIES = {
   aiGenerate: "atlas.ai.generate",
   discoveryIngestion: "atlas.discovery.ingestion",
   landscapeShare: "atlas.landscape.share",
+  /** Only runsOn, suppliedBy and a layer hint; requires landscapeShare and admin opt-in, excludes integration topology. */
+  landscapeShareRelations: "atlas.landscape.share.relations",
   dataIntrospection: "atlas.data.introspection",
   dataOverlap: "atlas.data.overlap",
   dataQuality: "atlas.data.quality",
