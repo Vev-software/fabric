@@ -1,6 +1,9 @@
 {
   "contractVersion": "1",
   "capabilities": [
+    { "id": "atlas.history.view", "kind": "Feature", "description": "Read the Atlas landscape as of a date, bounded by atlas.history.window-months.", "reserved": false },
+    { "id": "atlas.history.timeline", "kind": "Feature", "description": "Reserved extension for unlimited history look-back, date comparison and baselines.", "reserved": true },
+    { "id": "atlas.history.window-months", "kind": "Limit", "description": "Maximum look-back window in calendar months for atlas.history.view.", "reserved": false },
     { "id": "weekli.planning.extended", "kind": "Feature", "description": "Extended Weekli planning horizon.", "reserved": false },
     { "id": "weekli.ai.text", "kind": "Feature", "description": "Weekli text AI attempts.", "reserved": false },
     { "id": "weekli.ai.image", "kind": "Feature", "description": "Weekli image AI attempts.", "reserved": false },
