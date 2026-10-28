@@ -214,6 +214,33 @@ public sealed class TenantMembershipContractsTests
     }
 
     [Fact]
+    public void Role_collections_cannot_mutate_the_registry()
+    {
+        var (registry, _) = NewRegistry();
+        var roles = new[] { "Reader" };
+        registry.Apply(Snapshot(members:
+        [
+            new TenantMember(new TenantMemberIdentity(Issuer, "subject-1"), roles)
+        ]));
+
+        roles[0] = "TenantOwner";
+        var returnedRoles = Assert.IsAssignableFrom<IList<string>>(registry.Resolve(Issuer, "subject-1").Roles);
+        Assert.Throws<NotSupportedException>(() => returnedRoles[0] = "TenantOwner");
+        Assert.Equal(["Reader"], registry.Resolve(Issuer, "subject-1").Roles);
+    }
+
+    [Fact]
+    public void Future_snapshot_leaves_current_membership_unchanged()
+    {
+        var (registry, _) = NewRegistry();
+        registry.Apply(Snapshot());
+        var future = Snapshot(sequence: 8, members: []) with { IssuedAt = Issued.AddMinutes(1) };
+
+        Assert.Equal(ReasonCodes.MembershipSnapshotInvalid, registry.Apply(future).ReasonCode);
+        Assert.True(registry.Resolve(Issuer, "subject-1").IsMember);
+    }
+
+    [Fact]
     public void Malformed_snapshots_are_rejected()
     {
         var (registry, _) = NewRegistry();
@@ -222,6 +249,9 @@ public sealed class TenantMembershipContractsTests
         TenantMembershipSnapshot[] malformed =
         [
             Snapshot(sequence: 0),
+            Snapshot() with { Tenant = default },
+            Snapshot(tenant: " "),
+            Snapshot() with { IssuedAt = Issued.AddMinutes(1) },
             Snapshot(members: [new TenantMember(identity, [])]),
             Snapshot(members: [new TenantMember(identity, ["Reader", "Reader"])]),
             Snapshot(members: [new TenantMember(identity, [" "])]),

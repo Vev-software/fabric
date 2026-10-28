@@ -94,12 +94,17 @@ public sealed class TenantMembershipRegistry(string tenantId, TimeProvider? cloc
                 return TenantMembershipApplyResult.Reject(ReasonCodes.MembershipSnapshotUnsupportedVersion);
             }
 
+            if (string.IsNullOrWhiteSpace(snapshot.Tenant.TenantId))
+            {
+                return TenantMembershipApplyResult.Reject(ReasonCodes.MembershipSnapshotInvalid);
+            }
+
             if (!string.Equals(snapshot.Tenant.TenantId, tenantId, StringComparison.Ordinal))
             {
                 return TenantMembershipApplyResult.Reject(ReasonCodes.MembershipSnapshotTenantMismatch);
             }
 
-            if (!TryBuildIndex(snapshot, out var index))
+            if (snapshot.IssuedAt > now || !TryBuildIndex(snapshot, out var index))
             {
                 return TenantMembershipApplyResult.Reject(ReasonCodes.MembershipSnapshotInvalid);
             }
@@ -149,7 +154,7 @@ public sealed class TenantMembershipRegistry(string tenantId, TimeProvider? cloc
             }
 
             return _index.TryGetValue((issuer, subject), out var roles)
-                ? TenantMembershipResolution.Member(roles)
+                ? TenantMembershipResolution.Member(Array.AsReadOnly(roles))
                 : TenantMembershipResolution.Denied(ReasonCodes.MembershipNotFound);
         }
     }

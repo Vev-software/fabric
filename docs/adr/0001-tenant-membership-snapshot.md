@@ -30,7 +30,7 @@ no disabled flag and no partial or delta form in v1. Removal is a newer snapshot
 **Ordering.** `sequence` is monotonic per tenant. A lower value is rejected as rollback; an equal
 value is accepted only for identical content; anything else at the same value is invalid.
 
-**Validity.** `validUntil` is mandatory. Membership ends at that instant without further
+**Validity.** `validUntil` is mandatory. Snapshots with a future `issuedAt` are rejected. Membership ends at that instant without further
 messages, so a consumer cut off from its source fails closed.
 
 **Roles.** Role names are opaque strings, at least one per member. They are data, not policy.

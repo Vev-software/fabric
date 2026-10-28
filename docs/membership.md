@@ -45,14 +45,14 @@ A consumer applies a snapshot, in this order, and fails closed on every step:
 2. **Tenant.** Reject a snapshot whose tenant is not the one the consumer serves
    (`membership_snapshot_tenant_mismatch`).
 3. **Shape.** Reject duplicate identities, empty or duplicate roles, empty issuer/subject,
-   `sequence < 1` or `validUntil <= issuedAt` (`membership_snapshot_invalid`).
+   missing/blank tenant, `sequence < 1`, future `issuedAt` or `validUntil <= issuedAt` (`membership_snapshot_invalid`).
 4. **Order.** Reject a lower `sequence` than the one applied (`membership_snapshot_rolled_back`).
    An equal `sequence` is accepted only when the content is identical (idempotent redelivery);
    different content at the same sequence is `membership_snapshot_invalid`.
 5. **Validity.** Reject a snapshot that is already past `validUntil` (`membership_snapshot_expired`).
 
 Only then does it replace the previous snapshot, atomically. A rejected snapshot never changes
-state.
+membership state. Clock observations still advance on rejected applies.
 
 ## Resolving an identity
 
