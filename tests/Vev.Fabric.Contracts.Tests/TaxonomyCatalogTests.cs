@@ -32,6 +32,29 @@ public sealed class TaxonomyCatalogTests
     }
 
     [Fact]
+    public void Weekli_Identifiers_Agree_Across_Sdk_Catalogue_And_Conformance_Sample_Without_Default_Grants()
+    {
+        var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
+        var typescript = File.ReadAllText(Path.Combine(root, "sdk", "typescript", "src", "index.ts"));
+        using var sample = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "conformance", "samples", "taxonomy-catalog.sample.json")));
+        var expected = new (string Id, TaxonomyKind Kind)[]
+        {
+            (WeekliTaxonomy.PlanningExtended.Value, TaxonomyKind.Feature), (WeekliTaxonomy.AiText.Value, TaxonomyKind.Feature), (WeekliTaxonomy.AiImage.Value, TaxonomyKind.Feature),
+            (WeekliTaxonomy.PlanningHorizonDays.Value, TaxonomyKind.Limit), (WeekliTaxonomy.AiTextAttemptsMonth.Value, TaxonomyKind.Limit), (WeekliTaxonomy.AiImageAttemptsMonth.Value, TaxonomyKind.Limit)
+        };
+        Assert.Equal(6, Capabilities.All.Count(c => c.Id.StartsWith("weekli.", StringComparison.Ordinal)));
+        foreach (var (id, kind) in expected)
+        {
+            var definition = Assert.Single(Capabilities.All, c => c.Id == id);
+            Assert.Equal(kind, definition.Kind); Assert.False(definition.Reserved);
+            Assert.Contains($"\"{id}\"", typescript);
+            var row = Assert.Single(sample.RootElement.GetProperty("capabilities").EnumerateArray(), c => c.GetProperty("id").GetString() == id);
+            Assert.Equal(kind.ToString(), row.GetProperty("kind").GetString());
+            Assert.False(row.GetProperty("reserved").GetBoolean());
+        }
+    }
+
+    [Fact]
     public void LimitKeys_Are_WellFormed()
     {
         var limitIds = Capabilities.All
