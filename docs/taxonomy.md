@@ -126,6 +126,23 @@ patch release would produce `Vev.Fabric.Contracts` and `@vev-software/fabric-con
 version `0.1.10` (a minor bump would produce `0.2.0`). The owner chooses and approves
 the release; this change does not publish packages or enable integrations.
 
+## Weekli taxonomy
+
+Additive registration (issue #65), mirrored in `WeekliTaxonomy` (.NET), `WEEKLI_CAPABILITIES` and `WEEKLI_LIMIT_KEYS` (TypeScript):
+
+| Identifier | Kind | Unit |
+|---|---|---|
+| `weekli.planning.extended` | Feature | Extended planning |
+| `weekli.ai.text` | Feature | Text AI attempts |
+| `weekli.ai.image` | Feature | Image AI attempts |
+| `weekli.planning.horizon-days` | Limit | Calendar days from the Monday of the current ISO week, including the current week, in the consumer calendar time zone |
+| `weekli.ai.text.attempts.month` | Limit | Dispatched text provider attempts per UTC calendar month |
+| `weekli.ai.image.attempts.month` | Limit | Dispatched image provider attempts per UTC calendar month |
+
+An AI attempt counts when a provider request is dispatched, including failed or unknown outcomes. It is not a token, currency amount, successful response, delivered image or user action. An undispatched request does not consume an attempt allowance. A UTC calendar month starts at 00:00 UTC on day one; this is not an agreement-anchored billing month.
+
+No default allowance, price, commercial plan mapping or automatic grant is introduced. The identifiers are not reserved; explicit grants determine availability, including use in a trial. A planning limit is a relative horizon, not a duration in hours and not a cap on historical reads. Existing identifiers, catalogue shape and schema version retain their meanings. Publication follows the normal gated dual-SDK release; adding source identifiers does not publish a package or activate any consumer.
+
 ## Shared decision reasons
 
 The current shared reason-code catalog covers:

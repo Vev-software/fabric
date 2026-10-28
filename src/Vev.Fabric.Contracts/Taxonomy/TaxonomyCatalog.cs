@@ -66,12 +66,20 @@ public static class TaxonomyCatalog
 }
 
 /// <summary>
-/// Seeded capabilities and limits already consumed by Atlas and Fabric contracts.
+/// Seeded capabilities and limits in the public contract catalogue.
 /// </summary>
 public static class Capabilities
 {
     public static IReadOnlyList<CapabilityDefinition> All { get; } =
     [
+        // Weekli: units only, without default allowances or commercial plan mapping.
+        new(WeekliTaxonomy.PlanningExtended.Value, TaxonomyKind.Feature, "Extended Weekli planning horizon."),
+        new(WeekliTaxonomy.AiText.Value, TaxonomyKind.Feature, "Weekli text AI attempts."),
+        new(WeekliTaxonomy.AiImage.Value, TaxonomyKind.Feature, "Weekli image AI attempts."),
+        new(WeekliTaxonomy.PlanningHorizonDays.Value, TaxonomyKind.Limit, "Calendar days from the Monday of the current ISO week in the consumer calendar time zone, including the current week."),
+        new(WeekliTaxonomy.AiTextAttemptsMonth.Value, TaxonomyKind.Limit, "Dispatched text provider attempts per UTC calendar month, including failed or unknown outcomes; not tokens, money or user actions."),
+        new(WeekliTaxonomy.AiImageAttemptsMonth.Value, TaxonomyKind.Limit, "Dispatched image provider attempts per UTC calendar month, including failed or unknown outcomes; not delivered images or user actions."),
+
         // Atlas free/community catalogue surface
         new(AtlasTaxonomy.CatalogueRead.Value, TaxonomyKind.Feature, "Read the Atlas catalogue."),
         new(AtlasTaxonomy.CatalogueWrite.Value, TaxonomyKind.Feature, "Create, edit or delete Atlas catalogue entries."),
@@ -116,8 +124,19 @@ public static class Capabilities
 }
 
 /// <summary>
-/// Canonical Atlas capability and limit identifiers currently seeded in Fabric.
+/// Canonical Weekli capability and limit identifiers, without default grants or commercial plan mapping.
 /// </summary>
+public static class WeekliTaxonomy
+{
+    public static readonly CapabilityId PlanningExtended = new("weekli.planning.extended");
+    public static readonly CapabilityId AiText = new("weekli.ai.text");
+    public static readonly CapabilityId AiImage = new("weekli.ai.image");
+    public static readonly LimitKey PlanningHorizonDays = new("weekli.planning.horizon-days");
+    public static readonly LimitKey AiTextAttemptsMonth = new("weekli.ai.text.attempts.month");
+    public static readonly LimitKey AiImageAttemptsMonth = new("weekli.ai.image.attempts.month");
+}
+
+/// <summary>Canonical Atlas capability and limit identifiers.</summary>
 public static class AtlasTaxonomy
 {
     public static readonly CapabilityId CatalogueRead = new("atlas.catalogue.read");

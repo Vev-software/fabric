@@ -1,6 +1,12 @@
 {
   "contractVersion": "1",
   "capabilities": [
+    { "id": "weekli.planning.extended", "kind": "Feature", "description": "Extended Weekli planning horizon.", "reserved": false },
+    { "id": "weekli.ai.text", "kind": "Feature", "description": "Weekli text AI attempts.", "reserved": false },
+    { "id": "weekli.ai.image", "kind": "Feature", "description": "Weekli image AI attempts.", "reserved": false },
+    { "id": "weekli.planning.horizon-days", "kind": "Limit", "description": "Calendar days from the current ISO week Monday in the consumer calendar time zone, including the current week.", "reserved": false },
+    { "id": "weekli.ai.text.attempts.month", "kind": "Limit", "description": "Dispatched text provider attempts per UTC calendar month, including failed or unknown outcomes.", "reserved": false },
+    { "id": "weekli.ai.image.attempts.month", "kind": "Limit", "description": "Dispatched image provider attempts per UTC calendar month, including failed or unknown outcomes.", "reserved": false },
     {
       "id": "atlas.landscape.share.relations",
       "kind": "Feature",
