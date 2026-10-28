@@ -613,6 +613,22 @@ export const EXTENSION_VALIDATION_REASON_CODES = {
   reservedCapabilityDeclared: "extension_reserved_capability"
 } as const;
 
+/** Stable public Weekli identifiers; no default grant, price or allowance is implied. */
+export const WEEKLI_CAPABILITIES = {
+  planningExtended: "weekli.planning.extended",
+  aiText: "weekli.ai.text",
+  aiImage: "weekli.ai.image"
+} as const;
+
+export const WEEKLI_LIMIT_KEYS = {
+  /** Calendar days from the current ISO week's Monday, in the consumer calendar time zone. */
+  planningHorizonDays: "weekli.planning.horizon-days",
+  /** Dispatched text provider attempts per UTC calendar month, including failed/unknown outcomes. */
+  aiTextAttemptsMonth: "weekli.ai.text.attempts.month",
+  /** Dispatched image provider attempts per UTC calendar month, including failed/unknown outcomes. */
+  aiImageAttemptsMonth: "weekli.ai.image.attempts.month"
+} as const;
+
 export const ATLAS_CAPABILITIES = {
   catalogueRead: "atlas.catalogue.read",
   catalogueWrite: "atlas.catalogue.write",
@@ -626,6 +642,8 @@ export const ATLAS_CAPABILITIES = {
   aiGenerate: "atlas.ai.generate",
   discoveryIngestion: "atlas.discovery.ingestion",
   landscapeShare: "atlas.landscape.share",
+  /** Only runsOn, suppliedBy and a layer hint; requires landscapeShare and admin opt-in, excludes integration topology. */
+  landscapeShareRelations: "atlas.landscape.share.relations",
   dataIntrospection: "atlas.data.introspection",
   dataOverlap: "atlas.data.overlap",
   dataQuality: "atlas.data.quality",

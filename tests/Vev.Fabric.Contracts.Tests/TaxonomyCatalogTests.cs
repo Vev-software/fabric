@@ -6,12 +6,52 @@ namespace Vev.Fabric.Contracts.Tests;
 public sealed class TaxonomyCatalogTests
 {
     [Fact]
+    public void Relations_identifier_and_description_match_the_SDK_and_conformance_sample()
+    {
+        var definition = Assert.Single(Capabilities.All, c => c.Id == AtlasTaxonomy.LandscapeShareRelations.Value);
+        Assert.Equal("atlas.landscape.share.relations", definition.Id);
+        Assert.True(definition.Reserved);
+        Assert.Equal(TaxonomyKind.Feature, definition.Kind);
+        var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
+        var sdk = File.ReadAllText(Path.Combine(root, "sdk", "typescript", "src", "index.ts"));
+        Assert.Contains($"landscapeShareRelations: \"{definition.Id}\"", sdk);
+        using var sample = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "conformance", "samples", "taxonomy-catalog.sample.json")));
+        var relation = Assert.Single(sample.RootElement.GetProperty("capabilities").EnumerateArray(),
+            c => c.GetProperty("id").GetString() == definition.Id);
+        Assert.Equal(definition.Description, relation.GetProperty("description").GetString());
+        Assert.True(relation.GetProperty("reserved").GetBoolean());
+    }
+
+    [Fact]
     public void CapabilityIds_Are_Unique_And_WellFormed()
     {
         var ids = Capabilities.All.Select(capability => capability.Id).ToArray();
 
         Assert.Equal(ids.Length, ids.Distinct(StringComparer.Ordinal).Count());
         Assert.All(ids, id => Assert.True(TaxonomyCatalog.IsWellFormedCapabilityId(id), id));
+    }
+
+    [Fact]
+    public void Weekli_Identifiers_Agree_Across_Sdk_Catalogue_And_Conformance_Sample_Without_Default_Grants()
+    {
+        var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
+        var typescript = File.ReadAllText(Path.Combine(root, "sdk", "typescript", "src", "index.ts"));
+        using var sample = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "conformance", "samples", "taxonomy-catalog.sample.json")));
+        var expected = new (string Id, TaxonomyKind Kind)[]
+        {
+            (WeekliTaxonomy.PlanningExtended.Value, TaxonomyKind.Feature), (WeekliTaxonomy.AiText.Value, TaxonomyKind.Feature), (WeekliTaxonomy.AiImage.Value, TaxonomyKind.Feature),
+            (WeekliTaxonomy.PlanningHorizonDays.Value, TaxonomyKind.Limit), (WeekliTaxonomy.AiTextAttemptsMonth.Value, TaxonomyKind.Limit), (WeekliTaxonomy.AiImageAttemptsMonth.Value, TaxonomyKind.Limit)
+        };
+        Assert.Equal(6, Capabilities.All.Count(c => c.Id.StartsWith("weekli.", StringComparison.Ordinal)));
+        foreach (var (id, kind) in expected)
+        {
+            var definition = Assert.Single(Capabilities.All, c => c.Id == id);
+            Assert.Equal(kind, definition.Kind); Assert.False(definition.Reserved);
+            Assert.Contains($"\"{id}\"", typescript);
+            var row = Assert.Single(sample.RootElement.GetProperty("capabilities").EnumerateArray(), c => c.GetProperty("id").GetString() == id);
+            Assert.Equal(kind.ToString(), row.GetProperty("kind").GetString());
+            Assert.False(row.GetProperty("reserved").GetBoolean());
+        }
     }
 
     [Fact]
@@ -51,6 +91,7 @@ public sealed class TaxonomyCatalogTests
             "atlas.discovery.ingestion",
             "atlas.export.archimate",
             "atlas.landscape.share",
+            "atlas.landscape.share.relations",
         ];
 
         Assert.Equal(expected.OrderBy(id => id, StringComparer.Ordinal), reserved);

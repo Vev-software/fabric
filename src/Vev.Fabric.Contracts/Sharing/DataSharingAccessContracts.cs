@@ -63,6 +63,34 @@ public sealed class LocalDataSharingPushAccessEvaluator(TimeProvider? timeProvid
     public const string DefaultSource = "sharing:local-access-evaluator";
     private readonly TimeProvider timeProvider = timeProvider ?? TimeProvider.System;
 
+    /// <summary>
+    /// Decide relation sharing using the existing sharing enrollment and base grant plus the separate relations grant.
+    /// Callers must use this check for relations; payload scope never substitutes for either grant or admin opt-in.
+    /// </summary>
+    public DataSharingPushAccessDecision EvaluateRelations(DataSharingPushAccessRequest request, EntitlementDecision relationsEntitlement)
+    {
+        ArgumentNullException.ThrowIfNull(relationsEntitlement);
+        if (relationsEntitlement.Capability != AtlasTaxonomy.LandscapeShareRelations)
+            throw new ArgumentException("Relations entitlement must name the relations capability.", nameof(relationsEntitlement));
+
+        var sharing = Evaluate(request);
+        if (!sharing.Allowed) return sharing with { Capability = AtlasTaxonomy.LandscapeShareRelations };
+        if (!relationsEntitlement.Allowed)
+            return sharing with
+            {
+                Allowed = false,
+                Capability = AtlasTaxonomy.LandscapeShareRelations,
+                ReasonCode = relationsEntitlement.ReasonCode,
+                ValidUntil = relationsEntitlement.ValidUntil
+            };
+
+        return sharing with
+        {
+            Capability = AtlasTaxonomy.LandscapeShareRelations,
+            ValidUntil = Min(sharing.ValidUntil, relationsEntitlement.ValidUntil)
+        };
+    }
+
     public DataSharingPushAccessDecision Evaluate(DataSharingPushAccessRequest request)
     {
         ArgumentNullException.ThrowIfNull(request);

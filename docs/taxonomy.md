@@ -92,6 +92,57 @@ No existing offer grants it automatically; bundle assignment is a separate decis
 Consumers must adopt a published SDK containing this identifier and align their
 reserved capability sets before enabling the feature.
 
+## Landscape relation sharing
+
+`atlas.landscape.share.relations` is confirmed as the separate reserved grant. The
+suffix keeps it under the existing sharing namespace while identifying the narrower
+scope: `runsOn`, `suppliedBy`, a layer hint, and, with explicit stage-2 activation,
+`integrates` between included systems/applications. The 2026-10-10 scope decision
+extends the existing grant to these undirected company-level associations. Existing
+stage-1 activations must not silently expand. Stage 2 requires customer-admin
+authorization explicitly covering integrations and a receiver that supports them.
+Edges contain only opaque endpoints and a closed kind: no network details, labels,
+data descriptions/counts, or personal data. The digest vocabulary does not itself
+authorize stage 2; sender and receiver enforce the activated scope.
+
+The .NET identifier is `AtlasTaxonomy.LandscapeShareRelations`; the TypeScript alias
+is `ATLAS_CAPABILITIES.landscapeShareRelations`. Both this grant and
+`atlas.landscape.share`, plus admin opt-in through an active sharing enrollment,
+are required. A signed payload scope is never authorization. The reference evaluator's
+`EvaluateRelations(request, relationsEntitlement)` first checks the ordinary sharing
+request, then the separate relations entitlement, and bounds validity by both decisions.
+Consumers handling relations must use this composed check (or equivalent checks).
+The existing `Evaluate` method authorizes the base digest only.
+
+The conservative initial bundle choice grants both capabilities only to Enterprise
+and SelfHostedEnterprise while active; lifecycle restrictions remove both. Community,
+Hosted Trial, Hosted Starter and Pro do not receive either automatically. Owner question:
+should paid tiers below Enterprise or the hosted trial also carry both sharing grants?
+
+This is additive: existing request/schema shapes and base-digest evaluation are unchanged.
+Downstream Atlas aliases must align after a containing SDK is published; no downstream
+implementation is included here. Latest tag at implementation is `v0.1.9`; the default
+patch release would produce `Vev.Fabric.Contracts` and `@vev-software/fabric-contracts`
+version `0.1.10` (a minor bump would produce `0.2.0`). The owner chooses and approves
+the release; this change does not publish packages or enable integrations.
+
+## Weekli taxonomy
+
+Additive registration (issue #65), mirrored in `WeekliTaxonomy` (.NET), `WEEKLI_CAPABILITIES` and `WEEKLI_LIMIT_KEYS` (TypeScript):
+
+| Identifier | Kind | Unit |
+|---|---|---|
+| `weekli.planning.extended` | Feature | Extended planning |
+| `weekli.ai.text` | Feature | Text AI attempts |
+| `weekli.ai.image` | Feature | Image AI attempts |
+| `weekli.planning.horizon-days` | Limit | Calendar days from the Monday of the current ISO week, including the current week, in the consumer calendar time zone |
+| `weekli.ai.text.attempts.month` | Limit | Dispatched text provider attempts per UTC calendar month |
+| `weekli.ai.image.attempts.month` | Limit | Dispatched image provider attempts per UTC calendar month |
+
+An AI attempt counts when a provider request is dispatched, including failed or unknown outcomes. It is not a token, currency amount, successful response, delivered image or user action. An undispatched request does not consume an attempt allowance. A UTC calendar month starts at 00:00 UTC on day one; this is not an agreement-anchored billing month.
+
+No default allowance, price, commercial plan mapping or automatic grant is introduced. The identifiers are not reserved; explicit grants determine availability, including use in a trial. A planning limit is a relative horizon, not a duration in hours and not a cap on historical reads. Existing identifiers, catalogue shape and schema version retain their meanings. Publication follows the normal gated dual-SDK release; adding source identifiers does not publish a package or activate any consumer.
+
 ## Shared decision reasons
 
 The current shared reason-code catalog covers:

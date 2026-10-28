@@ -105,6 +105,12 @@ public sealed class EntitlementBundleResolver
     private static readonly EntitlementGrant PortalReadOnly =
         new(AtlasTaxonomy.PortalReadonly.Value, "bundle");
 
+    private static readonly EntitlementGrant LandscapeShare =
+        new(AtlasTaxonomy.LandscapeShare.Value, "bundle");
+
+    private static readonly EntitlementGrant LandscapeShareRelations =
+        new(AtlasTaxonomy.LandscapeShareRelations.Value, "bundle");
+
     public EntitlementBundleResolution Resolve(EntitlementBundleRequest request)
     {
         var grants = ResolveBaseOffer(request.Offer);
@@ -211,6 +217,8 @@ public sealed class EntitlementBundleResolver
 
             EntitlementOffer.Enterprise or EntitlementOffer.SelfHostedEnterprise =>
             [
+                LandscapeShare,
+                LandscapeShareRelations,
                 CatalogueRead,
                 CatalogueWrite,
                 ExportPortableBundle,

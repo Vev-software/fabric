@@ -30,6 +30,26 @@ public sealed class DataSharingAccessContractsTests
         new LocalDataSharingPushAccessEvaluator().Evaluate(request);
 
     [Fact]
+    public void Relations_require_both_grants_and_the_existing_enrollment_checks()
+    {
+        var evaluator = new LocalDataSharingPushAccessEvaluator();
+        var relations = EntitlementDecision.Allow(Vev.Fabric.Contracts.Taxonomy.AtlasTaxonomy.LandscapeShareRelations, "test", Now, Now.AddDays(2));
+        var relationsDenied = EntitlementDecision.Deny(relations.Capability, ReasonCodes.EntitlementDenied, "test", Now);
+
+        var relationsOnly = evaluator.EvaluateRelations(Request(entitlement: NotEntitled()), relations);
+        Assert.False(relationsOnly.Allowed);
+        Assert.Equal(ReasonCodes.EntitlementDenied, relationsOnly.ReasonCode);
+        Assert.False(evaluator.EvaluateRelations(Request(), relationsDenied).Allowed);
+        Assert.False(evaluator.EvaluateRelations(Request(enrollment: new DataSharingEnrollmentTimeline(Now)), relations).Allowed);
+        Assert.False(evaluator.EvaluateRelations(Request(claimed: new DataSharingClaim("tenant-b")), relations).Allowed);
+        var allowed = evaluator.EvaluateRelations(Request(), relations);
+        Assert.True(allowed.Allowed);
+        Assert.Equal(relations.Capability, allowed.Capability);
+        Assert.Equal(Now.AddDays(2), allowed.ValidUntil);
+        Assert.Throws<ArgumentException>(() => evaluator.EvaluateRelations(Request(), Entitled()));
+    }
+
+    [Fact]
     public void An_active_enrollment_of_an_entitled_tenant_is_allowed_until_the_earlier_of_credential_and_entitlement()
     {
         var decision = Evaluate(Request());
