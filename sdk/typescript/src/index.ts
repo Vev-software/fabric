@@ -606,6 +606,9 @@ export const WEEKLI_LIMIT_KEYS = {
 } as const;
 
 export const ATLAS_CAPABILITIES = {
+  historyView: "atlas.history.view",
+  /** Reserved extension for unlimited look-back, comparison and baselines. */
+  historyTimeline: "atlas.history.timeline",
   catalogueRead: "atlas.catalogue.read",
   catalogueWrite: "atlas.catalogue.write",
   analysisIntegrationMap: "atlas.analysis.integration-map",
@@ -629,6 +632,8 @@ export const ATLAS_CAPABILITIES = {
 } as const;
 
 export const ATLAS_LIMIT_KEYS = {
+  /** Maximum look-back in calendar months for historyView; no default is assigned. */
+  historyWindowMonths: "atlas.history.window-months",
   entities: "atlas.entities",
   users: "atlas.users",
   storage: "atlas.storage",
