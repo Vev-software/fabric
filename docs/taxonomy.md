@@ -31,6 +31,9 @@ Resource ids follow the same lowercase/stable rule, but allow path-like scoping:
 
 Current Atlas feature ids seeded in Fabric:
 
+- `atlas.history.view`
+- `atlas.history.timeline`
+
 - `atlas.catalogue.read`
 - `atlas.catalogue.write`
 - `atlas.export.portable-bundle`
@@ -50,6 +53,8 @@ Current Atlas feature ids seeded in Fabric:
 
 Current Atlas limit keys:
 
+- `atlas.history.window-months`
+
 - `atlas.entities`
 - `atlas.users`
 - `atlas.storage`
@@ -62,6 +67,8 @@ entitlement work can treat them explicitly as commercial seams. This is the sing
 for the reserved set: downstream editions (for example the Atlas Community `ReservedPaid` set) key
 their entitlement gates on exactly these ids and must not invent parallel strings. The reserved
 commercial seams are:
+
+- `atlas.history.timeline`
 
 - `atlas.analysis.integration-map`
 - `atlas.analysis.eol`
@@ -161,3 +168,23 @@ The public taxonomy contract now exists in three places:
 - .NET definitions in `src/Vev.Fabric.Contracts/Taxonomy`
 - TypeScript mirror in `sdk/typescript/src/index.ts`
 - schema and sample document in `schemas/v1/taxonomy-catalog.schema.json` and `conformance/samples/taxonomy-catalog.sample.json`
+
+## Landscape history
+
+Issue #63 adds vocabulary only:
+
+| Identifier | Kind | SDK aliases | Meaning |
+|---|---|---|---|
+| `atlas.history.view` | Feature | `AtlasTaxonomy.HistoryView` / `ATLAS_CAPABILITIES.historyView` | Read the landscape as of a date, bounded by the history window. |
+| `atlas.history.timeline` | Feature, reserved | `AtlasTaxonomy.HistoryTimeline` / `ATLAS_CAPABILITIES.historyTimeline` | Extension for unlimited look-back, comparison between dates and baselines. |
+| `atlas.history.window-months` | Limit | `AtlasTaxonomy.HistoryWindowMonths` / `ATLAS_LIMIT_KEYS.historyWindowMonths` | Maximum look-back in calendar months for the as-of view. |
+
+The proposed spelling `atlas.history.windowMonths` is normalized to
+`atlas.history.window-months` to follow the existing lowercase taxonomy rules.
+There is no alias with the mixed-case spelling and no existing identifier is renamed.
+
+Registration does not grant access, assign a plan, set a default month count or enable
+history/timeline behavior. Reserved describes the extension seam; it does not grant
+unlimited access by itself. Consumers apply their entitlement and limit decisions.
+No existing bundle or grant changes. The addition preserves contract version 1 and
+requires a separate approved SDK release and consumer adoption before use.

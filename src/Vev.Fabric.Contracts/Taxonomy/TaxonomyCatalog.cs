@@ -85,6 +85,11 @@ public static class Capabilities
         new(AtlasTaxonomy.CatalogueWrite.Value, TaxonomyKind.Feature, "Create, edit or delete Atlas catalogue entries."),
         new(AtlasTaxonomy.ExportPortableBundle.Value, TaxonomyKind.Feature, "Export a portable Atlas bundle."),
 
+        // History vocabulary only; grants and concrete window sizes are assigned by consumers.
+        new(AtlasTaxonomy.HistoryView.Value, TaxonomyKind.Feature, "Read the Atlas landscape as of a date, bounded by atlas.history.window-months."),
+        new(AtlasTaxonomy.HistoryTimeline.Value, TaxonomyKind.Feature, "Reserved extension for unlimited history look-back, date comparison and baselines.", Reserved: true),
+        new(AtlasTaxonomy.HistoryWindowMonths.Value, TaxonomyKind.Limit, "Maximum look-back window in calendar months for atlas.history.view."),
+
         // Atlas commercial/hosted feature surface
         new(AtlasTaxonomy.AnalysisIntegrationMap.Value, TaxonomyKind.Feature, "Integration mapping across the landscape.", Reserved: true),
         new(AtlasTaxonomy.AnalysisEndOfLife.Value, TaxonomyKind.Feature, "End-of-life analysis over the landscape.", Reserved: true),
@@ -139,6 +144,9 @@ public static class WeekliTaxonomy
 /// <summary>Canonical Atlas capability and limit identifiers.</summary>
 public static class AtlasTaxonomy
 {
+    public static readonly CapabilityId HistoryView = new("atlas.history.view");
+    public static readonly CapabilityId HistoryTimeline = new("atlas.history.timeline");
+    public static readonly LimitKey HistoryWindowMonths = new("atlas.history.window-months");
     public static readonly CapabilityId CatalogueRead = new("atlas.catalogue.read");
     public static readonly CapabilityId CatalogueWrite = new("atlas.catalogue.write");
     public static readonly CapabilityId AnalysisIntegrationMap = new("atlas.analysis.integration-map");

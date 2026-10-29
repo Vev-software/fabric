@@ -6,6 +6,36 @@ namespace Vev.Fabric.Contracts.Tests;
 public sealed class TaxonomyCatalogTests
 {
     [Fact]
+    public void History_identifiers_agree_across_both_sdks_and_the_conformance_sample()
+    {
+        var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
+        var sdk = File.ReadAllText(Path.Combine(root, "sdk", "typescript", "src", "index.ts"));
+        using var sample = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "conformance", "samples", "taxonomy-catalog.sample.json")));
+        var expected = new (string Id, string Alias, TaxonomyKind Kind, bool Reserved)[]
+        {
+            (AtlasTaxonomy.HistoryView.Value, "historyView", TaxonomyKind.Feature, false),
+            (AtlasTaxonomy.HistoryTimeline.Value, "historyTimeline", TaxonomyKind.Feature, true),
+            (AtlasTaxonomy.HistoryWindowMonths.Value, "historyWindowMonths", TaxonomyKind.Limit, false)
+        };
+        Assert.Equal(3, Capabilities.All.Count(c => c.Id.StartsWith("atlas.history.", StringComparison.Ordinal)));
+        foreach (var (id, alias, kind, reserved) in expected)
+        {
+            var definition = Assert.Single(Capabilities.All, c => c.Id == id);
+            Assert.Equal(kind, definition.Kind);
+            Assert.Equal(reserved, definition.Reserved);
+            Assert.Contains($"{alias}: \"{id}\"", sdk);
+            var row = Assert.Single(sample.RootElement.GetProperty("capabilities").EnumerateArray(), c => c.GetProperty("id").GetString() == id);
+            Assert.Equal(kind.ToString(), row.GetProperty("kind").GetString());
+            Assert.Equal(reserved, row.GetProperty("reserved").GetBoolean());
+            Assert.Equal(definition.Description, row.GetProperty("description").GetString());
+        }
+        Assert.Equal("atlas.history.view", AtlasTaxonomy.HistoryView.Value);
+        Assert.Equal("atlas.history.timeline", AtlasTaxonomy.HistoryTimeline.Value);
+        Assert.Equal("atlas.history.window-months", AtlasTaxonomy.HistoryWindowMonths.Value);
+        Assert.False(TaxonomyCatalog.IsWellFormedLimitKey("atlas.history.windowMonths"));
+    }
+
+    [Fact]
     public void Relations_identifier_and_description_match_the_SDK_and_conformance_sample()
     {
         var definition = Assert.Single(Capabilities.All, c => c.Id == AtlasTaxonomy.LandscapeShareRelations.Value);
@@ -90,6 +120,7 @@ public sealed class TaxonomyCatalogTests
             "atlas.data.quality",
             "atlas.discovery.ingestion",
             "atlas.export.archimate",
+            "atlas.history.timeline",
             "atlas.landscape.share",
             "atlas.landscape.share.relations",
         ];
