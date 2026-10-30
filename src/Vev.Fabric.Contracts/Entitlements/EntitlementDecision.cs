@@ -62,6 +62,13 @@ public static class ReasonCodes
     public const string SharingActivationCodeExpired = "sharing_activation_code_expired";
     public const string SharingActivationCodeUsed = "sharing_activation_code_used";
     public const string SharingBindingMismatch = "sharing_binding_mismatch";
+    public const string MembershipSnapshotUnavailable = "membership_snapshot_unavailable";
+    public const string MembershipSnapshotInvalid = "membership_snapshot_invalid";
+    public const string MembershipSnapshotUnsupportedVersion = "membership_snapshot_unsupported_version";
+    public const string MembershipSnapshotTenantMismatch = "membership_snapshot_tenant_mismatch";
+    public const string MembershipSnapshotRolledBack = "membership_snapshot_rolled_back";
+    public const string MembershipSnapshotExpired = "membership_snapshot_expired";
+    public const string MembershipNotFound = "membership_not_found";
 
     // Offline evaluator hardening (fabric#9, security#1 T3/T4/T7).
 

@@ -26,6 +26,7 @@
   <ItemGroup>
     <None Include="../../schemas/**/*.json" CopyToOutputDirectory="PreserveNewest" LinkBase="schemas/" />
     <None Include="../../conformance/samples/**/*.json" CopyToOutputDirectory="PreserveNewest" LinkBase="samples/" />
+    <None Include="../../conformance/invalid/**/*.json" CopyToOutputDirectory="PreserveNewest" LinkBase="invalid/" />
   </ItemGroup>
 
 </Project>

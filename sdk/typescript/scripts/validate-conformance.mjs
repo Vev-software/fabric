@@ -8,6 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const schemaDir = path.join(repoRoot, "schemas", "v1");
 const sampleDir = path.join(repoRoot, "conformance", "samples");
+const invalidDir = path.join(repoRoot, "conformance", "invalid");
 
 const sampleSchemaMap = new Map([
   ["audit-event.sample.json", "audit-event.schema.json"],
@@ -29,6 +30,7 @@ const sampleSchemaMap = new Map([
   ["evaluate-entitlements-request.sample.json", "evaluate-entitlements-request.schema.json"],
   ["import-signed-entitlement-snapshot-request.sample.json", "import-signed-entitlement-snapshot-request.schema.json"],
   ["signed-entitlement-snapshot.sample.json", "signed-entitlement-snapshot.schema.json"],
+  ["tenant-membership-snapshot.sample.json", "tenant-membership-snapshot.schema.json"],
   ["tenant-lifecycle-query.sample.json", "tenant-lifecycle-query.schema.json"],
   ["tenant-lifecycle-status.sample.json", "tenant-lifecycle-status.schema.json"],
   ["tenant-lifecycle-transition-request.sample.json", "tenant-lifecycle-transition-request.schema.json"],
@@ -70,8 +72,26 @@ for (const [sampleFile, schemaFile] of sampleSchemaMap) {
   }
 }
 
+// Negative fixtures: `<schema-name>.<case>.json` must be rejected by `<schema-name>.schema.json`.
+let invalidCount = 0;
+for (const file of readdirSync(invalidDir).filter((f) => f.endsWith(".json"))) {
+  const schemaName = file.split(".")[0];
+  const schema = ajv.getSchema(`https://schemas.vev.software/fabric/v1/${schemaName}.schema.json`);
+  if (!schema) {
+    console.error(`Missing schema registration for invalid fixture ${file}`);
+    failures++;
+    continue;
+  }
+
+  invalidCount++;
+  if (schema(JSON.parse(readFileSync(path.join(invalidDir, file), "utf8")))) {
+    failures++;
+    console.error(`Invalid fixture ${file} was accepted by ${schemaName}.schema.json`);
+  }
+}
+
 if (failures > 0) {
   process.exit(1);
 }
 
-console.log(`Validated ${sampleSchemaMap.size} conformance samples against published schemas.`);
+console.log(`Validated ${sampleSchemaMap.size} conformance samples and rejected ${invalidCount} invalid fixtures against published schemas.`);

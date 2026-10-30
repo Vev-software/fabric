@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "tenant": {
+    "tenantId": "tenant-b"
+  },
+  "sequence": 7,
+  "issuedAt": "2026-10-01T10:00:00Z",
+  "validUntil": "2026-10-01T10:05:00Z",
+  "members": [
+    {
+      "identity": {
+        "issuer": "https://id.example.test/",
+        "subject": "subject-1"
+      },
+      "roles": [
+        "Reader"
+      ]
+    },
+    {
+      "identity": {
+        "issuer": "https://id.example.test/",
+        "subject": "subject-2"
+      },
+      "roles": [
+        "Contributor",
+        "Reader"
+      ]
+    },
+    {
+      "identity": {
+        "issuer": "https://other-id.example.test/",
+        "subject": "subject-1"
+      },
+      "roles": [
+        "TenantOwner"
+      ]
+    }
+  ]
+}
