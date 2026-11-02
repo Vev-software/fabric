@@ -1,0 +1,6 @@
+{
+  "note": "Deliberately bad fixture for the public naming guard; all names are dummies. Excluded from structural scans.",
+  "enrolments": [{ "productId": "secret-product-x", "offerId": "offer-1" }],
+  "capabilities": [{ "id": "secretns.feature.on" }],
+  "text": "secret-product-x costs 99 DKK per month"
+}

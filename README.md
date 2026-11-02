@@ -45,6 +45,9 @@ Contributions are welcome under the terms in `CONTRIBUTING.md`. Because VEV oper
 open-core model, contributions to this repository require a sign-off (DCO or CLA as stated
 per repo).
 
+This repository is public, so examples, fixtures and docs follow a naming rule: see
+[`docs/public-naming-rule.md`](./docs/public-naming-rule.md).
+
 ## Current authorization surface
 
 The current authorization slice implemented for `fabric#5` includes:
