@@ -13,7 +13,7 @@ namespace Vev.Fabric.Contracts.Entitlements;
 /// <param name="Counter">
 /// Optional monotonic issue counter per tenant+deployment. When present it is a stricter
 /// anti-rollback nonce than <see cref="IssuedAt"/>: a snapshot whose counter is lower than the
-/// highest already seen is refused even if its timestamp looks newer (fabric#9, security#1 T3).
+/// highest already seen is refused even if its timestamp looks newer (fabric#9, threat T3).
 /// </param>
 public sealed record EntitlementSnapshot(
     string Tenant,

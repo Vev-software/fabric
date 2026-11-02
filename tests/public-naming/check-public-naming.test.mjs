@@ -116,3 +116,34 @@ test("guard passes on the current repository without a deny-list", () => {
   assert.equal(r.status, 0, r.stdout + r.stderr);
   assert.match(r.stdout, /deny-list not configured, skipped/);
 });
+
+test("deny-list matches whole words only", () => {
+  const hit = (text, ...deny) => checkDenyList(f("a.md", text), deny, null).length;
+  assert.equal(hit("the word is here", "word"), 1);
+  assert.equal(hit("the words are here", "word"), 0);
+  assert.equal(hit("a sword", "word"), 0);
+  assert.equal(hit("(word), word. word:", "word"), 1);
+  assert.equal(hit("WORD and Word", "word"), 1);
+  assert.equal(hit("wörd is here", "wörd"), 1);
+  assert.equal(hit("wörds", "wörd"), 0);
+  assert.equal(hit("snake_word", "word"), 0);
+  assert.equal(hit("word2", "word"), 0);
+});
+
+test("deny-list treats hyphenated slugs as one token and catches issue references", () => {
+  const hit = (text, ...deny) => checkDenyList(f("a.md", text), deny, null);
+  assert.equal(hit("see my-slug here", "my-slug").length, 1);
+  assert.equal(hit("see my-slug-extra here", "my-slug").length, 0);
+  assert.equal(hit("see pre-my-slug here", "my-slug").length, 0);
+  assert.equal(hit("see my-slug here", "slug").length, 0);
+  const ref = hit("implemented for `name#123` and name#7", "name");
+  assert.equal(ref.length, 1);
+  assert.equal(ref[0].col, 18);
+  assert.equal(hit("owner/name#5", "name").length, 1);
+});
+
+test("deny-list also applies to file names and regex metacharacters are literal", () => {
+  assert.equal(checkDenyList(f("docs/word.md", "x"), ["word"], null).length, 1);
+  assert.equal(checkDenyList(f("docs/words.md", "x"), ["word"], null).length, 0);
+  assert.equal(checkDenyList(f("a.md", "abc"), ["a.c"], null).length, 0);
+});

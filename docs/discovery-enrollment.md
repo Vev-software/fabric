@@ -1,6 +1,6 @@
 # Fabric Discovery Enrollment
 
-This document records the public discovery enrollment surface implemented for `atlas-enterprise#9`
+This document records the public discovery enrollment surface implemented for the discovery feature of the Atlas product
 on August 15, 2026.
 
 ## Scope

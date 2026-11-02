@@ -117,12 +117,20 @@ export function parseDenyList(raw) {
   return (raw ?? "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
 }
 
+// A deny-list word matches only as a whole token: not preceded or followed by a letter, digit,
+// underscore or hyphen (unicode-aware). A hyphenated slug is therefore one token, and a reference
+// such as `name#123` still matches the name part.
+export function wordRegex(word) {
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(?<![\\p{L}\\p{N}_-])${escaped}(?![\\p{L}\\p{N}_-])`, "iu");
+}
+
 function scanText(label, text, deny, findings) {
+  const patterns = deny.map((word) => [word, wordRegex(word)]);
   text.split("\n").forEach((l, i) => {
-    const lower = l.toLowerCase();
-    for (const word of deny) {
-      const col = lower.indexOf(word);
-      if (col >= 0) findings.push({ file: label, line: i + 1, col: col + 1, length: word.length });
+    for (const [word, re] of patterns) {
+      const m = re.exec(l);
+      if (m) findings.push({ file: label, line: i + 1, col: m.index + 1, length: word.length });
     }
   });
 }
