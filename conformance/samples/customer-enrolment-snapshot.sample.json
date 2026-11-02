@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "customer": { "customerId": "cust-7f3a9c" },
+  "sequence": 3,
+  "issuedAt": "2026-11-01T09:00:00Z",
+  "enrolments": [
+    {
+      "productId": "weekli",
+      "offerId": "offer-family",
+      "source": "Paid",
+      "status": "Active",
+      "from": "2026-11-01T00:00:00Z"
+    },
+    {
+      "productId": "curio",
+      "offerId": "offer-intro",
+      "source": "Trial",
+      "status": "Active",
+      "from": "2026-11-01T00:00:00Z",
+      "until": "2026-11-15T00:00:00Z"
+    }
+  ]
+}

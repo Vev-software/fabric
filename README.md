@@ -107,6 +107,14 @@ bindings. It is data only: no credentials, no transport and no role policy.
 - conformance samples in [`conformance/samples`](./conformance/samples) and negative fixtures in [`conformance/invalid`](./conformance/invalid)
 - how to apply it in [`docs/membership.md`](./docs/membership.md); decision in [ADR 0001](./docs/adr/0001-tenant-membership-snapshot.md)
 
+## Customer enrolment
+
+`CustomerEnrolmentSnapshot` is a portable, versioned statement of which products one customer is enrolled in, identified only by an opaque `CustomerRef`. It carries no personal data, prices or payment concepts.
+
+- .NET contracts in [`src/Vev.Fabric.Contracts/Customers`](./src/Vev.Fabric.Contracts/Customers)
+- JSON Schema [`customer-enrolment-snapshot.schema.json`](./schemas/v1/customer-enrolment-snapshot.schema.json) and TypeScript types in [`sdk/typescript`](./sdk/typescript)
+- details in [`docs/customer-enrolment.md`](./docs/customer-enrolment.md)
+
 ## Current lifecycle surface
 
 The current hosted lifecycle slice implemented for `fabric#8` includes:

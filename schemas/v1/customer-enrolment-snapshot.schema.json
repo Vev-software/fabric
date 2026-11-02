@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.vev.software/fabric/v1/customer-enrolment-snapshot.schema.json",
+  "title": "CustomerEnrolmentSnapshot",
+  "description": "Portable, versioned statement of which products one customer is enrolled in (fabric#69). It identifies the customer only by an opaque id and carries no personal data, no prices, no payment concepts and no product domain. How it is authenticated or delivered is outside this contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "customer", "sequence", "issuedAt", "enrolments"],
+  "properties": {
+    "schemaVersion": {
+      "const": 1,
+      "description": "Contract version. A consumer rejects every value it does not know (fail closed)."
+    },
+    "customer": { "$ref": "#/$defs/customerRef" },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Monotonic revision for this customer. A consumer never accepts a lower sequence than it has applied."
+    },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "enrolments": {
+      "type": "array",
+      "description": "The complete set of product enrolments. Absence of a product means the customer is not enrolled in it. At most one enrolment per product.",
+      "items": { "$ref": "#/$defs/productEnrolment" }
+    }
+  },
+  "$defs": {
+    "customerRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["customerId"],
+      "properties": {
+        "customerId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Opaque, stable customer identifier. Compared exactly; carries no meaning and is never an e-mail address or a name."
+        }
+      }
+    },
+    "productEnrolment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["productId", "offerId", "source", "status", "from"],
+      "properties": {
+        "productId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Stable lower-case product identifier."
+        },
+        "offerId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Opaque offer identifier chosen by the issuer. The contract assigns it no price, plan or tier meaning."
+        },
+        "source": {
+          "type": "string",
+          "enum": ["Paid", "Gift", "Trial", "Bundle"],
+          "description": "How the enrolment came about."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Active", "Suspended", "Ended"]
+        },
+        "from": { "type": "string", "format": "date-time", "description": "Start of the enrolment period." },
+        "until": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "End of the enrolment period; absent or null means open-ended. Must be later than 'from'."
+        }
+      }
+    }
+  }
+}
