@@ -1,1 +1,1 @@
-{ "schemaVersion": 1, "customer": { "customerId": "cust-7f3a9c" }, "sequence": 3, "issuedAt": "2026-11-01T09:00:00Z", "enrolments": [{ "productId": "Weekli", "offerId": "offer-family", "source": "Paid", "status": "Active", "from": "2026-11-01T00:00:00Z" }] }
+{ "schemaVersion": 1, "customer": { "customerId": "cust-7f3a9c" }, "sequence": 3, "issuedAt": "2026-11-01T09:00:00Z", "enrolments": [{ "productId": "Product-A", "offerId": "offer-family", "source": "Paid", "status": "Active", "from": "2026-11-01T00:00:00Z" }] }
