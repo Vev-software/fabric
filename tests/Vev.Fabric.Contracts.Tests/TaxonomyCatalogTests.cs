@@ -70,9 +70,9 @@ public sealed class TaxonomyCatalogTests
         var expected = new (string Id, TaxonomyKind Kind)[]
         {
             (WeekliTaxonomy.PlanningExtended.Value, TaxonomyKind.Feature), (WeekliTaxonomy.AiText.Value, TaxonomyKind.Feature), (WeekliTaxonomy.AiImage.Value, TaxonomyKind.Feature),
-            (WeekliTaxonomy.PlanningHorizonDays.Value, TaxonomyKind.Limit), (WeekliTaxonomy.AiTextAttemptsMonth.Value, TaxonomyKind.Limit), (WeekliTaxonomy.AiImageAttemptsMonth.Value, TaxonomyKind.Limit)
+            (WeekliTaxonomy.PlanningHorizonDays.Value, TaxonomyKind.Limit), (WeekliTaxonomy.AiTextAttemptsMonth.Value, TaxonomyKind.Limit), (WeekliTaxonomy.AiImageAttemptsMonth.Value, TaxonomyKind.Limit), (WeekliTaxonomy.PlansExtra.Value, TaxonomyKind.Limit)
         };
-        Assert.Equal(6, Capabilities.All.Count(c => c.Id.StartsWith("weekli.", StringComparison.Ordinal)));
+        Assert.Equal(7, Capabilities.All.Count(c => c.Id.StartsWith("weekli.", StringComparison.Ordinal)));
         foreach (var (id, kind) in expected)
         {
             var definition = Assert.Single(Capabilities.All, c => c.Id == id);

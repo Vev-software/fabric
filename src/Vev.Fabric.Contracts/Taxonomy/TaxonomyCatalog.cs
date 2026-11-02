@@ -79,6 +79,7 @@ public static class Capabilities
         new(WeekliTaxonomy.PlanningHorizonDays.Value, TaxonomyKind.Limit, "Calendar days from the Monday of the current ISO week in the consumer calendar time zone, including the current week."),
         new(WeekliTaxonomy.AiTextAttemptsMonth.Value, TaxonomyKind.Limit, "Dispatched text provider attempts per UTC calendar month, including failed or unknown outcomes; not tokens, money or user actions."),
         new(WeekliTaxonomy.AiImageAttemptsMonth.Value, TaxonomyKind.Limit, "Dispatched image provider attempts per UTC calendar month, including failed or unknown outcomes; not delivered images or user actions."),
+        new(WeekliTaxonomy.PlansExtra.Value, TaxonomyKind.Limit, "Number of additional active week plans; a count, not a price or plan tier."),
 
         // Atlas free/community catalogue surface
         new(AtlasTaxonomy.CatalogueRead.Value, TaxonomyKind.Feature, "Read the Atlas catalogue."),
@@ -139,6 +140,7 @@ public static class WeekliTaxonomy
     public static readonly LimitKey PlanningHorizonDays = new("weekli.planning.horizon-days");
     public static readonly LimitKey AiTextAttemptsMonth = new("weekli.ai.text.attempts.month");
     public static readonly LimitKey AiImageAttemptsMonth = new("weekli.ai.image.attempts.month");
+    public static readonly LimitKey PlansExtra = new("weekli.plans.extra");
 }
 
 /// <summary>Canonical Atlas capability and limit identifiers.</summary>

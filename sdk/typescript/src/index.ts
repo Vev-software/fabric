@@ -626,7 +626,9 @@ export const WEEKLI_LIMIT_KEYS = {
   /** Dispatched text provider attempts per UTC calendar month, including failed/unknown outcomes. */
   aiTextAttemptsMonth: "weekli.ai.text.attempts.month",
   /** Dispatched image provider attempts per UTC calendar month, including failed/unknown outcomes. */
-  aiImageAttemptsMonth: "weekli.ai.image.attempts.month"
+  aiImageAttemptsMonth: "weekli.ai.image.attempts.month",
+  /** Number of additional active week plans (a count). */
+  plansExtra: "weekli.plans.extra"
 } as const;
 
 export const ATLAS_CAPABILITIES = {
