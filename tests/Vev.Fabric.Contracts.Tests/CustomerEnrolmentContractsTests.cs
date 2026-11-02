@@ -30,8 +30,8 @@ public sealed class CustomerEnrolmentContractsTests
             3,
             Start.AddHours(9),
             [
-                new ProductEnrolment("weekli", "offer-family", ProductEnrolmentSource.Paid, ProductEnrolmentStatus.Active, Start),
-                new ProductEnrolment("curio", "offer-intro", ProductEnrolmentSource.Trial, ProductEnrolmentStatus.Active, Start, Start.AddDays(14))
+                new ProductEnrolment("product-a", "offer-family", ProductEnrolmentSource.Paid, ProductEnrolmentStatus.Active, Start),
+                new ProductEnrolment("product-b", "offer-intro", ProductEnrolmentSource.Trial, ProductEnrolmentStatus.Active, Start, Start.AddDays(14))
             ]);
 
         var json = JsonSerializer.Serialize(snapshot, SerializerOptions);
@@ -50,7 +50,7 @@ public sealed class CustomerEnrolmentContractsTests
 
         Assert.True(IsValid(instance));
         var snapshot = JsonSerializer.Deserialize<CustomerEnrolmentSnapshot>(instance!.ToJsonString(), SerializerOptions)!;
-        Assert.Equal(["weekli", "curio"], snapshot.Enrolments.Select(e => e.ProductId));
+        Assert.Equal(["product-a", "product-b"], snapshot.Enrolments.Select(e => e.ProductId));
         Assert.Equal(ProductEnrolmentSource.Trial, snapshot.Enrolments.Last().Source);
     }
 

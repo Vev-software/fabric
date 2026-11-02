@@ -5,14 +5,14 @@
   "issuedAt": "2026-11-01T09:00:00Z",
   "enrolments": [
     {
-      "productId": "weekli",
+      "productId": "product-a",
       "offerId": "offer-family",
       "source": "Paid",
       "status": "Active",
       "from": "2026-11-01T00:00:00Z"
     },
     {
-      "productId": "curio",
+      "productId": "product-b",
       "offerId": "offer-intro",
       "source": "Trial",
       "status": "Active",

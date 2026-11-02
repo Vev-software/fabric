@@ -1,1 +1,1 @@
-{ "schemaVersion": 1, "customer": {}, "sequence": 3, "issuedAt": "2026-11-01T09:00:00Z", "enrolments": [{ "productId": "weekli", "offerId": "offer-family", "source": "Paid", "status": "Active", "from": "2026-11-01T00:00:00Z" }] }
+{ "schemaVersion": 1, "customer": {}, "sequence": 3, "issuedAt": "2026-11-01T09:00:00Z", "enrolments": [{ "productId": "product-a", "offerId": "offer-family", "source": "Paid", "status": "Active", "from": "2026-11-01T00:00:00Z" }] }
