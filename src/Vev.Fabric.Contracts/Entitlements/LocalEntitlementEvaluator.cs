@@ -6,7 +6,7 @@ namespace Vev.Fabric.Contracts.Entitlements;
 /// grant and no access.
 ///
 /// Hardened for offline / air-gapped / self-hosted hosts, where the clock is under the customer's
-/// (or an attacker's) control (fabric#9, security#1):
+/// (or an attacker's) control (fabric#9):
 /// <list type="bullet">
 /// <item><b>Anti-rollback (T3)</b> — a snapshot older than the highest already seen (by
 ///   <see cref="EntitlementSnapshot.Counter"/>, else <see cref="EntitlementSnapshot.IssuedAt"/>) is

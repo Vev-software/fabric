@@ -4,8 +4,8 @@ The offline evaluator (`fabric#4`) is deliberately **offline-capable and fail-st
 control-plane outage never stops authorised production. On offline / air-gapped / self-hosted hosts
 that same property is the weak point: the host and its clock are under the customer's (or an
 attacker's) control. This is the Fabric-side (contract + reference evaluator) hardening for the
-licensing threat model (`security#1`, threats T3/T4/T7). The signer and keys stay in
-`fabric-control-plane`; Fabric owns the **semantics** only.
+licensing threat model (threats T3/T4/T7). The signer and keys stay in
+the private control plane; Fabric owns the **semantics** only.
 
 ## Threat → control
 

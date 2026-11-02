@@ -7,7 +7,7 @@ using Vev.Fabric.Contracts.Entitlements;
 namespace Vev.Fabric.Contracts.Tests;
 
 /// <summary>
-/// Offline evaluator hardening (fabric#9, security#1 T3/T4/T7): anti-rollback, clock-regression and
+/// Offline evaluator hardening (fabric#9, threats T3/T4/T7): anti-rollback, clock-regression and
 /// trial hard-stop, plus the purchased freeze-open-within-grace guarantee that must survive.
 /// </summary>
 public sealed class EntitlementHardeningTests

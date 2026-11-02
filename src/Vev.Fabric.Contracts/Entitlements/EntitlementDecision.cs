@@ -70,7 +70,7 @@ public static class ReasonCodes
     public const string MembershipSnapshotExpired = "membership_snapshot_expired";
     public const string MembershipNotFound = "membership_not_found";
 
-    // Offline evaluator hardening (fabric#9, security#1 T3/T4/T7).
+    // Offline evaluator hardening (fabric#9, threats T3/T4/T7).
 
     /// <summary>A snapshot older than the highest already seen was presented (anti-rollback).</summary>
     public const string EntitlementSnapshotRolledBack = "entitlement_snapshot_rolled_back";

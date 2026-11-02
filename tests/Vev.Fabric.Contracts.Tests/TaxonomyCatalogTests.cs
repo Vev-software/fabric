@@ -98,7 +98,7 @@ public sealed class TaxonomyCatalogTests
     public void Reserved_Capabilities_Are_The_Canonical_Atlas_Commercial_Seams()
     {
         // Fabric is the single source of truth for the reserved (paid) capability ids. Downstream
-        // editions (atlas-community AtlasCapabilities.ReservedPaid, atlas-enterprise) key their
+        // editions of the Atlas product key their
         // gates on exactly these strings, so pin the set here and let it fail closed on drift.
         var reserved = Capabilities.All
             .Where(capability => capability is { Kind: TaxonomyKind.Feature, Reserved: true })

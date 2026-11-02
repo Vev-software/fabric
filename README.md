@@ -133,7 +133,7 @@ instead of product-local flags or scheduler-specific assumptions.
 
 ## Current discovery enrollment, access and Atlas discovery event surface
 
-The public discovery enrollment/access slice implemented for `atlas-enterprise#9`, `fabric#28`
+The public discovery enrollment/access slice implemented for the discovery feature of the Atlas product, `fabric#28`
 and `fabric#35` includes:
 
 - .NET discovery enrollment contracts, access-decision evaluator, lifecycle state machine, lifecycle event envelope and audit vocabulary in [`src/Vev.Fabric.Contracts/Discovery`](./src/Vev.Fabric.Contracts/Discovery)
