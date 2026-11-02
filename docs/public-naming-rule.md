@@ -43,8 +43,10 @@ namespace to `.github/public-naming-namespaces.txt`. Nothing else makes a name p
 
 ```bash
 node scripts/check-public-naming.mjs
-node --test tests/public-naming/
+node --test tests/public-naming/check-public-naming.test.mjs
 ```
+
+Both need Node 22 or later (CI pins Node 22 in `setup-node`).
 
 `tests/public-naming/` holds the guard's own tests and a deliberately bad fixture; it uses
 dummy names only and is excluded from the structural scan.

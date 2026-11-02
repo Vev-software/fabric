@@ -27,7 +27,7 @@ jobs:
           node-version: 22
 
       - name: Public naming guard (tests)
-        run: node --test tests/public-naming/
+        run: node --test tests/public-naming/check-public-naming.test.mjs
 
       - name: Public naming guard
         run: node scripts/check-public-naming.mjs
