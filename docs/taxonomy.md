@@ -145,6 +145,7 @@ Additive registration (issue #65), mirrored in `WeekliTaxonomy` (.NET), `WEEKLI_
 | `weekli.planning.horizon-days` | Limit | Calendar days from the Monday of the current ISO week, including the current week, in the consumer calendar time zone |
 | `weekli.ai.text.attempts.month` | Limit | Dispatched text provider attempts per UTC calendar month |
 | `weekli.ai.image.attempts.month` | Limit | Dispatched image provider attempts per UTC calendar month |
+| `weekli.plans.extra` | Limit | Number of additional active week plans (a count; registered in issue #68) |
 
 An AI attempt counts when a provider request is dispatched, including failed or unknown outcomes. It is not a token, currency amount, successful response, delivered image or user action. An undispatched request does not consume an attempt allowance. A UTC calendar month starts at 00:00 UTC on day one; this is not an agreement-anchored billing month.
 
