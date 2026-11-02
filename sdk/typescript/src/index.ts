@@ -238,6 +238,39 @@ export interface TenantMembershipSnapshot {
   members: TenantMember[];
 }
 
+/** Opaque, stable customer identifier; never an e-mail address or other personal data. */
+export interface CustomerRef {
+  customerId: string;
+}
+
+export type ProductEnrolmentSource = "Paid" | "Gift" | "Trial" | "Bundle";
+
+export type ProductEnrolmentStatus = "Active" | "Suspended" | "Ended";
+
+/** One customer's enrolment in one product: identifiers and a period only, no price or payment concept. */
+export interface ProductEnrolment {
+  /** Stable lower-case product identifier (^[a-z][a-z0-9-]*$). */
+  productId: string;
+  /** Opaque issuer-chosen offer identifier; no price, plan or tier meaning is implied. */
+  offerId: string;
+  source: ProductEnrolmentSource;
+  status: ProductEnrolmentStatus;
+  from: string;
+  /** Absent or null means open-ended. */
+  until?: string | null;
+}
+
+/** Portable, versioned statement of the products one customer is enrolled in (fabric#69). Data only. */
+export interface CustomerEnrolmentSnapshot {
+  /** Reject every value other than a version you know. */
+  schemaVersion: 1;
+  customer: CustomerRef;
+  sequence: number;
+  issuedAt: string;
+  /** The complete set of enrolments, at most one per product. */
+  enrolments: ProductEnrolment[];
+}
+
 export interface TenantLifecycleStatus {
   tenant: string;
   state: TenantLifecycleState;
