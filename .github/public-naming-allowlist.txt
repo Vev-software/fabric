@@ -1,0 +1,6 @@
+# productId values permitted in public samples, fixtures, tests and docs.
+# One id per line (lower-case). Adding a real product here is a deliberate,
+# reviewed change made at or after its public launch. See docs/public-naming-rule.md.
+weekli
+product-a
+product-b

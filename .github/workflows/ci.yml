@@ -26,6 +26,15 @@ jobs:
         with:
           node-version: 22
 
+      - name: Public naming guard (tests)
+        run: node --test tests/public-naming/
+
+      - name: Public naming guard
+        run: node scripts/check-public-naming.mjs
+        env:
+          # Empty on forks and local runs: the deny-list layer is then skipped.
+          PUBLIC_NAMING_DENYLIST: ${{ secrets.PUBLIC_NAMING_DENYLIST }}
+
       - name: Restore (.NET)
         run: dotnet restore Vev.Fabric.slnx
 

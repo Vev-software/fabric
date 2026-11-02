@@ -33,6 +33,9 @@ merged; if you forget, `git commit --amend -s` (or a rebase sign-off) fixes it.
   three (schema, .NET, TS) stay in lock-step.
 - **Docs + compatibility note.** Document new contracts under `docs/`, and state the
   compatibility impact.
+- **Neutral names.** Samples, fixtures, tests and docs use only the ids described in
+  [`docs/public-naming-rule.md`](./docs/public-naming-rule.md); CI enforces it
+  (`node scripts/check-public-naming.mjs`).
 
 ## The boundary (what belongs here)
 

@@ -1,0 +1,7 @@
+# Capability / limit id namespaces (the prefix before the first dot) that already
+# exist in the taxonomy sources and SDKs. A new namespace is a deliberate, reviewed
+# change made at or after public launch. See docs/public-naming-rule.md.
+weekli
+atlas
+portic
+fabric
