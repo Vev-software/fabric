@@ -2,7 +2,7 @@
 
 Shared contracts, schemas and SDKs used across VEV products.
 
-`fabric` is the public contract layer of VEV's internal substrate. It defines the
+`fabric` is the public contract layer shared by VEV products. It defines the
 cross-cutting concerns — tenant context, entitlements, audit, events, observability
 conventions, the extension manifest and the AI contract — as versioned contracts with
 .NET and TypeScript SDKs. Products depend on these packages; third parties validate
